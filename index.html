@@ -385,17 +385,29 @@
         const dagtekening = document.getElementById('dagtekening').value;
         const peildatum   = document.getElementById('peildatum').value;
         if (!dagtekening || !peildatum) return;
-        const resp = await fetch('/export-pdf', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({dagtekening, peildatum}),
-        });
-        if (!resp.ok) { alert('PDF-export mislukt'); return; }
-        const blob = await resp.blob();
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = 'lexnode-besluit.pdf';
-        a.click();
+        try {
+            const resp = await fetch('/export-pdf', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({dagtekening, peildatum}),
+            });
+            if (!resp.ok) {
+                const tekst = await resp.text();
+                alert('PDF-export mislukt (' + resp.status + '): ' + tekst);
+                return;
+            }
+            const blob = await resp.blob();
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'lexnode-besluit.pdf';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        } catch (err) {
+            alert('PDF-export mislukt: ' + err.message);
+        }
     }
 
     window.addEventListener('load', initGraph);
