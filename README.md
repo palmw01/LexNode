@@ -1,9 +1,9 @@
 # LexNode — Rules as Code kennisgraaf
 
-[![Live demo](https://img.shields.io/badge/live_demo-palmw01.github.io%2FLexNode-0070c0?logo=github)](https://palmw01.github.io/LexNode/)
-[![Deployment](https://github.com/palmw01/LexNode/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/palmw01/LexNode/actions/workflows/pages/pages-build-deployment)
-[![Prototype](https://img.shields.io/badge/status-prototype-orange)](https://github.com/palmw01/LexNode)
-[![Art. 9 IW 1990](https://img.shields.io/badge/wet-Art.%209%20IW%201990-012456)](https://wetten.overheid.nl/BWBR0004770/2024-01-01#Hoofdstuk2_Artikel9)
+<a href="https://palmw01.github.io/LexNode/" target="_blank"><img src="https://img.shields.io/badge/live_demo-palmw01.github.io%2FLexNode-0070c0?logo=github" alt="Live demo"></a>
+<a href="https://github.com/palmw01/LexNode/actions/workflows/pages/pages-build-deployment" target="_blank"><img src="https://github.com/palmw01/LexNode/actions/workflows/pages/pages-build-deployment/badge.svg" alt="Deployment"></a>
+<a href="https://github.com/palmw01/LexNode" target="_blank"><img src="https://img.shields.io/badge/status-prototype-orange" alt="Prototype"></a>
+<a href="https://wetten.overheid.nl/BWBR0004770/2024-01-01#Hoofdstuk2_Artikel9" target="_blank"><img src="https://img.shields.io/badge/wet-Art.%209%20IW%201990-012456" alt="Art. 9 IW 1990"></a>
 
 🌐 **Bekijk de live kennisgraaf en berekening:**
 <a href="https://palmw01.github.io/LexNode/" target="_blank"><strong>https://palmw01.github.io/LexNode/</strong></a>
