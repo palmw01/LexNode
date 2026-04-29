@@ -72,14 +72,22 @@
         .tab-content h3:first-child { margin-top: 0; }
 
         label { display: block; font-size: 0.8rem; font-weight: bold; margin-bottom: 4px; }
-        input[type="date"] {
+        input[type="date"],
+        select {
             display: block;
             width: 100%;
             padding: 10px;
             border: 1px solid var(--border);
             font-size: 1rem;
-            text-align: center;
+            background: var(--wit);
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23555' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 32px;
+            cursor: pointer;
         }
+        input[type="date"] { text-align: center; }
         .field { margin-bottom: 15px; }
 
         .btn { cursor: pointer; padding: 14px; font-weight: bold; border: none; width: 100%; margin-bottom: 8px; font-size: 0.9rem; }

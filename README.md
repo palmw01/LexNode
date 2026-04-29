@@ -14,9 +14,12 @@ LexNode modelleert juridische regels uit **Art. 9 Invorderingswet 1990** als een
 
 ## Wat het doet
 
-Gegeven een **dagtekening** (datum op het aanslagbiljet) en een **peildatum**, berekent LexNode of een belastingaanslag al invorderbaar is. De kern: een aanslag is invorderbaar zes weken na de dagtekening (Art. 9 lid 1 IW 1990). De termijn wordt dynamisch uitgelezen uit de kennisgraaf — niet hardcoded.
+Gegeven een **aanslagtype**, **dagtekening** en **peildatum**, berekent LexNode of een belastingaanslag al invorderbaar is. De UI ondersteunt twee redeneerroutes:
 
-Het resultaat is downloadbaar als PDF-besluit met volledige juridische onderbouwing vanuit de kennisgraaf (definities, toelichtingen, wetsverwijzingen en de afleidingsregel). De PDF wordt volledig in de browser gegenereerd via jsPDF — er is geen server voor nodig.
+- **Art. 9 lid 1** (definitieve aanslagen) — invorderbaar zes weken na de dagtekening. De termijn wordt dynamisch uitgelezen uit de kennisgraaf via regex, niet hardcoded.
+- **Art. 9 lid 5** (voorlopige aanslagen IB/VPB en voorlopige conserverende aanslagen IB) — invorderbaar in gelijke maandelijkse termijnen. Het aantal termijnen is gelijk aan het aantal resterende kalendermaanden na de dagtekeningmaand (AR-9-5b). Bij onvoldoende termijnen (≤ 1, AR-9-5e) valt de berekening terug op lid 1.
+
+De kennisgraafvisualisatie markeert automatisch de actieve redeneerroute. Het resultaat is downloadbaar als PDF-besluit met volledige juridische onderbouwing (definities, toelichtingen, wetsverwijzingen en afleidingsregels). De PDF wordt volledig in de browser gegenereerd via jsPDF — er is geen server voor nodig.
 
 ## Lokale installatie en opstarten
 
@@ -93,19 +96,27 @@ python validator.py
 
 De applicatie heeft drie lagen:
 
-**Kennisgraaf (`graph.gexf`)** — GEXF-bestand gegenereerd door NetworkX. Bevat 33 nodes met juridische concepten. De actieve route voor lid 1 is:
+**Kennisgraaf (`graph.gexf`)** — GEXF-bestand gegenereerd door NetworkX. Bevat 33 nodes met juridische concepten. Drie actieve redeneerroutes:
 
 ```
-dagtekening-aanslagbiljet → zes-weken → zes-weken-na-dagtekening-aanslagbiljet → AR-9-1 → invorderbaarheid
-```
+Lid 1:       dagtekening-aanslagbiljet → zes-weken → zes-weken-na-dagtekening-aanslagbiljet → AR-9-1 → invorderbaarheid
 
-De graaf bevat ook nodes voor Art. 9 lid 5 IW 1990 (gelijke termijnen voor voorlopige aanslagen), maar deze zijn nog niet aangesloten op de UI.
+Lid 5:       dagtekening-aanslagbiljet → dagtekening-in-vaststellingsjaar → voorlopige-aanslag
+             → AR-9-5a → invorderbaarheid-in-gelijke-termijnen
+             → AR-9-5b → termijnenberekening-resterende-maanden
+             → AR-9-5c → vervaldag-eerste-termijn → AR-9-5d → vervaldag-volgende-termijnen
+
+Lid 5 + terugval (AR-9-5e):
+             dagtekening-aanslagbiljet → dagtekening-in-vaststellingsjaar
+             → termijnenberekening-resterende-maanden → AR-9-5e → terugvalregel-lid-1 → [lid-1-route]
+```
 
 **Backend (`app.py` + `lexnode_engine.py`)** — `http.server` zonder framework. `LexNodeEngine` laadt de GEXF eenmalig bij startup. De termijn (zes weken = 42 dagen) wordt via regex uitgelezen uit de `definitie`-tekst van node `zes-weken`; fallback is 42 dagen. `get_route_nodes()` levert alle attributen van de 5 actieve route-nodes voor de PDF-export.
 
-**Frontend (`index.html`)** — Geen build-stap. Gebruikt **vis-network** (CDN) voor graafvisualisatie en **jsPDF** (CDN) voor PDF-generatie in de browser. Twee tabbladen: "Berekening" en "Node Details". Na een berekening filtert de graafvisualisatie automatisch naar de actieve route. Alle logica — berekening, GEXF-parsing en PDF-export — draait volledig client-side, zodat de app op GitHub Pages werkt zonder backend.
+**Frontend (`index.html`)** — Geen build-stap. Gebruikt **vis-network** (CDN) voor graafvisualisatie en **jsPDF** (CDN) voor PDF-generatie in de browser. Twee tabbladen: "Berekening" en "Node Details". De gebruiker kiest het aanslagtype via een dropdown; na de berekening markeert de graafvisualisatie de relevante route. Alle logica — berekening, GEXF-parsing en PDF-export — draait volledig client-side, zodat de app op GitHub Pages werkt zonder backend.
 
 ## Juridische context
 
 - **Art. 9 lid 1 IW 1990** — Belastingaanslagen zijn invorderbaar zes weken na de dagtekening van het aanslagbiljet.
+- **Art. 9 lid 5 IW 1990** — Voorlopige aanslagen IB/VPB en voorlopige conserverende aanslagen IB, waarvan het aanslagbiljet is gedagtekend in het belastingjaar waarover zij zijn vastgesteld, zijn invorderbaar in zoveel gelijke maandelijkse termijnen als er na de dagtekeningmaand nog maanden in dat jaar resteren. Als de berekening niet leidt tot meer dan één termijn, herneemt lid 1.
 - **Art. 9 lid 10 IW 1990** — De Algemene Termijnenwet (ATW) is uitgesloten; weekenden en feestdagen tellen mee.

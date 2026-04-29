@@ -68,16 +68,24 @@ De termijn wordt dynamisch via regex uitgelezen uit `attribuut 14` van node `zes
 **De frontend gebruikt deze endpoints niet op GitHub Pages** — alle logica draait client-side.
 
 **3. Frontend (`index.html`)**  
-Single-page app zonder build-stap. Gebruikt **vis-network** (CDN) voor graafvisualisatie en **jsPDF 2.5.1** (CDN) voor PDF-generatie in de browser. Twee tabbladen: "Berekening" en "Node Details". Na een berekening filtert de frontend de graaf naar de actieve route (`dagtekening-aanslagbiljet → zes-weken → zes-weken-na-dagtekening-aanslagbiljet → AR-9-1 → invorderbaarheid`).
+Single-page app zonder build-stap. Gebruikt **vis-network** (CDN) voor graafvisualisatie en **jsPDF 2.5.1** (CDN) voor PDF-generatie in de browser. Twee tabbladen: "Berekening" en "Node Details".
+
+De gebruiker kiest het aanslagtype via een dropdown. Na een berekening filtert de frontend de graaf naar één van drie dynamische routes (in `activeRoute`):
+
+- **`LID1_ROUTE`** — lid-1-pad (5 nodes)
+- **`LID5_ROUTE_NORMAAL`** — lid-5-pad met maandelijkse termijnen (11 nodes)
+- **`LID5_ROUTE_TERUGVAL`** — lid-5-pad met AR-9-5e terugval naar lid 1 (9 nodes)
+
+Berekeningsfuncties: `checkInvorderbaarheid()` (lid 1) en `checkInvorderbaarheidLid5()` (lid 5). Lid-5-logica: AR-9-5b berekent `12 - maand(dagtekening)` resterende termijnen; AR-9-5e activeert terugval als ≤ 1; AR-9-5c/d genereren de vervaldatums iteratief.
 
 Alle logica draait volledig client-side: GEXF wordt via `fetch('graph.gexf')` geladen en geparseerd, de invorderbaarheidsberekening en PDF-export gebruiken alleen de geparseerde XML. Er is geen backend nodig; de app werkt op GitHub Pages.
 
-## Lid-5-nodes: intentioneel aanwezig maar niet actief
-
-De GEXF-graaf bevat 33 nodes. De UI gebruikt er actief 5 (de lid-1-route: `dagtekening-aanslagbiljet → zes-weken → zes-weken-na-dagtekening-aanslagbiljet → AR-9-1 → invorderbaarheid`). De overige nodes (o.a. `AR-9-5a/b/c/d/e`, `voorlopige-aanslag`, `invorderbaarheid-in-gelijke-termijnen`, etc.) modelleren Art. 9 lid 5 IW 1990 (gelijke termijnen voor voorlopige aanslagen). Ze zijn correct gemodelleerd maar nog niet aangesloten op de UI — dit is bewust, niet per ongeluk.
-
 ## Kritische koppeling
 
-De node-IDs in de GEXF (`zes-weken`, `AR-9-1`, `invorderbaarheid`, etc.) zijn hardcoded in `lexnode_engine.py` én `index.html`. Bij hernoemen van een node in de graaf moeten beide bestanden mee worden aangepast.
+De node-IDs in de GEXF zijn hardcoded in `lexnode_engine.py` én `index.html`. Bij hernoemen van een node in de graaf moeten beide bestanden mee worden aangepast.
+
+Hardcoded node-IDs in `index.html` (lid 1): `zes-weken`, `zes-weken-na-dagtekening-aanslagbiljet`, `AR-9-1`, `invorderbaarheid`, `dagtekening-aanslagbiljet`.
+
+Hardcoded node-IDs in `index.html` (lid 5): `dagtekening-in-vaststellingsjaar`, `voorlopige-aanslag`, `AR-9-5a`, `AR-9-5b`, `AR-9-5c`, `AR-9-5d`, `AR-9-5e`, `invorderbaarheid-in-gelijke-termijnen`, `termijnenberekening-resterende-maanden`, `vervaldag-eerste-termijn`, `vervaldag-volgende-termijnen`, `terugvalregel-lid-1`.
 
 De attribuut-ID's (0–26) zijn nummeriek en positioneel — als de volgorde van `<attribute>`-declaraties in het `<attributes>`-blok van de GEXF wijzigt, breken alle lookups in `app.py` en `lexnode_engine.py`.
