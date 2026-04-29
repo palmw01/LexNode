@@ -98,7 +98,7 @@
 
         .detail-row   { margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
         .detail-label { font-weight: bold; font-size: 0.7rem; color: #777; text-transform: uppercase; }
-        .detail-value { font-size: 0.85rem; word-break: break-word; }
+        .detail-value { font-size: 0.85rem; word-break: break-word; overflow-wrap: break-word; white-space: normal; max-width: 100%; }
 
         #graph-container { flex: 1; position: relative; background: white; min-width: 0; }
         #mynetwork { position: absolute; inset: 0; }
@@ -120,9 +120,27 @@
             background: white; z-index: 20; font-size: 0.9rem; color: #666;
         }
 
+        #node-tooltip {
+            display: none;
+            position: fixed;
+            max-width: 280px;
+            background: rgba(30, 30, 30, 0.92);
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            line-height: 1.5;
+            white-space: normal;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            z-index: 9999;
+            pointer-events: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
         @media (max-width: 850px) {
             main { flex-direction: column; overflow-x: hidden; overflow-y: auto; }
-            #sidebar { width: 100%; flex-shrink: 0; border-right: none; border-bottom: 1px solid var(--border); overflow: hidden; }
+            #sidebar { width: 100%; flex-shrink: 0; border-right: none; border-bottom: 1px solid var(--border); overflow: hidden; max-height: 55vh; }
             input[type="date"] { max-width: -webkit-fill-available; }
             #graph-container { flex: none; height: 60vh; min-height: 350px; width: 100%; }
             .legend { font-size: 0.65rem; max-width: 160px; }
@@ -219,12 +237,35 @@
         nodesDS:   new vis.DataSet(),
         edgesDS:   new vis.DataSet(),
         graphData: { nodes: [], edges: [] },
+        nodeById:  new Map(),
+        edgeById:  new Map(),
         gexfDoc:   null,
+    };
+
+    const RELATIES = {
+        'begrippen':        { color: '#aaa',    label: 'Groepeert begrippen'       },
+        'leidt-tot':        { color: '#007bc7', label: 'Leidt tot conclusie'       },
+        'afleidingsregels': { color: '#e87c25', label: 'Koppelt afleidingsregel'   },
+        'heeft':            { color: '#999',    label: 'Heeft als onderdeel'       },
+        'is-een':           { color: '#3a9e5f', label: 'Is een specialisatie van'  },
     };
 
     // ── Helpers ───────────────────────────────────────────────────────────
     const formatDatum = d =>
         d.toLocaleDateString('nl-NL', { day: '2-digit', month: '2-digit', year: 'numeric' });
+
+    function appendDetailRow(container, label, value) {
+        const row = document.createElement('div');
+        const lEl = document.createElement('div');
+        const vEl = document.createElement('div');
+        row.className = 'detail-row';
+        lEl.className = 'detail-label';
+        vEl.className = 'detail-value';
+        lEl.textContent = label;
+        vEl.textContent = value;
+        row.append(lEl, vEl);
+        container.appendChild(row);
+    }
 
     // ── GEXF parser ───────────────────────────────────────────────────────
     function parseGexf(xml) {
@@ -238,15 +279,21 @@
                 id:        node.getAttribute('id'),
                 label:     node.getAttribute('label'),
                 color:     attrs[ATTR_COLOR]     || '#97C2FC',
-                title:     attrs[ATTR_DEFINITIE] || '',
+                definitie: attrs[ATTR_DEFINITIE] || '',
                 node_type: attrs['0']            || 'onbekend',
             });
         }
         for (const edge of doc.getElementsByTagNameNS(NS, 'edge')) {
+            const rel   = edge.getAttribute('label') || '';
+            const color = RELATIES[rel]?.color || '#ccc';
             edges.push({
-                from:   edge.getAttribute('source'),
-                to:     edge.getAttribute('target'),
-                arrows: 'to',
+                id:      String(edge.getAttribute('id')),
+                from:    edge.getAttribute('source'),
+                to:      edge.getAttribute('target'),
+                relatie: rel,
+                arrows:  'to',
+                color:   { color, highlight: color, hover: color },
+                title:   rel || undefined,
             });
         }
         return { nodes, edges, doc };
@@ -303,11 +350,37 @@
         const container = document.getElementById('mynetwork');
         const options = {
             nodes: { shape: 'dot', size: 16, font: { size: 12 } },
-            edges: { color: '#ccc', smooth: { type: 'continuous' } },
+            edges: { smooth: { type: 'continuous' } },
             physics: { stabilization: true, barnesHut: { gravitationalConstant: -2000 } },
+            interaction: { hover: true },
         };
         App.network = new vis.Network(container, { nodes: App.nodesDS, edges: App.edgesDS }, options);
-        App.network.on('click', p => { if (p.nodes.length) showNodeDetails(p.nodes[0]); });
+        App.network.on('click', p => {
+            if (p.nodes.length)      showNodeDetails(p.nodes[0]);
+            else if (p.edges.length) showEdgeDetails(p.edges[0]);
+        });
+
+        const tooltip = document.getElementById('node-tooltip');
+        App.network.on('hoverNode', function(params) {
+            const node = App.nodesDS.get(params.node);
+            if (!node || !node.definitie) return;
+            tooltip.textContent = node.definitie;
+            tooltip.style.display = 'block';
+            requestAnimationFrame(function() {
+                const x = params.pointer.DOM.x + 14;
+                const y = params.pointer.DOM.y + 14;
+                const tw = tooltip.offsetWidth;
+                const th = tooltip.offsetHeight;
+                tooltip.style.left = (x + tw > window.innerWidth  ? x - tw - 28 : x) + 'px';
+                tooltip.style.top  = (y + th > window.innerHeight ? y - th - 28 : y) + 'px';
+            });
+        });
+        App.network.on('blurNode', function() {
+            tooltip.style.display = 'none';
+        });
+        container.addEventListener('mouseleave', function() {
+            tooltip.style.display = 'none';
+        });
 
         try {
             const res    = await fetch('graph.gexf');
@@ -315,6 +388,8 @@
             const xml    = await res.text();
             const parsed = parseGexf(xml);
             App.graphData = { nodes: parsed.nodes, edges: parsed.edges };
+            App.nodeById  = new Map(parsed.nodes.map(n => [n.id, n]));
+            App.edgeById  = new Map(parsed.edges.map(e => [e.id, e]));
             App.gexfDoc   = parsed.doc;
 
             document.getElementById('loader').style.display = 'none';
@@ -378,33 +453,40 @@
         highlightRoute();
     }
 
+    const NODE_ATTR_LABELS = {
+        '0':'node_type','1':'jas_klasse','2':'kleur','3':'artikel','4':'bwb_id',
+        '5':'peildatum','6':'structuurpositie','7':'kruisreferenties','8':'begripsnaam',
+        '9':'markering','10':'bron','11':'bronnen','12':'interpretatiemethode',
+        '13':'toelichting','14':'definitie','15':'soort','16':'herkomst',
+        '17':'geldigheid_van','19':'status','20':'is_een','21':'heeft',
+        '22':'leidt_tot','23':'afleidingsregels','24':'regel_id','25':'naam','26':'operators'
+    };
+
     function showNodeDetails(nodeId) {
         openTab('details');
-        const LABELS = {
-            '0':'node_type','1':'jas_klasse','2':'kleur','3':'artikel','4':'bwb_id',
-            '5':'peildatum','6':'structuurpositie','7':'kruisreferenties','8':'begripsnaam',
-            '9':'markering','10':'bron','11':'bronnen','12':'interpretatiemethode',
-            '13':'toelichting','14':'definitie','15':'soort','16':'herkomst',
-            '17':'geldigheid_van','19':'status','20':'is_een','21':'heeft',
-            '22':'leidt_tot','23':'afleidingsregels','24':'regel_id','25':'naam','26':'operators'
-        };
         const attrs   = getNodeAttrs(nodeId);
         const content = document.getElementById('node-details-content');
         content.innerHTML = '';
         for (const [k, v] of Object.entries(attrs)) {
             if (!v || v === '[]') continue;
-            const row   = document.createElement('div');
-            const label = document.createElement('div');
-            const value = document.createElement('div');
-            row.className   = 'detail-row';
-            label.className = 'detail-label';
-            value.className = 'detail-value';
-            label.textContent = LABELS[k] || k;
-            value.textContent = v;
-            row.append(label, value);
-            content.appendChild(row);
+            appendDetailRow(content, NODE_ATTR_LABELS[k] || k, v);
         }
         if (!content.children.length) content.textContent = 'Geen gegevens beschikbaar.';
+    }
+
+    function showEdgeDetails(edgeId) {
+        openTab('details');
+        const edge     = App.edgeById.get(String(edgeId));
+        if (!edge) return;
+        const fromNode = App.nodeById.get(edge.from);
+        const toNode   = App.nodeById.get(edge.to);
+        const content  = document.getElementById('node-details-content');
+        content.innerHTML = '';
+        const rel = RELATIES[edge.relatie];
+        appendDetailRow(content, 'Relatietype', edge.relatie || '—');
+        appendDetailRow(content, 'Betekenis',   rel?.label  || '—');
+        appendDetailRow(content, 'Van',         fromNode?.label ?? edge.from);
+        appendDetailRow(content, 'Naar',        toNode?.label   ?? edge.to);
     }
 
     function exportPDF() {
@@ -572,5 +654,6 @@
 
     window.addEventListener('load', initGraph);
 </script>
+<div id="node-tooltip"></div>
 </body>
 </html>
