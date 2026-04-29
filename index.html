@@ -96,6 +96,15 @@
         #deadline-info { margin-top: 4px; }
         #meta-info     { font-size: 0.75rem; margin-top: 8px; color: #555; }
 
+        #termijnen-tabel { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.8rem; }
+        #termijnen-tabel th { background: #f0f0f0; padding: 4px 8px; text-align: left; border-bottom: 2px solid var(--border); }
+        #termijnen-tabel td { padding: 4px 8px; border-bottom: 1px solid #eee; }
+        .termijn-vervallen td { color: #2d6a0f; }
+        .termijn-toekomst td { color: #555; }
+        .checkbox-label { display: flex; align-items: flex-start; gap: 8px; font-size: 0.82rem; cursor: pointer; margin: 6px 0; line-height: 1.4; }
+        .checkbox-label input { margin-top: 2px; flex-shrink: 0; }
+        #lid5-veld { margin: 8px 0; padding: 8px 10px; background: #f7f7ff; border-left: 3px solid #7030A0; font-size: 0.82rem; }
+
         .detail-row   { margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
         .detail-label { font-weight: bold; font-size: 0.7rem; color: #777; text-transform: uppercase; }
         .detail-value { font-size: 0.85rem; word-break: break-word; overflow-wrap: break-word; white-space: normal; max-width: 100%; }
@@ -166,6 +175,14 @@
         <div id="calc" class="tab-content active" role="tabpanel">
             <h3>Invorderbaarheid Check</h3>
             <div class="field">
+                <label for="aanslagtype">Aanslagtype</label>
+                <select id="aanslagtype">
+                    <option value="definitief">Definitieve aanslag (Art. 9 lid 1)</option>
+                    <option value="voorlopig">Voorlopige aanslag IB/VPB (Art. 9 lid 5)</option>
+                    <option value="voorlopig-conserverend">Voorl. conserverende aanslag IB (Art. 9 lid 5)</option>
+                </select>
+            </div>
+            <div class="field">
                 <label for="dagtekening">Dagtekening</label>
                 <input type="date" id="dagtekening" value="2026-01-01">
             </div>
@@ -173,12 +190,25 @@
                 <label for="peildatum">Peildatum</label>
                 <input type="date" id="peildatum" value="2026-04-29">
             </div>
+            <div id="lid5-veld" style="display:none">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="dagtekening-in-vaststellingsjaar" checked>
+                    Dagtekening valt in het belastingjaar waarover de aanslag is vastgesteld
+                    (Art. 9 lid 5, node: dagtekening-in-vaststellingsjaar)
+                </label>
+            </div>
             <button type="button" class="btn btn-primary" id="btn-bereken">Bereken</button>
 
             <div id="result-panel" role="region" aria-live="polite" aria-label="Berekeningsresultaat">
                 <div id="status-header"></div>
                 <div id="deadline-info"></div>
                 <div id="meta-info"></div>
+                <div id="termijnen-lijst" style="display:none">
+                    <table id="termijnen-tabel">
+                        <thead><tr><th>#</th><th>Vervaldatum</th><th>Status op peildatum</th></tr></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
             </div>
 
             <div class="btn-row">
@@ -223,13 +253,41 @@
     const ATTR_TOELICHTING = '13';
     const ATTR_DEFINITIE   = '14';
 
-    const ACTIVE_ROUTE = [
+    const LID1_ROUTE = [
         'dagtekening-aanslagbiljet',
         'zes-weken',
         'zes-weken-na-dagtekening-aanslagbiljet',
         'AR-9-1',
         'invorderbaarheid',
     ];
+
+    const LID5_ROUTE_NORMAAL = [
+        'dagtekening-aanslagbiljet',
+        'dagtekening-in-vaststellingsjaar',
+        'voorlopige-aanslag',
+        'AR-9-5a',
+        'invorderbaarheid-in-gelijke-termijnen',
+        'AR-9-5b',
+        'termijnenberekening-resterende-maanden',
+        'AR-9-5c',
+        'vervaldag-eerste-termijn',
+        'AR-9-5d',
+        'vervaldag-volgende-termijnen',
+    ];
+
+    const LID5_ROUTE_TERUGVAL = [
+        'dagtekening-aanslagbiljet',
+        'dagtekening-in-vaststellingsjaar',
+        'termijnenberekening-resterende-maanden',
+        'AR-9-5e',
+        'terugvalregel-lid-1',
+        'zes-weken',
+        'zes-weken-na-dagtekening-aanslagbiljet',
+        'AR-9-1',
+        'invorderbaarheid',
+    ];
+
+    let activeRoute = LID1_ROUTE;
 
     // ── State ─────────────────────────────────────────────────────────────
     const App = {
@@ -345,6 +403,34 @@
         return { invorderbaar: peildatum >= deadline, deadline, dagen, bron, atw };
     }
 
+    // ── Lid-5-berekening (AR-9-5a t/m AR-9-5e) ───────────────────────────
+    function checkInvorderbaarheidLid5(dagtekening, peildatum) {
+        const maand = dagtekening.getMonth() + 1; // 1..12
+        const resterendeMaanden = 12 - maand; // AR-9-5b: na dagtekeningmaand
+
+        // AR-9-5e: terugval naar lid 1 als termijnen <= 1
+        if (resterendeMaanden <= 1) {
+            const res = checkInvorderbaarheid(dagtekening, peildatum);
+            return { ...res, lid5: true, terugvalLid1: true, termijnen: [], resterendeMaanden };
+        }
+
+        // AR-9-5c + AR-9-5d: bereken vervaldatums (dagtekening + 1 t/m n maanden)
+        const termijnen = [];
+        for (let i = 1; i <= resterendeMaanden; i++) {
+            termijnen.push(new Date(dagtekening.getFullYear(), dagtekening.getMonth() + i, dagtekening.getDate()));
+        }
+
+        const bron = getNodeAttrs('invorderbaarheid-in-gelijke-termijnen')['10'] || 'Art. 9 lid 5 IW 1990';
+        return {
+            invorderbaar: peildatum >= termijnen[0],
+            termijnen,
+            resterendeMaanden,
+            bron,
+            lid5: true,
+            terugvalLid1: false,
+        };
+    }
+
     // ── Graph initialisatie ───────────────────────────────────────────────
     async function initGraph() {
         const container = document.getElementById('mynetwork');
@@ -410,11 +496,11 @@
 
     function highlightRoute() {
         const routeNodes = App.graphData.nodes
-            .filter(n => ACTIVE_ROUTE.includes(n.id))
+            .filter(n => activeRoute.includes(n.id))
             .map(n => ({ ...n, size: 24, borderWidth: 3,
                 color: { border: '#007bc7', background: n.color } }));
         const routeEdges = App.graphData.edges
-            .filter(e => ACTIVE_ROUTE.includes(e.from) && ACTIVE_ROUTE.includes(e.to));
+            .filter(e => activeRoute.includes(e.from) && activeRoute.includes(e.to));
         App.nodesDS.clear(); App.edgesDS.clear();
         App.nodesDS.add(routeNodes);
         App.edgesDS.add(routeEdges);
@@ -438,17 +524,64 @@
         const peildatumVal   = document.getElementById('peildatum').value;
         if (!dagtekeningVal || !peildatumVal) return;
 
-        const dag  = new Date(dagtekeningVal);
-        const peil = new Date(peildatumVal);
-        const res  = checkInvorderbaarheid(dag, peil);
+        const dag         = new Date(dagtekeningVal);
+        const peil        = new Date(peildatumVal);
+        const aanslagtype = document.getElementById('aanslagtype').value;
+        const isLid5      = aanslagtype !== 'definitief';
+        const voorwaarde  = !isLid5 || document.getElementById('dagtekening-in-vaststellingsjaar').checked;
 
-        const panel = document.getElementById('result-panel');
+        const panel          = document.getElementById('result-panel');
+        const termijnenLijst = document.getElementById('termijnen-lijst');
+
+        if (isLid5 && !voorwaarde) {
+            panel.style.display = 'block';
+            panel.className = '';
+            document.getElementById('status-header').textContent = 'Voorwaarde niet vervuld';
+            document.getElementById('deadline-info').textContent =
+                'De dagtekening valt niet in het belastingjaar waarover de aanslag is vastgesteld. Art. 9 lid 5 is niet van toepassing — raadpleeg Art. 9 lid 7 IW 1990.';
+            document.getElementById('meta-info').textContent = '';
+            termijnenLijst.style.display = 'none';
+            activeRoute = LID1_ROUTE;
+            highlightRoute();
+            return;
+        }
+
+        const res = isLid5 ? checkInvorderbaarheidLid5(dag, peil) : checkInvorderbaarheid(dag, peil);
+
         panel.style.display = 'block';
         panel.className = res.invorderbaar ? 'invorderbaar' : 'niet-invorderbaar';
         document.getElementById('status-header').textContent =
             res.invorderbaar ? 'INVORDERBAAR' : 'NIET INVORDERBAAR';
-        document.getElementById('deadline-info').textContent = 'Vervaldatum: ' + formatDatum(res.deadline);
-        document.getElementById('meta-info').textContent     = 'Bron: ' + res.bron + ' · ATW: ' + res.atw;
+
+        if (res.lid5 && !res.terugvalLid1) {
+            const aantalVervallen = res.termijnen.filter(d => peil >= d).length;
+            document.getElementById('deadline-info').textContent =
+                `Eerste termijn: ${formatDatum(res.termijnen[0])} · ${res.resterendeMaanden} termijnen · ${aantalVervallen} vervallen`;
+            document.getElementById('meta-info').textContent = 'Bron: ' + res.bron + ' (Art. 9 lid 5 IW 1990)';
+
+            const tbody = termijnenLijst.querySelector('tbody');
+            tbody.innerHTML = '';
+            res.termijnen.forEach((d, i) => {
+                const vervallen = peil >= d;
+                const tr = document.createElement('tr');
+                tr.className = vervallen ? 'termijn-vervallen' : 'termijn-toekomst';
+                tr.innerHTML = `<td>${i + 1}</td><td>${formatDatum(d)}</td>` +
+                    `<td>${vervallen ? 'Vervallen' : 'Nog niet vervallen'}</td>`;
+                tbody.appendChild(tr);
+            });
+            termijnenLijst.style.display = 'block';
+            activeRoute = LID5_ROUTE_NORMAAL;
+        } else {
+            document.getElementById('deadline-info').textContent = 'Vervaldatum: ' + formatDatum(res.deadline);
+            const atwTekst = res.atw ? ' · ATW: ' + res.atw : '';
+            document.getElementById('meta-info').textContent = 'Bron: ' + res.bron + atwTekst;
+            if (res.lid5 && res.terugvalLid1) {
+                document.getElementById('meta-info').textContent +=
+                    ' · Terugval naar lid 1 (AR-9-5e: onvoldoende termijnen)';
+            }
+            termijnenLijst.style.display = 'none';
+            activeRoute = (res.lid5 && res.terugvalLid1) ? LID5_ROUTE_TERUGVAL : LID1_ROUTE;
+        }
 
         highlightRoute();
     }
@@ -495,9 +628,11 @@
         if (!dagtekeningVal || !peildatumVal) return;
         if (!App.gexfDoc) { alert('Graaf nog niet geladen.'); return; }
 
-        const dag  = new Date(dagtekeningVal);
-        const peil = new Date(peildatumVal);
-        const res  = checkInvorderbaarheid(dag, peil);
+        const dag         = new Date(dagtekeningVal);
+        const peil        = new Date(peildatumVal);
+        const aanslagtype = document.getElementById('aanslagtype').value;
+        const isLid5      = aanslagtype !== 'definitief';
+        const res         = isLid5 ? checkInvorderbaarheidLid5(dag, peil) : checkInvorderbaarheid(dag, peil);
 
         const { jsPDF } = window.jspdf;
         const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
@@ -558,7 +693,16 @@
         pdf.setFontSize(13); setFont(true);
         pdf.text(res.invorderbaar ? 'INVORDERBAAR' : 'NIET INVORDERBAAR', M + 5, y + 8);
         pdf.setFontSize(8); setFont(false);
-        const infoBalk = `Dagtekening: ${formatDatum(dag)}  |  Peildatum: ${formatDatum(peil)}  |  Deadline: ${formatDatum(res.deadline)}  |  Termijn: ${res.dagen} dagen  |  ATW: ${res.atw}`;
+        let infoBalk;
+        if (res.lid5 && !res.terugvalLid1) {
+            infoBalk = `Dagtekening: ${formatDatum(dag)}  |  Peildatum: ${formatDatum(peil)}` +
+                `  |  Eerste termijn: ${formatDatum(res.termijnen[0])}  |  Aantal termijnen: ${res.resterendeMaanden}` +
+                `  |  Grondslag: ${res.bron}`;
+        } else {
+            infoBalk = `Dagtekening: ${formatDatum(dag)}  |  Peildatum: ${formatDatum(peil)}` +
+                `  |  Deadline: ${formatDatum(res.deadline)}  |  Termijn: ${res.dagen} dagen  |  ATW: ${res.atw}`;
+            if (res.lid5 && res.terugvalLid1) infoBalk += '  |  AR-9-5e: terugval naar lid 1';
+        }
         pdf.text(pdf.splitTextToSize(infoBalk, CW - 10), M + 5, y + 16);
         y += 29;
 
@@ -571,8 +715,8 @@
 
         const bronnenSet = new Set(), bronnenLijst = [];
 
-        for (let i = 0; i < ACTIVE_ROUTE.length; i++) {
-            const id    = ACTIVE_ROUTE[i];
+        for (let i = 0; i < activeRoute.length; i++) {
+            const id    = activeRoute[i];
             const attrs = getNodeAttrs(id);
             const node  = App.graphData.nodes.find(n => n.id === id);
             const label = node ? node.label : id;
@@ -601,7 +745,7 @@
         pdf.text('3. Juridische toelichting', M, y);
         y += 7;
 
-        for (const id of ACTIVE_ROUTE) {
+        for (const id of activeRoute) {
             const attrs = getNodeAttrs(id);
             if (!attrs['13']) continue;
             const node  = App.graphData.nodes.find(n => n.id === id);
@@ -614,13 +758,45 @@
 
         checkPagina(20);
         pdf.setFontSize(12); setFont(true); pdf.setTextColor(...BLAUW);
-        pdf.text('4. Afleidingsregel AR-9-1', M, y);
-        y += 7;
-        const arAttrs = getNodeAttrs('AR-9-1');
-        if (arAttrs['25'] || arAttrs['24']) {
-            tekst(`${arAttrs['25'] || 'AR-9-1'}${arAttrs['24'] ? ` (regel_id: ${arAttrs['24']})` : ''}`, M, 9, ZWART);
+        if (res.lid5 && !res.terugvalLid1) {
+            pdf.text('4. Afleidingsregels Art. 9 lid 5 IW 1990', M, y);
+            y += 7;
+            for (const rId of ['AR-9-5a', 'AR-9-5b', 'AR-9-5c', 'AR-9-5d']) {
+                const rAttrs = getNodeAttrs(rId);
+                if (!rAttrs['25'] && !rAttrs['24']) continue;
+                checkPagina(12);
+                tekst(`${rAttrs['25'] || rId}${rAttrs['24'] ? ` (${rAttrs['24']})` : ''}` +
+                    (rAttrs['26'] ? ` — operators: ${rAttrs['26']}` : ''), M, 9, ZWART);
+            }
+            y += 3;
+            checkPagina(10 + res.termijnen.length * 6);
+            tekst('Termijnenoverzicht:', M, 9, ZWART, true);
+            res.termijnen.forEach((d, i) => {
+                const status = peil >= d ? 'vervallen' : 'nog niet vervallen';
+                tekst(`  Termijn ${i + 1}: ${formatDatum(d)} (${status})`, M, 8.5, ZWART);
+            });
+        } else if (res.lid5 && res.terugvalLid1) {
+            pdf.text('4. Afleidingsregels Art. 9 lid 5 (terugval) + Art. 9 lid 1', M, y);
+            y += 7;
+            const ar5eAttrs = getNodeAttrs('AR-9-5e');
+            tekst(`${ar5eAttrs['25'] || 'AR-9-5e'}${ar5eAttrs['24'] ? ` (${ar5eAttrs['24']})` : ''}` +
+                (ar5eAttrs['26'] ? ` — operators: ${ar5eAttrs['26']}` : ''), M, 9, ZWART);
+            tekst('Onvoldoende termijnen (≤ 1): terugval naar Art. 9 lid 1 IW 1990.', M, 8.5, GRIJS, false, true);
+            y += 3;
+            const arAttrs = getNodeAttrs('AR-9-1');
+            if (arAttrs['25'] || arAttrs['24']) {
+                tekst(`${arAttrs['25'] || 'AR-9-1'}${arAttrs['24'] ? ` (regel_id: ${arAttrs['24']})` : ''}`, M, 9, ZWART);
+            }
+            tekst(`Formule: peildatum ≥ dagtekening + ${res.dagen} dagen`, M, 9, ZWART, false, true);
+        } else {
+            pdf.text('4. Afleidingsregel AR-9-1', M, y);
+            y += 7;
+            const arAttrs = getNodeAttrs('AR-9-1');
+            if (arAttrs['25'] || arAttrs['24']) {
+                tekst(`${arAttrs['25'] || 'AR-9-1'}${arAttrs['24'] ? ` (regel_id: ${arAttrs['24']})` : ''}`, M, 9, ZWART);
+            }
+            tekst(`Formule: peildatum ≥ dagtekening + ${res.dagen} dagen`, M, 9, ZWART, false, true);
         }
-        tekst(`Formule: peildatum ≥ dagtekening + ${res.dagen} dagen`, M, 9, ZWART, false, true);
         y += 3;
 
         checkPagina(20);
@@ -647,6 +823,11 @@
     document.querySelector('.tabs').addEventListener('click', e => {
         const btn = e.target.closest('[data-tab]');
         if (btn) openTab(btn.dataset.tab);
+    });
+    document.getElementById('aanslagtype').addEventListener('change', function () {
+        document.getElementById('lid5-veld').style.display =
+            this.value !== 'definitief' ? 'block' : 'none';
+        calculate();
     });
     document.getElementById('btn-bereken').addEventListener('click', calculate);
     document.getElementById('btn-pdf').addEventListener('click', exportPDF);
