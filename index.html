@@ -69,8 +69,8 @@
         .tab-content.active { display: block; }
 
         label { display: block; font-size: 0.8rem; font-weight: bold; margin-bottom: 4px; }
-        input[type="date"] { width: 100%; min-width: 0; padding: 10px; border: 1px solid var(--border); font-size: 0.9rem; }
-        .field { margin-bottom: 15px; }
+        input[type="date"] { box-sizing: border-box; display: block; width: 100%; max-width: 100%; min-width: 0; padding: 10px; border: 1px solid var(--border); font-size: 0.9rem; }
+        .field { margin-bottom: 15px; min-width: 0; overflow: hidden; }
 
         .btn { cursor: pointer; padding: 12px; font-weight: bold; border: none; width: 100%; margin-bottom: 8px; font-size: 0.9rem; }
         .btn-primary   { background: var(--hemel-blauw); color: white; }
@@ -109,7 +109,7 @@
 
         @media (max-width: 850px) {
             main { flex-direction: column; overflow-y: auto; overflow-x: hidden; }
-            #sidebar { width: 100%; flex-shrink: 0; border-right: none; border-bottom: 1px solid var(--border); overflow-x: hidden; overflow-y: visible; }
+            #sidebar { width: 100%; flex-shrink: 0; border-right: none; border-bottom: 1px solid var(--border); overflow-y: visible; }
             .tab-content { overflow-y: visible; overflow-x: hidden; }
             #graph-container { flex: none; height: 60vh; min-height: 350px; width: 100%; }
             .legend { font-size: 0.65rem; max-width: 160px; }
