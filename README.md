@@ -1,6 +1,16 @@
-# LexNode
+# LexNode — Rules as Code kennisgraaf
 
-Een "Rules as Code" prototype voor de Belastingdienst. LexNode modelleert juridische regels uit **Art. 9 Invorderingswet 1990** als een kennisgraaf en biedt een webinterface om de invorderbaarheid van belastingaanslagen te berekenen en de juridische structuur te visualiseren.
+[![Live demo](https://img.shields.io/badge/live_demo-palmw01.github.io%2FLexNode-0070c0?logo=github)](https://palmw01.github.io/LexNode/)
+[![Deployment](https://github.com/palmw01/LexNode/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/palmw01/LexNode/actions/workflows/pages/pages-build-deployment)
+[![Prototype](https://img.shields.io/badge/status-prototype-orange)](https://github.com/palmw01/LexNode)
+[![Art. 9 IW 1990](https://img.shields.io/badge/wet-Art.%209%20IW%201990-012456)](https://wetten.overheid.nl/BWBR0004770/2024-01-01#Hoofdstuk2_Artikel9)
+
+🌐 **Bekijk de live kennisgraaf en berekening:**
+**https://palmw01.github.io/LexNode/**
+
+LexNode modelleert juridische regels uit **Art. 9 Invorderingswet 1990** als een interactieve kennisgraaf en berekent de invorderbaarheid van belastingaanslagen direct in de browser — zonder server, volledig client-side.
+
+---
 
 ## Wat het doet
 
@@ -8,7 +18,7 @@ Gegeven een **dagtekening** (datum op het aanslagbiljet) en een **peildatum**, b
 
 Het resultaat is downloadbaar als PDF-besluit met volledige juridische onderbouwing vanuit de kennisgraaf (definities, toelichtingen, wetsverwijzingen en de afleidingsregel). De PDF wordt volledig in de browser gegenereerd via jsPDF — er is geen server voor nodig.
 
-## Installatie en opstarten
+## Lokale installatie en opstarten
 
 **Vereisten:** Python 3.10+
 
