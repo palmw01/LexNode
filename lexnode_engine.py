@@ -12,11 +12,11 @@ class LexNodeEngine:
         'definitie':   '14',
     }
     ROUTE = [
-        "dagtekening-aanslagbiljet",
-        "zes-weken",
-        "zes-weken-na-dagtekening-aanslagbiljet",
-        "AR-9-1",
-        "invorderbaarheid",
+        "begrippen/dagtekening-aanslagbiljet",
+        "begrippen/zes-weken",
+        "begrippen/zes-weken-na-dagtekening-aanslagbiljet",
+        "regels/AR-9-1",
+        "begrippen/invorderbaarheid",
     ]
 
     def __init__(self, gexf_path: str):
@@ -92,7 +92,7 @@ class LexNodeEngine:
         }
 
     def check_invorderbaarheid(self, dagtekening: datetime, peildatum: datetime) -> dict:
-        details  = self.get_full_justification("zes-weken")
+        details  = self.get_full_justification("begrippen/zes-weken")
         deadline = dagtekening + timedelta(days=details["termijn_dagen"])
         return {
             "invorderbaar": peildatum >= deadline,

@@ -299,37 +299,37 @@
     const ATTR_DEFINITIE   = '14';
 
     const LID1_ROUTE = [
-        'dagtekening-aanslagbiljet',
-        'zes-weken',
-        'zes-weken-na-dagtekening-aanslagbiljet',
-        'AR-9-1',
-        'invorderbaarheid',
+        'begrippen/dagtekening-aanslagbiljet',
+        'begrippen/zes-weken',
+        'begrippen/zes-weken-na-dagtekening-aanslagbiljet',
+        'regels/AR-9-1',
+        'begrippen/invorderbaarheid',
     ];
 
     const LID5_ROUTE_NORMAAL = [
-        'dagtekening-aanslagbiljet',
-        'dagtekening-in-vaststellingsjaar',
-        'voorlopige-aanslag',
-        'AR-9-5a',
-        'invorderbaarheid-in-gelijke-termijnen',
-        'AR-9-5b',
-        'termijnenberekening-resterende-maanden',
-        'AR-9-5c',
-        'vervaldag-eerste-termijn',
-        'AR-9-5d',
-        'vervaldag-volgende-termijnen',
+        'begrippen/dagtekening-aanslagbiljet',
+        'begrippen/dagtekening-in-vaststellingsjaar',
+        'begrippen/voorlopige-aanslag',
+        'regels/AR-9-5a',
+        'begrippen/invorderbaarheid-in-gelijke-termijnen',
+        'regels/AR-9-5b',
+        'begrippen/termijnenberekening-resterende-maanden',
+        'regels/AR-9-5c',
+        'begrippen/vervaldag-eerste-termijn',
+        'regels/AR-9-5d',
+        'begrippen/vervaldag-volgende-termijnen',
     ];
 
     const LID5_ROUTE_TERUGVAL = [
-        'dagtekening-aanslagbiljet',
-        'dagtekening-in-vaststellingsjaar',
-        'termijnenberekening-resterende-maanden',
-        'AR-9-5e',
-        'terugvalregel-lid-1',
-        'zes-weken',
-        'zes-weken-na-dagtekening-aanslagbiljet',
-        'AR-9-1',
-        'invorderbaarheid',
+        'begrippen/dagtekening-aanslagbiljet',
+        'begrippen/dagtekening-in-vaststellingsjaar',
+        'begrippen/termijnenberekening-resterende-maanden',
+        'regels/AR-9-5e',
+        'begrippen/terugvalregel-lid-1',
+        'begrippen/zes-weken',
+        'begrippen/zes-weken-na-dagtekening-aanslagbiljet',
+        'regels/AR-9-1',
+        'begrippen/invorderbaarheid',
     ];
 
     let activeRoute = LID1_ROUTE;
@@ -421,7 +421,7 @@
 
     // ── Termijn uit GEXF ──────────────────────────────────────────────────
     function getTermijnDagen() {
-        const attrs = getNodeAttrs('zes-weken');
+        const attrs = getNodeAttrs('begrippen/zes-weken');
         const def   = (attrs[ATTR_DEFINITIE] || '').toLowerCase();
         const match = def.match(/(?:zes|6|(\d+))\s+(?:\w+\s+)?(?:weken|dagen)/);
         if (match) {
@@ -436,7 +436,7 @@
 
     // ── Invorderbaarheidsberekening (volledig client-side) ────────────────
     function checkInvorderbaarheid(dagtekening, peildatum) {
-        const attrs       = getNodeAttrs('zes-weken');
+        const attrs       = getNodeAttrs('begrippen/zes-weken');
         const toelichting = (attrs[ATTR_TOELICHTING] || '').toLowerCase();
         const bron        = attrs[ATTR_BRON] || 'Art. 9 IW 1990';
         const dagen       = getTermijnDagen();
@@ -465,7 +465,7 @@
             termijnen.push(new Date(dagtekening.getFullYear(), dagtekening.getMonth() + i, dagtekening.getDate()));
         }
 
-        const bron = getNodeAttrs('invorderbaarheid-in-gelijke-termijnen')['10'] || 'Art. 9 lid 5 IW 1990';
+        const bron = getNodeAttrs('begrippen/invorderbaarheid-in-gelijke-termijnen')['10'] || 'Art. 9 lid 5 IW 1990';
         return {
             invorderbaar: peildatum >= termijnen[0],
             termijnen,
@@ -637,7 +637,8 @@
         '9':'markering','10':'bron','11':'bronnen','12':'interpretatiemethode',
         '13':'toelichting','14':'definitie','15':'soort','16':'herkomst',
         '17':'geldigheid_van','19':'status','20':'is_een','21':'heeft',
-        '22':'leidt_tot','23':'afleidingsregels','24':'regel_id','25':'naam','26':'operators'
+        '22':'leidt_tot','23':'afleidingsregels','24':'regel_id','25':'naam','26':'operators',
+        '27':'bronreferentie'
     };
 
     function showNodeDetails(nodeId) {
@@ -806,7 +807,7 @@
         if (res.lid5 && !res.terugvalLid1) {
             pdf.text('4. Afleidingsregels Art. 9 lid 5 IW 1990', M, y);
             y += 7;
-            for (const rId of ['AR-9-5a', 'AR-9-5b', 'AR-9-5c', 'AR-9-5d']) {
+            for (const rId of ['regels/AR-9-5a', 'regels/AR-9-5b', 'regels/AR-9-5c', 'regels/AR-9-5d']) {
                 const rAttrs = getNodeAttrs(rId);
                 if (!rAttrs['25'] && !rAttrs['24']) continue;
                 checkPagina(12);
@@ -823,12 +824,12 @@
         } else if (res.lid5 && res.terugvalLid1) {
             pdf.text('4. Afleidingsregels Art. 9 lid 5 (terugval) + Art. 9 lid 1', M, y);
             y += 7;
-            const ar5eAttrs = getNodeAttrs('AR-9-5e');
+            const ar5eAttrs = getNodeAttrs('regels/AR-9-5e');
             tekst(`${ar5eAttrs['25'] || 'AR-9-5e'}${ar5eAttrs['24'] ? ` (${ar5eAttrs['24']})` : ''}` +
                 (ar5eAttrs['26'] ? ` — operators: ${ar5eAttrs['26']}` : ''), M, 9, ZWART);
             tekst('Onvoldoende termijnen (≤ 1): terugval naar Art. 9 lid 1 IW 1990.', M, 8.5, GRIJS, false, true);
             y += 3;
-            const arAttrs = getNodeAttrs('AR-9-1');
+            const arAttrs = getNodeAttrs('regels/AR-9-1');
             if (arAttrs['25'] || arAttrs['24']) {
                 tekst(`${arAttrs['25'] || 'AR-9-1'}${arAttrs['24'] ? ` (regel_id: ${arAttrs['24']})` : ''}`, M, 9, ZWART);
             }
@@ -836,7 +837,7 @@
         } else {
             pdf.text('4. Afleidingsregel AR-9-1', M, y);
             y += 7;
-            const arAttrs = getNodeAttrs('AR-9-1');
+            const arAttrs = getNodeAttrs('regels/AR-9-1');
             if (arAttrs['25'] || arAttrs['24']) {
                 tekst(`${arAttrs['25'] || 'AR-9-1'}${arAttrs['24'] ? ` (regel_id: ${arAttrs['24']})` : ''}`, M, 9, ZWART);
             }

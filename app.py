@@ -196,7 +196,7 @@ class LexNodeHandler(http.server.SimpleHTTPRequestHandler):
 
         # ── 4. Afleidingsregel AR-9-1 ────────────────────────────────────────
         story.append(Paragraph("4. Afleidingsregel AR-9-1", s_h2))
-        ar = next((n for n in route_nodes if n["id"] == "AR-9-1"), None)
+        ar = next((n for n in route_nodes if n["id"] == "regels/AR-9-1"), None)
         if ar:
             story.append(Paragraph(f"<b>{ar['naam']}</b> (regel_id: {ar['regel_id']})", s_body))
             if ar["operators"]:

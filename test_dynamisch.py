@@ -53,7 +53,7 @@ def get_termijn_van_graaf(node_id):
     return 42 # Fallback als regex faalt
 
 def check_invorderbaarheid(dagtekening, huidige_datum):
-    termijn_dagen = get_termijn_van_graaf("zes-weken")
+    termijn_dagen = get_termijn_van_graaf("begrippen/zes-weken")
     deadline = dagtekening + timedelta(days=termijn_dagen)
     return huidige_datum >= deadline
 

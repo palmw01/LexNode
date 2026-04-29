@@ -24,7 +24,7 @@ class LexNodeValidator:
             try:
                 leidt_tot = ast.literal_eval(leidt_tot_str)
                 for target in leidt_tot:
-                    target_id = target.split('/')[-1].replace(']]', '')
+                    target_id = target.replace('[[', '').replace(']]', '')
                     if target_id not in self.nodes:
                         errors.append(f"ERR: Node '{node_id}' verwijst via leidt_tot naar niet-bestaande node '{target_id}'")
             except:

@@ -33,11 +33,11 @@ python validator.py
 De applicatie bestaat uit drie lagen:
 
 **1. Kennisgraaf (`graph.gexf`)**  
-GEXF-bestand gegenereerd door NetworkX met juridische concepten als nodes en relaties als edges. Elke node heeft 27 vaste attributen (id 0–26). Alle attribuut-ID's die door de codebase worden gebruikt:
+GEXF-bestand gegenereerd door NetworkX met juridische concepten als nodes en relaties als edges. Elke node heeft 28 vaste attributen (id 0–27). Node-IDs zijn hiërarchisch genaamd met een namespace-prefix: `begrippen/`, `regels/`, `annotaties/` of `wetteksten/`. Alle attribuut-ID's die door de codebase worden gebruikt:
 
 | ID | Titel                | Gebruik                                                       |
 |----|----------------------|---------------------------------------------------------------|
-| 0  | node_type            | Type node: `annotatie`, `begrip`, `regel`                    |
+| 0  | node_type            | Type node: `annotatie`, `begrip`, `regel`, `wettekst`        |
 | 1  | jas_klasse           | ATW/JAS-klasse — PDF redeneerroute (`get_route_nodes`)        |
 | 2  | color                | Hex-kleur voor visualisatie                                   |
 | 8  | begripsnaam          | Naam begrip — frontend node-details weergave                  |
@@ -49,11 +49,12 @@ GEXF-bestand gegenereerd door NetworkX met juridische concepten als nodes en rel
 | 14 | definitie            | Juridische definitie (bevat termijntekst voor regex-parsing)  |
 | 15 | soort                | Soort begrip of regel                                         |
 | 16 | herkomst             | Herkomst van de regel                                         |
-| 22 | leidt_tot            | Python-lijst van target-IDs — frontend graaf-navigatie        |
+| 22 | leidt_tot            | Python-lijst van `[[namespace/node-id]]`-refs — graaf-navigatie |
 | 23 | afleidingsregels     | Python-lijst van regelrefs                                    |
 | 24 | regel_id             | ID van de afleidingsregel — PDF sectie "Afleidingsregel"      |
 | 25 | naam                 | Naam van de regel — PDF sectie "Afleidingsregel"              |
 | 26 | operators            | Logische operators — PDF sectie "Afleidingsregel"             |
+| 27 | bronreferentie       | Externe bronverwijzing — node-details weergave                |
 
 **2. Backend (`app.py` + `lexnode_engine.py`)** — alleen lokaal  
 Eenvoudige Python `http.server` zonder framework. `LexNodeEngine` laadt de GEXF eenmalig bij startup en exposeert:
@@ -63,7 +64,7 @@ Eenvoudige Python `http.server` zonder framework. `LexNodeEngine` laadt de GEXF 
 - `POST /calculate` → `{dagtekening, peildatum}` → invorderbaarheidsresultaat
 - `POST /export-pdf` → onderbouwde PDF met besluit en alle relevante kennisgraafdata (vereist `reportlab`)
 
-De termijn wordt dynamisch via regex uitgelezen uit `attribuut 14` van node `zes-weken`. Fallback is 42 dagen als de regex faalt. `get_route_nodes()` levert alle attributen van de 5 actieve route-nodes voor de PDF-sectie "Redeneerroute".
+De termijn wordt dynamisch via regex uitgelezen uit `attribuut 14` van node `begrippen/zes-weken`. Fallback is 42 dagen als de regex faalt. `get_route_nodes()` levert alle attributen van de 5 actieve route-nodes voor de PDF-sectie "Redeneerroute".
 
 **De frontend gebruikt deze endpoints niet op GitHub Pages** — alle logica draait client-side.
 
@@ -82,10 +83,12 @@ Alle logica draait volledig client-side: GEXF wordt via `fetch('graph.gexf')` ge
 
 ## Kritische koppeling
 
-De node-IDs in de GEXF zijn hardcoded in `lexnode_engine.py` én `index.html`. Bij hernoemen van een node in de graaf moeten beide bestanden mee worden aangepast.
+De node-IDs in de GEXF zijn hardcoded in `lexnode_engine.py`, `test_dynamisch.py` én `index.html`. Bij hernoemen of herindelen van een node in de graaf moeten alle drie bestanden mee worden aangepast. Node-IDs gebruiken een hiërarchisch namespace-formaat (`begrippen/`, `regels/`, `annotaties/`, `wetteksten/`).
 
-Hardcoded node-IDs in `index.html` (lid 1): `zes-weken`, `zes-weken-na-dagtekening-aanslagbiljet`, `AR-9-1`, `invorderbaarheid`, `dagtekening-aanslagbiljet`.
+Hardcoded node-IDs in `index.html` (lid 1): `begrippen/zes-weken`, `begrippen/zes-weken-na-dagtekening-aanslagbiljet`, `regels/AR-9-1`, `begrippen/invorderbaarheid`, `begrippen/dagtekening-aanslagbiljet`.
 
-Hardcoded node-IDs in `index.html` (lid 5): `dagtekening-in-vaststellingsjaar`, `voorlopige-aanslag`, `AR-9-5a`, `AR-9-5b`, `AR-9-5c`, `AR-9-5d`, `AR-9-5e`, `invorderbaarheid-in-gelijke-termijnen`, `termijnenberekening-resterende-maanden`, `vervaldag-eerste-termijn`, `vervaldag-volgende-termijnen`, `terugvalregel-lid-1`.
+Hardcoded node-IDs in `index.html` (lid 5): `begrippen/dagtekening-in-vaststellingsjaar`, `begrippen/voorlopige-aanslag`, `regels/AR-9-5a`, `regels/AR-9-5b`, `regels/AR-9-5c`, `regels/AR-9-5d`, `regels/AR-9-5e`, `begrippen/invorderbaarheid-in-gelijke-termijnen`, `begrippen/termijnenberekening-resterende-maanden`, `begrippen/vervaldag-eerste-termijn`, `begrippen/vervaldag-volgende-termijnen`, `begrippen/terugvalregel-lid-1`.
 
-De attribuut-ID's (0–26) zijn nummeriek en positioneel — als de volgorde van `<attribute>`-declaraties in het `<attributes>`-blok van de GEXF wijzigt, breken alle lookups in `app.py` en `lexnode_engine.py`.
+De attribuut-ID's (0–27) zijn nummeriek en positioneel — als de volgorde van `<attribute>`-declaraties in het `<attributes>`-blok van de GEXF wijzigt, breken alle lookups in `app.py` en `lexnode_engine.py`.
+
+`leidt_tot`-waarden (attribuut 22) gebruiken de notatie `[[namespace/node-id]]`. De validator parseert deze met `.replace('[[', '').replace(']]', '')` om het volledige geprefixte node-ID te extraheren — gebruik nooit `.split('/')[-1]`, want dat strip het namespace-prefix weg.

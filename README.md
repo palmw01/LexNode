@@ -96,22 +96,24 @@ python validator.py
 
 De applicatie heeft drie lagen:
 
-**Kennisgraaf (`graph.gexf`)** — GEXF-bestand gegenereerd door NetworkX. Bevat 33 nodes met juridische concepten. Drie actieve redeneerroutes:
+**Kennisgraaf (`graph.gexf`)** — GEXF-bestand gegenereerd door NetworkX. Bevat 30 nodes met juridische concepten, ingedeeld in vier namespaces: `begrippen/`, `regels/`, `annotaties/` en `wetteksten/`. Drie actieve redeneerroutes:
 
 ```
-Lid 1:       dagtekening-aanslagbiljet → zes-weken → zes-weken-na-dagtekening-aanslagbiljet → AR-9-1 → invorderbaarheid
+Lid 1:       begrippen/dagtekening-aanslagbiljet → begrippen/zes-weken
+             → begrippen/zes-weken-na-dagtekening-aanslagbiljet → regels/AR-9-1 → begrippen/invorderbaarheid
 
-Lid 5:       dagtekening-aanslagbiljet → dagtekening-in-vaststellingsjaar → voorlopige-aanslag
-             → AR-9-5a → invorderbaarheid-in-gelijke-termijnen
-             → AR-9-5b → termijnenberekening-resterende-maanden
-             → AR-9-5c → vervaldag-eerste-termijn → AR-9-5d → vervaldag-volgende-termijnen
+Lid 5:       begrippen/dagtekening-aanslagbiljet → begrippen/dagtekening-in-vaststellingsjaar
+             → begrippen/voorlopige-aanslag → regels/AR-9-5a → begrippen/invorderbaarheid-in-gelijke-termijnen
+             → regels/AR-9-5b → begrippen/termijnenberekening-resterende-maanden
+             → regels/AR-9-5c → begrippen/vervaldag-eerste-termijn → regels/AR-9-5d → begrippen/vervaldag-volgende-termijnen
 
 Lid 5 + terugval (AR-9-5e):
-             dagtekening-aanslagbiljet → dagtekening-in-vaststellingsjaar
-             → termijnenberekening-resterende-maanden → AR-9-5e → terugvalregel-lid-1 → [lid-1-route]
+             begrippen/dagtekening-aanslagbiljet → begrippen/dagtekening-in-vaststellingsjaar
+             → begrippen/termijnenberekening-resterende-maanden → regels/AR-9-5e
+             → begrippen/terugvalregel-lid-1 → [lid-1-route]
 ```
 
-**Backend (`app.py` + `lexnode_engine.py`)** — `http.server` zonder framework. `LexNodeEngine` laadt de GEXF eenmalig bij startup. De termijn (zes weken = 42 dagen) wordt via regex uitgelezen uit de `definitie`-tekst van node `zes-weken`; fallback is 42 dagen. `get_route_nodes()` levert alle attributen van de 5 actieve route-nodes voor de PDF-export.
+**Backend (`app.py` + `lexnode_engine.py`)** — `http.server` zonder framework. `LexNodeEngine` laadt de GEXF eenmalig bij startup. De termijn (zes weken = 42 dagen) wordt via regex uitgelezen uit de `definitie`-tekst van node `begrippen/zes-weken`; fallback is 42 dagen. `get_route_nodes()` levert alle attributen van de 5 actieve route-nodes voor de PDF-export.
 
 **Frontend (`index.html`)** — Geen build-stap. Gebruikt **vis-network** (CDN) voor graafvisualisatie en **jsPDF** (CDN) voor PDF-generatie in de browser. Twee tabbladen: "Berekening" en "Node Details". De gebruiker kiest het aanslagtype via een dropdown; na de berekening markeert de graafvisualisatie de relevante route. Alle logica — berekening, GEXF-parsing en PDF-export — draait volledig client-side, zodat de app op GitHub Pages werkt zonder backend.
 
