@@ -96,6 +96,32 @@
         .btn-row { display: flex; gap: 10px; margin-top: 20px; }
         .btn-row .btn { width: auto; flex: 1; }
         .btn--small { font-size: 0.8rem; margin-top: 0; }
+        .notitie-github {
+            background: #f0f6ff;
+            border: 1px solid #a8c4e8;
+            border-left: 4px solid #3a7fc1;
+            border-radius: 4px;
+            padding: 8px 10px;
+            margin-top: 6px;
+            font-size: 0.78rem;
+            color: #1a3a5c;
+            line-height: 1.4;
+        }
+        .notitie-github a {
+            color: #1a3a5c;
+            font-weight: bold;
+        }
+        .notitie-ontbrekend {
+            background: #fffbe6;
+            border: 1px solid #e6c619;
+            border-left: 4px solid #e6c619;
+            border-radius: 4px;
+            padding: 8px 10px;
+            margin-top: 8px;
+            font-size: 0.78rem;
+            color: #5a4a00;
+            line-height: 1.4;
+        }
 
         #result-panel { padding: 15px; border: 2px solid var(--border); margin-top: 15px; display: none; }
         .invorderbaar      { border-color: var(--groen); background: var(--groen-licht); }
@@ -225,6 +251,17 @@
             <button type="button" class="btn btn-secondary btn--small" id="btn-reset">
                 Toon volledige graaf
             </button>
+            <div class="notitie-ontbrekend">
+                <strong>Let op:</strong> Art. 9.1 en 9.5 Leidraad Invordering 2008 zijn nog niet
+                gemodelleerd in de kennisgraaf. De correctieregel voor de laatste vervaldag
+                (Art. 9.1 LI) is daarmee ook nog niet geïmplementeerd.
+            </div>
+            <div class="notitie-github">
+                Broncode en kennisgraaf beschikbaar op
+                <a href="https://github.com/palmw01/LexNode" target="_blank" rel="noopener">
+                    github.com/palmw01/LexNode
+                </a>
+            </div>
         </div>
 
         <div id="details" class="tab-content" role="tabpanel">
