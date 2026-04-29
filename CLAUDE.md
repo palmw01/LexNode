@@ -46,7 +46,7 @@ GEXF-bestand gegenereerd door NetworkX met juridische concepten als nodes en rel
 | 22 | leidt_tot        | Geserialiseerde Python-lijst van target-IDs  |
 | 23 | afleidingsregels | Geserialiseerde Python-lijst van regelrefs   |
 
-**2. Backend (`app.py` + `lexnode_engine.py`)**  
+**2. Backend (`app.py` + `lexnode_engine.py`)** — alleen lokaal  
 Eenvoudige Python `http.server` zonder framework. `LexNodeEngine` laadt de GEXF eenmalig bij startup en exposeert:
 
 - `GET /graph-data` → alle nodes + edges als JSON voor vis-network
@@ -56,8 +56,12 @@ Eenvoudige Python `http.server` zonder framework. `LexNodeEngine` laadt de GEXF 
 
 De termijn wordt dynamisch via regex uitgelezen uit `attribuut 14` van node `zes-weken`. Fallback is 42 dagen als de regex faalt. `get_route_nodes()` levert alle attributen van de 5 actieve route-nodes voor de PDF-sectie "Redeneerroute".
 
+**De frontend gebruikt deze endpoints niet op GitHub Pages** — alle logica draait client-side.
+
 **3. Frontend (`index.html`)**  
-Single-page app zonder build-stap. Gebruikt **vis-network** (CDN) voor graafvisualisatie. Twee tabbladen: "Berekening" en "Node Details". Na een berekening filtert de frontend de graaf naar de actieve route (`dagtekening-aanslagbiljet → zes-weken → zes-weken-na-dagtekening-aanslagbiljet → AR-9-1 → invorderbaarheid`).
+Single-page app zonder build-stap. Gebruikt **vis-network** (CDN) voor graafvisualisatie en **jsPDF 2.5.1** (CDN) voor PDF-generatie in de browser. Twee tabbladen: "Berekening" en "Node Details". Na een berekening filtert de frontend de graaf naar de actieve route (`dagtekening-aanslagbiljet → zes-weken → zes-weken-na-dagtekening-aanslagbiljet → AR-9-1 → invorderbaarheid`).
+
+Alle logica draait volledig client-side: GEXF wordt via `fetch('graph.gexf')` geladen en geparseerd, de invorderbaarheidsberekening en PDF-export gebruiken alleen de geparseerde XML. Er is geen backend nodig; de app werkt op GitHub Pages.
 
 ## Lid-5-nodes: intentioneel aanwezig maar niet actief
 

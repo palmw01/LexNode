@@ -6,7 +6,7 @@ Een "Rules as Code" prototype voor de Belastingdienst. LexNode modelleert juridi
 
 Gegeven een **dagtekening** (datum op het aanslagbiljet) en een **peildatum**, berekent LexNode of een belastingaanslag al invorderbaar is. De kern: een aanslag is invorderbaar zes weken na de dagtekening (Art. 9 lid 1 IW 1990). De termijn wordt dynamisch uitgelezen uit de kennisgraaf — niet hardcoded.
 
-Het resultaat is downloadbaar als PDF-besluit met volledige juridische onderbouwing vanuit de kennisgraaf (definities, toelichtingen, wetsverwijzingen en de afleidingsregel).
+Het resultaat is downloadbaar als PDF-besluit met volledige juridische onderbouwing vanuit de kennisgraaf (definities, toelichtingen, wetsverwijzingen en de afleidingsregel). De PDF wordt volledig in de browser gegenereerd via jsPDF — er is geen server voor nodig.
 
 ## Installatie en opstarten
 
@@ -35,9 +35,11 @@ Voer een dagtekening en peildatum in op het tabblad "Berekening". Klik op **Expo
 
 | Package | Gebruik |
 |---|---|
-| `reportlab >= 4.0` | PDF-generatie (`/export-pdf`) |
+| `reportlab >= 4.0` | PDF-generatie via de lokale server (`/export-pdf`) — niet nodig voor GitHub Pages |
 
 Alle overige imports (`http.server`, `xml.etree`, `re`, `datetime`) zijn onderdeel van de Python standaardbibliotheek.
+
+De frontend laadt **vis-network** en **jsPDF** via CDN — geen installatie vereist.
 
 ## Projectstructuur
 
@@ -45,20 +47,22 @@ Alle overige imports (`http.server`, `xml.etree`, `re`, `datetime`) zijn onderde
 |---|---|
 | `graph.gexf` | Kennisgraaf — juridische concepten als nodes, relaties als edges |
 | `lexnode_engine.py` | Laadt de GEXF, berekent invorderbaarheid, levert route-nodes voor PDF |
-| `app.py` | HTTP-server (poort 8080), exposeert de REST-endpoints |
-| `index.html` | Single-page frontend met graafvisualisatie (vis-network via CDN) |
+| `app.py` | HTTP-server (poort 8080), exposeert de REST-endpoints (alleen lokaal) |
+| `index.html` | Single-page frontend — berekening, graafvisualisatie en PDF-export volledig client-side |
 | `validator.py` | Controleert integriteit van de GEXF (kapotte referenties, ontbrekende regels) |
 | `test_dynamisch.py` | Unittests die de termijn dynamisch uit de graaf ophalen |
 | `requirements.txt` | Python-afhankelijkheden |
 
-## API-endpoints
+## API-endpoints (lokale server)
+
+De frontend op GitHub Pages gebruikt geen van deze endpoints — alle logica draait client-side in de browser. De lokale server (`app.py`) biedt de endpoints hieronder aan voor ontwikkel- en testdoeleinden.
 
 | Methode | Pad | Beschrijving |
 |---|---|---|
 | `GET` | `/graph-data` | Alle nodes en edges als JSON |
 | `GET` | `/node-details/{id}` | Attributen van één node |
 | `POST` | `/calculate` | `{dagtekening, peildatum}` → invorderbaarheidsresultaat |
-| `POST` | `/export-pdf` | Onderbouwde PDF op basis van kennisgraaf |
+| `POST` | `/export-pdf` | Onderbouwde PDF via reportlab (alleen lokaal) |
 
 Datumformaat voor POST-requests: `YYYY-MM-DD`.
 
@@ -89,7 +93,7 @@ De graaf bevat ook nodes voor Art. 9 lid 5 IW 1990 (gelijke termijnen voor voorl
 
 **Backend (`app.py` + `lexnode_engine.py`)** — `http.server` zonder framework. `LexNodeEngine` laadt de GEXF eenmalig bij startup. De termijn (zes weken = 42 dagen) wordt via regex uitgelezen uit de `definitie`-tekst van node `zes-weken`; fallback is 42 dagen. `get_route_nodes()` levert alle attributen van de 5 actieve route-nodes voor de PDF-export.
 
-**Frontend (`index.html`)** — Geen build-stap. Twee tabbladen: "Berekening" en "Node Details". Na een berekening filtert de graafvisualisatie automatisch naar de actieve route.
+**Frontend (`index.html`)** — Geen build-stap. Gebruikt **vis-network** (CDN) voor graafvisualisatie en **jsPDF** (CDN) voor PDF-generatie in de browser. Twee tabbladen: "Berekening" en "Node Details". Na een berekening filtert de graafvisualisatie automatisch naar de actieve route. Alle logica — berekening, GEXF-parsing en PDF-export — draait volledig client-side, zodat de app op GitHub Pages werkt zonder backend.
 
 ## Juridische context
 
