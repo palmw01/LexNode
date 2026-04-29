@@ -12,15 +12,19 @@ Het resultaat is downloadbaar als PDF-besluit met volledige juridische onderbouw
 
 **Vereisten:** Python 3.10+
 
-```bash
-# 1. Virtuele omgeving aanmaken en activeren
+> **Let op:** voer alle commando's uit binnen de geactiveerde venv. Op Arch Linux blokkeert PEP 668 systeemwijde `pip install` buiten een venv.
+
+```fish
+# 1. Virtuele omgeving aanmaken (eenmalig)
 python3 -m venv .venv
+
+# 2. Venv activeren — doe dit elke keer voor je de server start
 source .venv/bin/activate.fish
 
-# 2. Afhankelijkheden installeren
+# 3. Afhankelijkheden installeren (eenmalig, binnen de venv)
 pip install -r requirements.txt
 
-# 3. Server starten (poort 8080)
+# 4. Server starten (poort 8080)
 python app.py
 # Open http://localhost:8080
 ```

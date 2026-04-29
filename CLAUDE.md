@@ -8,12 +8,14 @@ LexNode is een "Rules as Code" prototype voor de Belastingdienst. Het modelleert
 
 ## Commando's
 
-```bash
-# Venv aanmaken en activeren (eenmalig)
+```fish
+# Venv aanmaken (eenmalig)
 python3 -m venv .venv
+
+# Venv activeren — altijd doen voor server starten of pip install
 source .venv/bin/activate.fish
 
-# Afhankelijkheden installeren
+# Afhankelijkheden installeren (eenmalig, binnen de venv)
 pip install -r requirements.txt
 
 # Server starten (poort 8080)
