@@ -123,8 +123,8 @@
 
         @media (max-width: 850px) {
             main { flex-direction: column; overflow-x: hidden; overflow-y: auto; }
-            #sidebar { width: 100%; flex-shrink: 0; border-right: none; border-bottom: 1px solid var(--border); overflow: visible; }
-            .tab-content { overflow: visible; }
+            #sidebar { width: 100%; flex-shrink: 0; border-right: none; border-bottom: 1px solid var(--border); overflow-x: hidden; overflow-y: visible; }
+            .tab-content { overflow-x: hidden; overflow-y: visible; }
             input[type="date"] { font-size: 1rem; }
             #graph-container { flex: none; height: 60vh; min-height: 350px; width: 100%; }
             .legend { font-size: 0.65rem; max-width: 160px; }
