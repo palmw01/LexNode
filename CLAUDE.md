@@ -13,19 +13,13 @@ LexNode is een "Rules as Code" prototype voor de Belastingdienst. Het modelleert
 python app.py
 
 # Tests uitvoeren
-python -m pytest test_invorderbaarheid.py test_dynamisch.py -v
+python -m pytest test_dynamisch.py -v
 
 # Eén test uitvoeren
 python -m pytest test_dynamisch.py::TestInvorderbaarheidDynamisch::test_op_deadline -v
 
 # Graaf valideren (ontbrekende referenties, ontbrekende afleidingsregels)
 python validator.py
-
-# Specifieke node inspecteren via NetworkX
-python inspect_graph.py
-
-# Termijn uit GEXF ophalen
-python extract_term.py
 ```
 
 ## Architectuur
