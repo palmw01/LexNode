@@ -6,7 +6,7 @@
 [![Art. 9 IW 1990](https://img.shields.io/badge/wet-Art.%209%20IW%201990-012456)](https://wetten.overheid.nl/BWBR0004770/2024-01-01#Hoofdstuk2_Artikel9)
 
 🌐 **Bekijk de live kennisgraaf en berekening:**
-**https://palmw01.github.io/LexNode/**
+<a href="https://palmw01.github.io/LexNode/" target="_blank"><strong>https://palmw01.github.io/LexNode/</strong></a>
 
 LexNode modelleert juridische regels uit **Art. 9 Invorderingswet 1990** als een interactieve kennisgraaf en berekent de invorderbaarheid van belastingaanslagen direct in de browser — zonder server, volledig client-side.
 
