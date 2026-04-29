@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LexNode – Belastingdienst Rules as Code</title>
     <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <script src="https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
     <style>
         :root {
             --rijk-blauw:  #012456;
@@ -68,7 +69,7 @@
         .tab-content.active { display: block; }
 
         label { display: block; font-size: 0.8rem; font-weight: bold; margin-bottom: 4px; }
-        input[type="date"] { width: 100%; padding: 10px; border: 1px solid var(--border); font-size: 0.9rem; }
+        input[type="date"] { width: 100%; min-width: 0; padding: 10px; border: 1px solid var(--border); font-size: 0.9rem; }
         .field { margin-bottom: 15px; }
 
         .btn { cursor: pointer; padding: 12px; font-weight: bold; border: none; width: 100%; margin-bottom: 8px; font-size: 0.9rem; }
@@ -109,7 +110,7 @@
         @media (max-width: 850px) {
             main { flex-direction: column; overflow-y: auto; overflow-x: hidden; }
             #sidebar { width: 100%; flex-shrink: 0; border-right: none; border-bottom: 1px solid var(--border); overflow: visible; }
-            .tab-content { overflow-y: visible; }
+            .tab-content { overflow-y: visible; overflow-x: hidden; }
             #graph-container { flex: none; height: 60vh; min-height: 350px; width: 100%; }
             .legend { font-size: 0.65rem; max-width: 160px; }
         }
@@ -381,33 +382,167 @@
         if (!content.children.length) content.textContent = 'Geen gegevens beschikbaar.';
     }
 
-    async function exportPDF() {
-        const dagtekening = document.getElementById('dagtekening').value;
-        const peildatum   = document.getElementById('peildatum').value;
-        if (!dagtekening || !peildatum) return;
-        try {
-            const resp = await fetch('/export-pdf', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({dagtekening, peildatum}),
-            });
-            if (!resp.ok) {
-                const tekst = await resp.text();
-                alert('PDF-export mislukt (' + resp.status + '): ' + tekst);
-                return;
-            }
-            const blob = await resp.blob();
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'lexnode-besluit.pdf';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        } catch (err) {
-            alert('PDF-export mislukt: ' + err.message);
+    function exportPDF() {
+        const dagtekeningVal = document.getElementById('dagtekening').value;
+        const peildatumVal   = document.getElementById('peildatum').value;
+        if (!dagtekeningVal || !peildatumVal) return;
+        if (!gexfDoc) { alert('Graaf nog niet geladen.'); return; }
+
+        const dag  = new Date(dagtekeningVal);
+        const peil = new Date(peildatumVal);
+        const res  = checkInvorderbaarheid(dag, peil);
+        const fmt  = d => d.toLocaleDateString('nl-NL', { day: '2-digit', month: '2-digit', year: 'numeric' });
+
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+
+        const W = 210, M = 20, CW = 170;
+        let y = 0;
+
+        const BLAUW = [1, 36, 86];
+        const GROEN = [112, 173, 71];
+        const ROOD  = [217, 48, 37];
+        const GRIJS = [120, 120, 120];
+        const ZWART = [51, 51, 51];
+        const WIT   = [255, 255, 255];
+
+        function setFont(bold, italic) {
+            pdf.setFont('helvetica', bold ? 'bold' : italic ? 'italic' : 'normal');
         }
+
+        function tekst(str, x, size, kleur, bold, italic, maxW) {
+            pdf.setFontSize(size);
+            pdf.setTextColor(...kleur);
+            setFont(!!bold, !!italic);
+            const regels = pdf.splitTextToSize(String(str || ''), maxW || CW);
+            pdf.text(regels, x, y);
+            y += regels.length * size * 0.38 + 1.5;
+        }
+
+        function checkPagina(nodig) {
+            if (y + (nodig || 20) > 280) { pdf.addPage(); y = M; }
+        }
+
+        // Header balk
+        pdf.setFillColor(...BLAUW);
+        pdf.rect(0, 0, W, 16, 'F');
+        pdf.setTextColor(...WIT);
+        pdf.setFontSize(13);
+        setFont(true);
+        pdf.text('LexNode — Juridisch Besluit', M, 11);
+        y = 22;
+
+        // Subtitel
+        const nu = new Date();
+        tekst(
+            `Gegenereerd op ${fmt(nu)} om ${nu.toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' })}` +
+            `  |  Art. 9 Invorderingswet 1990  |  Status: concept`,
+            M, 7.5, GRIJS
+        );
+        y += 1;
+        pdf.setDrawColor(200, 200, 200);
+        pdf.line(M, y, W - M, y);
+        y += 7;
+
+        // 1. Besluit
+        pdf.setFontSize(12); setFont(true); pdf.setTextColor(...BLAUW);
+        pdf.text('1. Besluit', M, y);
+        y += 6;
+
+        pdf.setFillColor(...(res.invorderbaar ? GROEN : ROOD));
+        pdf.roundedRect(M, y, CW, 22, 3, 3, 'F');
+        pdf.setTextColor(...WIT);
+        pdf.setFontSize(13); setFont(true);
+        pdf.text(res.invorderbaar ? 'INVORDERBAAR' : 'NIET INVORDERBAAR', M + 5, y + 8);
+        pdf.setFontSize(8); setFont(false);
+        const infoBalk = `Dagtekening: ${fmt(dag)}  |  Peildatum: ${fmt(peil)}  |  Deadline: ${fmt(res.deadline)}  |  Termijn: ${res.dagen} dagen  |  ATW: ${res.atw}`;
+        pdf.text(pdf.splitTextToSize(infoBalk, CW - 10), M + 5, y + 16);
+        y += 29;
+
+        // 2. Redeneerroute
+        checkPagina(30);
+        pdf.setFontSize(12); setFont(true); pdf.setTextColor(...BLAUW);
+        pdf.text('2. Redeneerroute', M, y);
+        y += 5;
+        tekst('De beslissing volgt uit de onderstaande redeneerroute zoals gemodelleerd in de kennisgraaf.', M, 9, ZWART);
+        y += 3;
+
+        const bronnenSet = new Set(), bronnenLijst = [];
+
+        for (let i = 0; i < ACTIVE_ROUTE.length; i++) {
+            const id    = ACTIVE_ROUTE[i];
+            const attrs = getNodeAttrs(id);
+            const node  = graphData.nodes.find(n => n.id === id);
+            const label = node ? node.label : id;
+
+            for (const veld of [attrs['10'], attrs['11']]) {
+                if (!veld) continue;
+                let items = [veld];
+                if (veld.startsWith('[')) {
+                    try { items = JSON.parse(veld.replace(/'/g, '"')); } catch (e) {}
+                }
+                for (const b of items) {
+                    const bt = b.trim();
+                    if (bt && !bronnenSet.has(bt)) { bronnenSet.add(bt); bronnenLijst.push(bt); }
+                }
+            }
+
+            checkPagina(25);
+            tekst(`Stap ${i + 1}: ${label}` + (attrs['1'] ? ` (${attrs['1']})` : ''), M, 9, BLAUW, true);
+            if (attrs['14']) tekst(attrs['14'], M, 8.5, ZWART);
+            if (attrs['10']) tekst(`Bron: ${attrs['10']}`, M, 7.5, GRIJS);
+            y += 2;
+        }
+
+        // 3. Juridische toelichting
+        checkPagina(20);
+        pdf.setFontSize(12); setFont(true); pdf.setTextColor(...BLAUW);
+        pdf.text('3. Juridische toelichting', M, y);
+        y += 7;
+
+        for (const id of ACTIVE_ROUTE) {
+            const attrs = getNodeAttrs(id);
+            if (!attrs['13']) continue;
+            const node  = graphData.nodes.find(n => n.id === id);
+            const label = node ? node.label : id;
+            checkPagina(20);
+            tekst(label + (attrs['12'] ? ` — Interpretatiemethode: ${attrs['12']}` : ''), M, 9, ZWART, true);
+            tekst(attrs['13'], M, 8.5, ZWART);
+            y += 2;
+        }
+
+        // 4. Afleidingsregel AR-9-1
+        checkPagina(20);
+        pdf.setFontSize(12); setFont(true); pdf.setTextColor(...BLAUW);
+        pdf.text('4. Afleidingsregel AR-9-1', M, y);
+        y += 7;
+        const arAttrs = getNodeAttrs('AR-9-1');
+        if (arAttrs['25'] || arAttrs['24']) {
+            tekst(`${arAttrs['25'] || 'AR-9-1'}${arAttrs['24'] ? ` (regel_id: ${arAttrs['24']})` : ''}`, M, 9, ZWART);
+        }
+        tekst(`Formule: peildatum ≥ dagtekening + ${res.dagen} dagen`, M, 9, ZWART, false, true);
+        y += 3;
+
+        // 5. Wettelijke grondslagen
+        checkPagina(20);
+        pdf.setFontSize(12); setFont(true); pdf.setTextColor(...BLAUW);
+        pdf.text('5. Wettelijke grondslagen', M, y);
+        y += 7;
+        for (const b of bronnenLijst) {
+            checkPagina(7);
+            tekst(`• ${b}`, M, 9, ZWART);
+        }
+
+        // Footer
+        pdf.setDrawColor(200, 200, 200);
+        pdf.line(M, 287, W - M, 287);
+        pdf.setFontSize(7); setFont(false); pdf.setTextColor(...GRIJS);
+        pdf.text(
+            'LexNode prototype — Rules as Code — Belastingdienst | Art. 9 Invorderingswet 1990 | Dit document heeft geen juridische status.',
+            M, 291, { maxWidth: CW }
+        );
+
+        pdf.save('lexnode-besluit.pdf');
     }
 
     window.addEventListener('load', initGraph);
