@@ -11,6 +11,13 @@ class LexNodeEngine:
         'toelichting': '13',
         'definitie':   '14',
     }
+    ROUTE = [
+        "dagtekening-aanslagbiljet",
+        "zes-weken",
+        "zes-weken-na-dagtekening-aanslagbiljet",
+        "AR-9-1",
+        "invorderbaarheid",
+    ]
 
     def __init__(self, gexf_path: str):
         self.tree = ET.parse(gexf_path)
@@ -36,6 +43,31 @@ class LexNodeEngine:
         for edge in self.root.findall(".//g:edge", self.NS):
             edges.append({"from": edge.get('source'), "to": edge.get('target'), "arrows": "to"})
         return {"nodes": nodes, "edges": edges}
+
+    def get_route_nodes(self) -> list:
+        result = []
+        for node_id in self.ROUTE:
+            raw = self._get_attrs(node_id)
+            node_el = self.root.find(f".//g:node[@id='{node_id}']", self.NS)
+            result.append({
+                "id":               node_id,
+                "label":            node_el.get("label") if node_el is not None else node_id,
+                "node_type":        raw.get("0", ""),
+                "jas_klasse":       raw.get("1", ""),
+                "bron":             raw.get("10", ""),
+                "bronnen":          raw.get("11", ""),
+                "interpretatie":    raw.get("12", ""),
+                "toelichting":      raw.get("13", ""),
+                "definitie":        raw.get("14", ""),
+                "markering":        raw.get("9", ""),
+                "soort":            raw.get("15", ""),
+                "herkomst":         raw.get("16", ""),
+                "afleidingsregels": raw.get("23", ""),
+                "regel_id":         raw.get("24", ""),
+                "naam":             raw.get("25", ""),
+                "operators":        raw.get("26", ""),
+            })
+        return result
 
     def get_full_justification(self, node_id: str) -> dict:
         attrs = self._get_attrs(node_id)

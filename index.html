@@ -148,7 +148,7 @@
             </div>
 
             <div class="btn-row" style="margin-top:20px">
-                <button class="btn btn-secondary" onclick="exportJSON()">JSON</button>
+                <button class="btn btn-secondary" onclick="exportPDF()">Exporteer PDF</button>
             </div>
             <button class="btn btn-secondary" style="margin-top:8px; font-size:0.8rem" onclick="resetGraph()">
                 Toon volledige graaf
@@ -381,21 +381,20 @@
         if (!content.children.length) content.textContent = 'Geen gegevens beschikbaar.';
     }
 
-    function exportJSON() {
-        if (!gexfDoc) return;
-        const dag  = new Date(document.getElementById('dagtekening').value);
-        const peil = new Date(document.getElementById('peildatum').value);
-        const res  = checkInvorderbaarheid(dag, peil);
-        const data = {
-            invorderbaar: res.invorderbaar,
-            deadline:     res.deadline.toISOString().slice(0,10),
-            dagen:        res.dagen,
-            bron:         res.bron,
-            atw_status:   res.atw,
-        };
+    async function exportPDF() {
+        const dagtekening = document.getElementById('dagtekening').value;
+        const peildatum   = document.getElementById('peildatum').value;
+        if (!dagtekening || !peildatum) return;
+        const resp = await fetch('/export-pdf', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({dagtekening, peildatum}),
+        });
+        if (!resp.ok) { alert('PDF-export mislukt'); return; }
+        const blob = await resp.blob();
         const a = document.createElement('a');
-        a.href     = 'data:application/json,' + encodeURIComponent(JSON.stringify(data, null, 2));
-        a.download = 'bewijs.json';
+        a.href = URL.createObjectURL(blob);
+        a.download = 'lexnode-besluit.pdf';
         a.click();
     }
 
