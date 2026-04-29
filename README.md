@@ -15,7 +15,7 @@ Het resultaat is downloadbaar als PDF-besluit met volledige juridische onderbouw
 ```bash
 # 1. Virtuele omgeving aanmaken en activeren
 python3 -m venv .venv
-source .venv/bin/activate        # Windows: .venv\Scripts\activate
+source .venv/bin/activate.fish
 
 # 2. Afhankelijkheden installeren
 pip install -r requirements.txt
@@ -62,7 +62,7 @@ Datumformaat voor POST-requests: `YYYY-MM-DD`.
 
 ```bash
 # Activeer eerst de venv (zie Installatie)
-source .venv/bin/activate
+source .venv/bin/activate.fish
 
 # Unittests
 python test_dynamisch.py
