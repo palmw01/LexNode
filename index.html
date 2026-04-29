@@ -70,6 +70,8 @@
 
         label { display: block; font-size: 0.8rem; font-weight: bold; margin-bottom: 4px; }
         input[type="date"] { box-sizing: border-box; display: block; width: 100%; max-width: 100%; min-width: 0; padding: 10px; border: 1px solid var(--border); font-size: 0.9rem; text-align: center; }
+        input[type="date"]::-webkit-datetime-edit { text-align: center; }
+        input[type="date"]::-webkit-datetime-edit-fields-wrapper { text-align: center; }
         .field { margin-bottom: 15px; min-width: 0; overflow: hidden; }
 
         .btn { cursor: pointer; padding: 12px; font-weight: bold; border: none; width: 100%; margin-bottom: 8px; font-size: 0.9rem; }
