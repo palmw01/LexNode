@@ -1,0 +1,706 @@
+<?xml version='1.0' encoding='utf-8'?>
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
+  <meta lastmodifieddate="2026-04-28">
+    <creator>NetworkX 3.6.1</creator>
+  </meta>
+  <graph defaultedgetype="directed" mode="dynamic" name="" timeformat="date">
+    <attributes mode="static" class="node">
+      <attribute id="0" title="node_type" type="string" />
+      <attribute id="1" title="jas_klasse" type="string" />
+      <attribute id="2" title="color" type="string" />
+      <attribute id="3" title="artikel" type="string" />
+      <attribute id="4" title="bwb_id" type="string" />
+      <attribute id="5" title="peildatum" type="string" />
+      <attribute id="6" title="structuurpositie" type="string" />
+      <attribute id="7" title="kruisreferenties" type="string" />
+      <attribute id="8" title="begripsnaam" type="string" />
+      <attribute id="9" title="markering" type="string" />
+      <attribute id="10" title="bron" type="string" />
+      <attribute id="11" title="bronnen" type="string" />
+      <attribute id="12" title="interpretatiemethode" type="string" />
+      <attribute id="13" title="toelichting_klasse" type="string" />
+      <attribute id="14" title="definitie" type="string" />
+      <attribute id="15" title="soort" type="string" />
+      <attribute id="16" title="herkomst" type="string" />
+      <attribute id="17" title="geldigheid_van" type="string" />
+      <attribute id="18" title="geldigheid_tot" type="string" />
+      <attribute id="19" title="status" type="string" />
+      <attribute id="20" title="is_een" type="string" />
+      <attribute id="21" title="heeft" type="string" />
+      <attribute id="22" title="leidt_tot" type="string" />
+      <attribute id="23" title="afleidingsregels" type="string" />
+      <attribute id="24" title="regel_id" type="string" />
+      <attribute id="25" title="naam" type="string" />
+      <attribute id="26" title="operators" type="string" />
+    </attributes>
+    <nodes>
+      <node id="iw1990-art9" label="Art. 9 IW 1990" start="2026-01-01">
+        <attvalues>
+          <attvalue for="0" value="annotatie" />
+          <attvalue for="1" value="annotatie" />
+          <attvalue for="2" value="#CCCCCC" />
+          <attvalue for="3" value="Art. 9 IW 1990" />
+          <attvalue for="4" value="BWBR0004770" />
+          <attvalue for="5" value="2026-01-01" />
+          <attvalue for="6" value="Hoofdstuk II Invordering in eerste aanleg &gt; Artikel 9" />
+          <attvalue for="7" value="['Art. 2 IW 1990', 'Art. 8 Wet BPM 1992', 'Art. 6 Wet BZM', 'Algemene termijnenwet', 'Art. 167 Douanewetboek van de Unie']" />
+        </attvalues>
+      </node>
+      <node id="belastingaanslag" label="belastingaanslag" start="2026-01-01">
+        <attvalues>
+          <attvalue for="0" value="begrip" />
+          <attvalue for="1" value="rechtsobject" />
+          <attvalue for="2" value="#70AD47" />
+          <attvalue for="8" value="belastingaanslag" />
+          <attvalue for="9" value="Een belastingaanslag" />
+          <attvalue for="10" value="Art. 9 lid 1 IW 1990" />
+          <attvalue for="11" value="['Art. 9 lid 1 IW 1990']" />
+          <attvalue for="5" value="2026-01-01" />
+          <attvalue for="12" value="grammaticaal" />
+          <attvalue for="13" value="De belastingaanslag is het voorwerp van de invorderingsrechtsbetrekking; grammaticaal is 'een belastingaanslag' het zelfstandig naamwoord waarop de invorderbaarheid betrekking heeft. Alternatieve classificatie als rechtssubject is uitgesloten: de aanslag is geen drager van rechten of plichten." />
+          <attvalue for="14" value="Een door de Belastingdienst opgelegd en geformaliseerd besluit tot vaststelling van een belastingschuld, dat als voorwerp van invordering dient en waarop de invorderingsrechtsbetrekking zich richt" />
+          <attvalue for="15" value="enumeratiewaarde" />
+          <attvalue for="16" value="direct" />
+          <attvalue for="17" value="2026-01-01" />
+          <attvalue for="18" value="" />
+          <attvalue for="19" value="concept" />
+          <attvalue for="20" value="[]" />
+          <attvalue for="21" value="['[[begrippen/dagtekening-aanslagbiljet]]']" />
+          <attvalue for="22" value="[]" />
+          <attvalue for="23" value="[]" />
+        </attvalues>
+      </node>
+      <node id="dagtekening-aanslagbiljet" label="dagtekening-aanslagbiljet" start="2026-01-01">
+        <attvalues>
+          <attvalue for="0" value="begrip" />
+          <attvalue for="1" value="tijdsaanduiding" />
+          <attvalue for="2" value="#F4B942" />
+          <attvalue for="8" value="dagtekening-aanslagbiljet" />
+          <attvalue for="9" value="de dagtekening van het aanslagbiljet" />
+          <attvalue for="10" value="Art. 9 lid 1 IW 1990" />
+          <attvalue for="11" value="['Art. 9 lid 1 IW 1990', 'Art. 9 lid 5 IW 1990']" />
+          <attvalue for="5" value="2026-01-01" />
+          <attvalue for="12" value="systematisch" />
+          <attvalue for="13" value="Dubbelclassificatie: (1) tijdsaanduiding — de dagtekening is het referentiepunt waarvan de invorderingstermijn van zes weken wordt berekend; (2) rechtsfeit — de dagtekening is de handeling (het formeel dateren/uitreiken van het aanslagbiljet) waaraan het rechtsgevolg (aanvang invorderingstermijn) is verbonden. Primaire classificatie: tijdsaanduiding, omdat het meetpunt in de voorwaardeconstructie van lid 1 centraal staat." />
+          <attvalue for="14" value="De op het aanslagbiljet vermelde datum waarop de belastingaanslag formeel is gedagtekend en die dient als het vaste referentiepunt voor de berekening van de invorderingstermijn" />
+          <attvalue for="15" value="datum" />
+          <attvalue for="16" value="direct" />
+          <attvalue for="17" value="2026-01-01" />
+          <attvalue for="18" value="" />
+          <attvalue for="19" value="concept" />
+          <attvalue for="20" value="[]" />
+          <attvalue for="21" value="[]" />
+          <attvalue for="22" value="['[[begrippen/zes-weken-na-dagtekening-aanslagbiljet]]']" />
+          <attvalue for="23" value="[]" />
+        </attvalues>
+      </node>
+      <node id="dagtekening-in-vaststellingsjaar" label="dagtekening-in-vaststellingsjaar" start="2026-01-01">
+        <attvalues>
+          <attvalue for="0" value="begrip" />
+          <attvalue for="1" value="voorwaarde" />
+          <attvalue for="2" value="#7030A0" />
+          <attvalue for="8" value="dagtekening-in-vaststellingsjaar" />
+          <attvalue for="9" value="waarvan het aanslagbiljet een dagtekening heeft die ligt in het jaar waarover deze is vastgesteld" />
+          <attvalue for="10" value="Art. 9 lid 5 IW 1990" />
+          <attvalue for="11" value="['Art. 9 lid 5 IW 1990']" />
+          <attvalue for="5" value="2026-01-01" />
+          <attvalue for="12" value="grammaticaal" />
+          <attvalue for="13" value="Kwalificatieconditie die het toepassingsbereik van lid 5 afbakent: de dagtekening van het aanslagbiljet moet vallen in het belastingjaar waarover de voorlopige aanslag is vastgesteld. Aanslagen met een dagtekening vóór het belastingjaar vallen onder lid 7." />
+          <attvalue for="14" value="De toepassingsvoorwaarde dat de dagtekening van het aanslagbiljet valt binnen het kalenderjaar waarover de voorlopige aanslag of de voorlopige conserverende aanslag is vastgesteld, als afbakeningscriterium voor de termijnenregeling van art. 9 lid 5 IW 1990" />
+          <attvalue for="15" value="waar-niet-waar" />
+          <attvalue for="16" value="afgeleid" />
+          <attvalue for="17" value="2026-01-01" />
+          <attvalue for="18" value="" />
+          <attvalue for="19" value="concept" />
+          <attvalue for="20" value="[]" />
+          <attvalue for="21" value="['[[begrippen/dagtekening-aanslagbiljet]]']" />
+          <attvalue for="22" value="['[[begrippen/invorderbaarheid-in-gelijke-termijnen]]']" />
+          <attvalue for="23" value="['[[regels/AR-9-5a]]']" />
+        </attvalues>
+      </node>
+      <node id="een-maand-na-dagtekening" label="een-maand-na-dagtekening" start="2026-01-01">
+        <attvalues>
+          <attvalue for="0" value="begrip" />
+          <attvalue for="1" value="tijdsaanduiding" />
+          <attvalue for="2" value="#F4B942" />
+          <attvalue for="8" value="een-maand-na-dagtekening" />
+          <attvalue for="9" value="één maand na de dagtekening van het aanslagbiljet" />
+          <attvalue for="10" value="Art. 9 lid 5 IW 1990" />
+          <attvalue for="11" value="['Art. 9 lid 5 IW 1990']" />
+          <attvalue for="5" value="2026-01-01" />
+          <attvalue for="12" value="grammaticaal" />
+          <attvalue for="13" value="Tijdsaanduiding voor de vervaldatum van de eerste termijn in de lid-5-regeling. De termijn van één maand is een vaste verwijzingsdatum relatief aan de dagtekening." />
+          <attvalue for="14" value="Het tijdstip dat is gelegen één kalendermaand na de dagtekening van het aanslagbiljet en dat dient als vervaldatum van de eerste invorderingstermijn op grond van art. 9 lid 5 IW 1990" />
+          <attvalue for="15" value="datum" />
+          <attvalue for="16" value="afgeleid" />
+          <attvalue for="17" value="2026-01-01" />
+          <attvalue for="18" value="" />
+          <attvalue for="19" value="concept" />
+          <attvalue for="20" value="[]" />
+          <attvalue for="21" value="['[[begrippen/dagtekening-aanslagbiljet]]']" />
+          <attvalue for="22" value="['[[begrippen/vervaldag-eerste-termijn]]']" />
+          <attvalue for="23" value="['[[regels/AR-9-5c]]']" />
+        </attvalues>
+      </node>
+      <node id="in-afwijking-van-eerste-lid" label="in-afwijking-van-eerste-lid" start="2026-01-01">
+        <attvalues>
+          <attvalue for="0" value="begrip" />
+          <attvalue for="1" value="voorwaarde" />
+          <attvalue for="2" value="#7030A0" />
+          <attvalue for="8" value="in-afwijking-van-eerste-lid" />
+          <attvalue for="9" value="In afwijking van het eerste lid" />
+          <attvalue for="10" value="Art. 9 lid 5 IW 1990" />
+          <attvalue for="11" value="['Art. 9 lid 5 IW 1990']" />
+          <attvalue for="5" value="2026-01-01" />
+          <attvalue for="12" value="systematisch" />
+          <attvalue for="13" value="Specialisatiebepaling die lid 5 aanmerkt als lex specialis t.o.v. art. 9 lid 1. De zinsnede heeft geen zelfstandige materiële inhoud maar markeert de hiërarchische relatie: de hoofdregel van lid 1 (zes weken) wordt voor de genoemde aanslagtypen verdrongen door de termijnenregeling van lid 5." />
+          <attvalue for="14" value="De aanduiding dat de termijnenregeling van lid 5 een lex-specialis-relatie heeft ten opzichte van de hoofdregel van art. 9 lid 1 IW 1990, zodat de zes-wekentermijn van lid 1 voor de genoemde voorlopige aanslagen wordt verdrongen door de gelijke-termijnenregeling van lid 5" />
+          <attvalue for="15" value="waar-niet-waar" />
+          <attvalue for="16" value="afgeleid" />
+          <attvalue for="17" value="2026-01-01" />
+          <attvalue for="18" value="" />
+          <attvalue for="19" value="concept" />
+          <attvalue for="20" value="[]" />
+          <attvalue for="21" value="[]" />
+          <attvalue for="22" value="['[[begrippen/invorderbaarheid-in-gelijke-termijnen]]']" />
+          <attvalue for="23" value="['[[regels/AR-9-5a]]']" />
+        </attvalues>
+      </node>
+      <node id="invorderbaarheid-belastingaanslag" label="invorderbaarheid-belastingaanslag" start="2026-01-01">
+        <attvalues>
+          <attvalue for="0" value="begrip" />
+          <attvalue for="1" value="afleidingsregel" />
+          <attvalue for="2" value="#00B0F0" />
+          <attvalue for="8" value="invorderbaarheid-belastingaanslag" />
+          <attvalue for="9" value="Een belastingaanslag is invorderbaar zes weken na de dagtekening van het aanslagbiljet." />
+          <attvalue for="10" value="Art. 9 lid 1 IW 1990" />
+          <attvalue for="11" value="['Art. 9 lid 1 IW 1990']" />
+          <attvalue for="5" value="2026-01-01" />
+          <attvalue for="12" value="systematisch" />
+          <attvalue for="13" value="De volledige zin van lid 1 vormt een beslissingsregel (type afleidingsregel): als zes weken zijn verstreken na de dagtekening van het aanslagbiljet, dan is de belastingaanslag invorderbaar (ja/nee). Dit is de hoofdregel; de overige leden (2, 4–9, 11) bevatten specialisatieregels die 'in afwijking van het eerste lid' gelden." />
+          <attvalue for="14" value="De beslissingsregel die bepaalt of een belastingaanslag invorderbaar is, inhoudende dat invorderbaarheid intreedt zodra zes weken zijn verstreken na de dagtekening van het aanslagbiljet" />
+          <attvalue for="15" value="waar-niet-waar" />
+          <attvalue for="16" value="afgeleid" />
+          <attvalue for="17" value="2026-01-01" />
+          <attvalue for="18" value="" />
+          <attvalue for="19" value="concept" />
+          <attvalue for="20" value="[]" />
+          <attvalue for="21" value="['[[begrippen/belastingaanslag]]', '[[begrippen/zes-weken-na-dagtekening-aanslagbiljet]]']" />
+          <attvalue for="22" value="['[[begrippen/invorderbaarheid]]']" />
+          <attvalue for="23" value="['[[regels/AR-9-1]]']" />
+        </attvalues>
+      </node>
+      <node id="invorderbaarheid-in-gelijke-termijnen" label="invorderbaarheid-in-gelijke-termijnen" start="2026-01-01">
+        <attvalues>
+          <attvalue for="0" value="begrip" />
+          <attvalue for="1" value="afleidingsregel" />
+          <attvalue for="2" value="#00B0F0" />
+          <attvalue for="8" value="invorderbaarheid-in-gelijke-termijnen" />
+          <attvalue for="9" value="In afwijking van het eerste lid is een voorlopige aanslag in de inkomstenbelasting of in de vennootschapsbelasting en een voorlopige conserverende aanslag in de inkomstenbelasting, waarvan het aanslagbiljet een dagtekening heeft die ligt in het jaar waarover deze is vastgesteld, invorderbaar in zoveel gelijke termijnen als er na de maand, die in de dagtekening van het aanslagbiljet is vermeld, nog maanden van het jaar overblijven." />
+          <attvalue for="10" value="Art. 9 lid 5 IW 1990" />
+          <attvalue for="11" value="['Art. 9 lid 5 IW 1990']" />
+          <attvalue for="5" value="2026-01-01" />
+          <attvalue for="12" value="systematisch" />
+          <attvalue for="13" value="Specialisatieregel t.o.v. art. 9 lid 1. Als-dan: als de voorlopige aanslag (IB/VPB) of voorlopige conserverende aanslag (IB) is gedagtekend in het belastingjaar, dan is hij invorderbaar in gelijke maandelijkse termijnen. Bevat twee cumulatieve kwalificatievoorwaarden en de rekenregel voor het termijnenaantal." />
+          <attvalue for="14" value="De specialisatieregel die bepaalt dat een voorlopige aanslag IB of VPB, dan wel een voorlopige conserverende aanslag IB, waarvan het aanslagbiljet is gedagtekend in het belastingjaar, invorderbaar is in een aantal gelijke maandelijkse termijnen dat gelijk is aan het aantal kalendermaanden dat na de dagtekening maand nog in dat jaar resteert" />
+          <attvalue for="15" value="getal" />
+          <attvalue for="16" value="afgeleid" />
+          <attvalue for="17" value="2026-01-01" />
+          <attvalue for="18" value="" />
+          <attvalue for="19" value="concept" />
+          <attvalue for="20" value="['[[begrippen/invorderbaarheid]]']" />
+          <attvalue for="21" value="['[[begrippen/voorlopige-aanslag]]', '[[begrippen/voorlopige-conserverende-aanslag-ib]]', '[[begrippen/dagtekening-in-vaststellingsjaar]]', '[[begrippen/termijnenberekening-resterende-maanden]]']" />
+          <attvalue for="22" value="['[[begrippen/vervaldag-eerste-termijn]]', '[[begrippen/vervaldag-volgende-termijnen]]']" />
+          <attvalue for="23" value="['[[regels/AR-9-5a]]']" />
+        </attvalues>
+      </node>
+      <node id="invorderbaarheid" label="invorderbaarheid" start="2026-01-01">
+        <attvalues>
+          <attvalue for="0" value="begrip" />
+          <attvalue for="1" value="rechtsbetrekking" />
+          <attvalue for="2" value="#FF0000" />
+          <attvalue for="8" value="invorderbaarheid" />
+          <attvalue for="9" value="is invorderbaar" />
+          <attvalue for="10" value="Art. 9 lid 1 IW 1990" />
+          <attvalue for="11" value="['Art. 9 lid 1 IW 1990', 'Art. 9 lid 5 IW 1990']" />
+          <attvalue for="5" value="2026-01-01" />
+          <attvalue for="12" value="grammaticaal" />
+          <attvalue for="13" value="Het werkwoord 'is invorderbaar' drukt de juridische toestand uit die de rechtsbetrekking tussen ontvanger (rechthebbende) en belastingschuldige (plichthebbende) activeert. Rechtssubjecten worden in lid 1 niet expliciet benoemd; zij vloeien voort uit art. 2 en 3 IW 1990. Invorderbaarheid is de drempelvoorwaarde voor het inzetten van invorderingsmaatregelen." />
+          <attvalue for="14" value="De juridische toestand waarin een belastingaanslag verkeert zodra de wettelijke betalingstermijn is verstreken, op grond waarvan de ontvanger bevoegd is invorderingsmaatregelen te treffen jegens de belastingschuldige" />
+          <attvalue for="15" value="waar-niet-waar" />
+          <attvalue for="16" value="afgeleid" />
+          <attvalue for="17" value="2026-01-01" />
+          <attvalue for="18" value="" />
+          <attvalue for="19" value="concept" />
+          <attvalue for="20" value="[]" />
+          <attvalue for="21" value="[]" />
+          <attvalue for="22" value="[]" />
+          <attvalue for="23" value="['[[regels/AR-9-1]]']" />
+        </attvalues>
+      </node>
+      <node id="logische-of" label="logische-of" start="2026-01-01">
+        <attvalues>
+          <attvalue for="0" value="begrip" />
+          <attvalue for="1" value="operator" />
+          <attvalue for="2" value="#808080" />
+          <attvalue for="8" value="logische-of" />
+          <attvalue for="9" value="of" />
+          <attvalue for="10" value="Art. 9 lid 5 IW 1990" />
+          <attvalue for="11" value="['Art. 9 lid 5 IW 1990']" />
+          <attvalue for="5" value="2026-01-01" />
+          <attvalue for="12" value="grammaticaal" />
+          <attvalue for="13" value="Het voegwoord 'of' fungeert als logische OR-operator in de opsomming van aanslagtypen (IB of VPB) in lid 5. De voorwaarde is vervuld als sprake is van ofwel een voorlopige IB-aanslag ofwel een voorlopige VPB-aanslag." />
+          <attvalue for="14" value="De logische operator die twee of meer alternatieven verbindt, zodanig dat de samengestelde voorwaarde is vervuld als ten minste één van de verbonden elementen waar is" />
+          <attvalue for="15" value="waar-niet-waar" />
+          <attvalue for="16" value="direct" />
+          <attvalue for="17" value="2026-01-01" />
+          <attvalue for="18" value="" />
+          <attvalue for="19" value="concept" />
+          <attvalue for="20" value="[]" />
+          <attvalue for="21" value="[]" />
+          <attvalue for="22" value="[]" />
+          <attvalue for="23" value="[]" />
+        </attvalues>
+      </node>
+      <node id="maand-dagtekening-aanslagbiljet" label="maand-dagtekening-aanslagbiljet" start="2026-01-01">
+        <attvalues>
+          <attvalue for="0" value="begrip" />
+          <attvalue for="1" value="tijdsaanduiding" />
+          <attvalue for="2" value="#F4B942" />
+          <attvalue for="8" value="maand-dagtekening-aanslagbiljet" />
+          <attvalue for="9" value="de maand, die in de dagtekening van het aanslagbiljet is vermeld" />
+          <attvalue for="10" value="Art. 9 lid 5 IW 1990" />
+          <attvalue for="11" value="['Art. 9 lid 5 IW 1990']" />
+          <attvalue for="5" value="2026-01-01" />
+          <attvalue for="12" value="grammaticaal" />
+          <attvalue for="13" value="Tijdsaanduiding die de maandcomponent uit de dagtekening van het aanslagbiljet extraheert. Dit is het ankerpunt voor de termijnenberekening in lid 5: het aantal resterende maanden van het jaar wordt geteld na de vermelde maand." />
+          <attvalue for="14" value="De kalendermaand die is vermeld in de dagtekening van het aanslagbiljet en die als referentiepunt dient voor de berekening van het aantal resterende maanden van het belastingjaar in de termijnenregeling van art. 9 lid 5 IW 1990" />
+          <attvalue for="15" value="datum" />
+          <attvalue for="16" value="direct" />
+          <attvalue for="17" value="2026-01-01" />
+          <attvalue for="18" value="" />
+          <attvalue for="19" value="concept" />
+          <attvalue for="20" value="[]" />
+          <attvalue for="21" value="[]" />
+          <attvalue for="22" value="['[[begrippen/resterende-maanden-jaar]]']" />
+          <attvalue for="23" value="[]" />
+        </attvalues>
+      </node>
+      <node id="resterende-maanden-jaar" label="resterende-maanden-jaar" start="2026-01-01">
+        <attvalues>
+          <attvalue for="0" value="begrip" />
+          <attvalue for="1" value="variabele" />
+          <attvalue for="2" value="#92D050" />
+          <attvalue for="8" value="resterende-maanden-jaar" />
+          <attvalue for="9" value="nog maanden van het jaar overblijven" />
+          <attvalue for="10" value="Art. 9 lid 5 IW 1990" />
+          <attvalue for="11" value="['Art. 9 lid 5 IW 1990']" />
+          <attvalue for="5" value="2026-01-01" />
+          <attvalue for="12" value="grammaticaal" />
+          <attvalue for="13" value="Variabele die het aantal resterende kalendermaanden in het belastingjaar weergeeft, te tellen na de maand die in de dagtekening van het aanslagbiljet is vermeld. De waarde varieert naar gelang de dagtekening (max. 11 bij januari, min. 0 bij december)." />
+          <attvalue for="14" value="Het aantal kalendermaanden dat in het belastingjaar resteert na de maand die in de dagtekening van het aanslagbiljet is vermeld, en dat gelijk is aan het aantal gelijke termijnen waarin de voorlopige aanslag invorderbaar is op grond van art. 9 lid 5 IW 1990" />
+          <attvalue for="15" value="getal" />
+          <attvalue for="16" value="afgeleid" />
+          <attvalue for="17" value="2026-01-01" />
+          <attvalue for="18" value="" />
+          <attvalue for="19" value="concept" />
+          <attvalue for="20" value="[]" />
+          <attvalue for="21" value="['[[begrippen/maand-dagtekening-aanslagbiljet]]']" />
+          <attvalue for="22" value="['[[begrippen/termijnenberekening-resterende-maanden]]']" />
+          <attvalue for="23" value="['[[regels/AR-9-5b]]']" />
+        </attvalues>
+      </node>
+      <node id="telkens-een-maand-later" label="telkens-een-maand-later" start="2026-01-01">
+        <attvalues>
+          <attvalue for="0" value="begrip" />
+          <attvalue for="1" value="tijdsaanduiding" />
+          <attvalue for="2" value="#F4B942" />
+          <attvalue for="8" value="telkens-een-maand-later" />
+          <attvalue for="9" value="telkens een maand later" />
+          <attvalue for="10" value="Art. 9 lid 5 IW 1990" />
+          <attvalue for="11" value="['Art. 9 lid 5 IW 1990']" />
+          <attvalue for="5" value="2026-01-01" />
+          <attvalue for="12" value="grammaticaal" />
+          <attvalue for="13" value="Tijdsaanduiding die de iteratieve periodiciteit van de vervaldatums na de eerste termijn uitdrukt. 'Telkens' markeert de herhalende toepassing van de één-maand-stap voor elke volgende termijn." />
+          <attvalue for="14" value="De iteratieve tijdstap van één kalendermaand waarmee elke vervaldatum na de eerste termijn wordt bepaald, door steeds één maand op te tellen bij de vorige vervaldatum" />
+          <attvalue for="15" value="datum" />
+          <attvalue for="16" value="afgeleid" />
+          <attvalue for="17" value="2026-01-01" />
+          <attvalue for="18" value="" />
+          <attvalue for="19" value="concept" />
+          <attvalue for="20" value="[]" />
+          <attvalue for="21" value="[]" />
+          <attvalue for="22" value="['[[begrippen/vervaldag-volgende-termijnen]]']" />
+          <attvalue for="23" value="['[[regels/AR-9-5d]]']" />
+        </attvalues>
+      </node>
+      <node id="termijnenberekening-resterende-maanden" label="termijnenberekening-resterende-maanden" start="2026-01-01">
+        <attvalues>
+          <attvalue for="0" value="begrip" />
+          <attvalue for="1" value="afleidingsregel" />
+          <attvalue for="2" value="#00B0F0" />
+          <attvalue for="8" value="termijnenberekening-resterende-maanden" />
+          <attvalue for="9" value="in zoveel gelijke termijnen als er na de maand, die in de dagtekening van het aanslagbiljet is vermeld, nog maanden van het jaar overblijven" />
+          <attvalue for="10" value="Art. 9 lid 5 IW 1990" />
+          <attvalue for="11" value="['Art. 9 lid 5 IW 1990']" />
+          <attvalue for="5" value="2026-01-01" />
+          <attvalue for="12" value="systematisch" />
+          <attvalue for="13" value="Rekenregel die het aantal invorderingstermijnen bepaalt. Input: maand van de dagtekening (tijdsaanduiding) en het resterende aantal kalendermaanden (variabele). Output: het exacte aantal gelijke maandelijkse termijnen. Logica: bij dagtekening in januari zijn er 11 termijnen; bij oktober 2, bij november 1 (terugval naar lid 1 via derde volzin)." />
+          <attvalue for="14" value="De rekenregel die het aantal gelijke invorderingstermijnen bepaalt door het aantal kalendermaanden te tellen dat in het belastingjaar resteert na de maand die in de dagtekening van het aanslagbiljet is vermeld" />
+          <attvalue for="15" value="getal" />
+          <attvalue for="16" value="afgeleid" />
+          <attvalue for="17" value="2026-01-01" />
+          <attvalue for="18" value="" />
+          <attvalue for="19" value="concept" />
+          <attvalue for="20" value="[]" />
+          <attvalue for="21" value="['[[begrippen/maand-dagtekening-aanslagbiljet]]', '[[begrippen/resterende-maanden-jaar]]']" />
+          <attvalue for="22" value="['[[begrippen/invorderbaarheid-in-gelijke-termijnen]]']" />
+          <attvalue for="23" value="['[[regels/AR-9-5b]]']" />
+        </attvalues>
+      </node>
+      <node id="terugvalregel-lid-1" label="terugvalregel-lid-1" start="2026-01-01">
+        <attvalues>
+          <attvalue for="0" value="begrip" />
+          <attvalue for="1" value="afleidingsregel" />
+          <attvalue for="2" value="#00B0F0" />
+          <attvalue for="8" value="terugvalregel-lid-1" />
+          <attvalue for="9" value="Indien de toepassing van de eerste volzin niet leidt tot meer dan één termijn, vindt het eerste lid toepassing." />
+          <attvalue for="10" value="Art. 9 lid 5 IW 1990" />
+          <attvalue for="11" value="['Art. 9 lid 5 IW 1990']" />
+          <attvalue for="5" value="2026-01-01" />
+          <attvalue for="12" value="systematisch" />
+          <attvalue for="13" value="Beslissingsregel (terugvalregel) die de toepassingsgrens van de lid-5-termijnenregeling bepaalt. Als het berekende termijnenaantal ≤ 1 is, herneemt art. 9 lid 1 toepassing. Dit doet zich voor bij een dagtekening in december (0 resterende maanden na december)." />
+          <attvalue for="14" value="De beslissingsregel die bepaalt dat art. 9 lid 1 IW 1990 herneemt als de termijnenberekening van art. 9 lid 5 eerste volzin niet leidt tot meer dan één termijn, zodat de zes-wekentermijn van lid 1 in de plaats treedt van de gelijke-termijnenregeling" />
+          <attvalue for="15" value="waar-niet-waar" />
+          <attvalue for="16" value="afgeleid" />
+          <attvalue for="17" value="2026-01-01" />
+          <attvalue for="18" value="" />
+          <attvalue for="19" value="concept" />
+          <attvalue for="20" value="[]" />
+          <attvalue for="21" value="['[[begrippen/termijnenberekening-resterende-maanden]]', '[[begrippen/resterende-maanden-jaar]]']" />
+          <attvalue for="22" value="['[[begrippen/invorderbaarheid-belastingaanslag]]']" />
+          <attvalue for="23" value="['[[regels/AR-9-5e]]']" />
+        </attvalues>
+      </node>
+      <node id="vervaldag-eerste-termijn" label="vervaldag-eerste-termijn" start="2026-01-01">
+        <attvalues>
+          <attvalue for="0" value="begrip" />
+          <attvalue for="1" value="afleidingsregel" />
+          <attvalue for="2" value="#00B0F0" />
+          <attvalue for="8" value="vervaldag-eerste-termijn" />
+          <attvalue for="9" value="De eerste termijn vervalt één maand na de dagtekening van het aanslagbiljet" />
+          <attvalue for="10" value="Art. 9 lid 5 IW 1990" />
+          <attvalue for="11" value="['Art. 9 lid 5 IW 1990']" />
+          <attvalue for="5" value="2026-01-01" />
+          <attvalue for="12" value="grammaticaal" />
+          <attvalue for="13" value="Rekenregel die de vervaldatum van de eerste maandelijkse termijn bepaalt. Input: dagtekening aanslagbiljet. Output: vervaldatum = dagtekening + één maand." />
+          <attvalue for="14" value="De rekenregel die de vervaldatum van de eerste gelijke invorderingstermijn vaststelt als het tijdstip gelegen één kalendermaand na de dagtekening van het aanslagbiljet" />
+          <attvalue for="15" value="datum" />
+          <attvalue for="16" value="afgeleid" />
+          <attvalue for="17" value="2026-01-01" />
+          <attvalue for="18" value="" />
+          <attvalue for="19" value="concept" />
+          <attvalue for="20" value="[]" />
+          <attvalue for="21" value="['[[begrippen/dagtekening-aanslagbiljet]]', '[[begrippen/een-maand-na-dagtekening]]']" />
+          <attvalue for="22" value="[]" />
+          <attvalue for="23" value="['[[regels/AR-9-5c]]']" />
+        </attvalues>
+      </node>
+      <node id="vervaldag-volgende-termijnen" label="vervaldag-volgende-termijnen" start="2026-01-01">
+        <attvalues>
+          <attvalue for="0" value="begrip" />
+          <attvalue for="1" value="afleidingsregel" />
+          <attvalue for="2" value="#00B0F0" />
+          <attvalue for="8" value="vervaldag-volgende-termijnen" />
+          <attvalue for="9" value="elk van de volgende termijnen telkens een maand later" />
+          <attvalue for="10" value="Art. 9 lid 5 IW 1990" />
+          <attvalue for="11" value="['Art. 9 lid 5 IW 1990']" />
+          <attvalue for="5" value="2026-01-01" />
+          <attvalue for="12" value="grammaticaal" />
+          <attvalue for="13" value="Rekenregel die de vervaldatums van alle opvolgende termijnen bepaalt. Input: vervaldatum vorige termijn. Output: vervaldatum volgende termijn = vorige vervaldatum + één maand. De regel wordt iteratief toegepast voor elke volgende termijn." />
+          <attvalue for="14" value="De rekenregel die voor elke invorderingstermijn na de eerste de vervaldatum vaststelt door bij de vervaldatum van de vorige termijn steeds één kalendermaand op te tellen" />
+          <attvalue for="15" value="datum" />
+          <attvalue for="16" value="afgeleid" />
+          <attvalue for="17" value="2026-01-01" />
+          <attvalue for="18" value="" />
+          <attvalue for="19" value="concept" />
+          <attvalue for="20" value="[]" />
+          <attvalue for="21" value="['[[begrippen/vervaldag-eerste-termijn]]', '[[begrippen/telkens-een-maand-later]]']" />
+          <attvalue for="22" value="[]" />
+          <attvalue for="23" value="['[[regels/AR-9-5d]]']" />
+        </attvalues>
+      </node>
+      <node id="voorlopige-aanslag" label="voorlopige-aanslag" start="2026-01-01">
+        <attvalues>
+          <attvalue for="0" value="begrip" />
+          <attvalue for="1" value="rechtsobject" />
+          <attvalue for="2" value="#70AD47" />
+          <attvalue for="8" value="voorlopige-aanslag" />
+          <attvalue for="9" value="een voorlopige aanslag in de inkomstenbelasting of in de vennootschapsbelasting" />
+          <attvalue for="10" value="Art. 9 lid 5 IW 1990" />
+          <attvalue for="11" value="['Art. 9 lid 5 IW 1990']" />
+          <attvalue for="5" value="2026-01-01" />
+          <attvalue for="12" value="grammaticaal" />
+          <attvalue for="13" value="De voorlopige aanslag (IB of VPB) is het rechtsobject van de invorderingsrelatie in lid 5. Lid 5 behandelt IB en VPB als één categorie verbonden door logische OR; beide aanslagtypen vallen onder dezelfde termijnenregeling." />
+          <attvalue for="14" value="Een belastingaanslag in de inkomstenbelasting of in de vennootschapsbelasting die voorlopig van aard is en die — mits het aanslagbiljet is gedagtekend in het belastingjaar waarover hij is vastgesteld — invorderbaar is in gelijke maandelijkse termijnen overeenkomstig art. 9 lid 5 IW 1990" />
+          <attvalue for="15" value="enumeratiewaarde" />
+          <attvalue for="16" value="direct" />
+          <attvalue for="17" value="2026-01-01" />
+          <attvalue for="18" value="" />
+          <attvalue for="19" value="concept" />
+          <attvalue for="20" value="['[[begrippen/belastingaanslag]]']" />
+          <attvalue for="21" value="[]" />
+          <attvalue for="22" value="[]" />
+          <attvalue for="23" value="[]" />
+        </attvalues>
+      </node>
+      <node id="voorlopige-conserverende-aanslag-ib" label="voorlopige-conserverende-aanslag-ib" start="2026-01-01">
+        <attvalues>
+          <attvalue for="0" value="begrip" />
+          <attvalue for="1" value="rechtsobject" />
+          <attvalue for="2" value="#70AD47" />
+          <attvalue for="8" value="voorlopige-conserverende-aanslag-ib" />
+          <attvalue for="9" value="een voorlopige conserverende aanslag in de inkomstenbelasting" />
+          <attvalue for="10" value="Art. 9 lid 5 IW 1990" />
+          <attvalue for="11" value="['Art. 9 lid 5 IW 1990']" />
+          <attvalue for="5" value="2026-01-01" />
+          <attvalue for="12" value="grammaticaal" />
+          <attvalue for="13" value="Naast de reguliere voorlopige aanslag IB/VPB benoemt lid 5 afzonderlijk de voorlopige conserverende aanslag IB als tweede aanslagtype waarvoor de termijnenregeling geldt. Het is een conserverende aanslag die belastinguitstel bij emigratie of vergelijkbare situaties beoogt te verzekeren." />
+          <attvalue for="14" value="Een belastingaanslag in de inkomstenbelasting van voorlopige en conserverende aard, die — mits het aanslagbiljet is gedagtekend in het belastingjaar waarover hij is vastgesteld — invorderbaar is in gelijke maandelijkse termijnen overeenkomstig art. 9 lid 5 IW 1990" />
+          <attvalue for="15" value="enumeratiewaarde" />
+          <attvalue for="16" value="direct" />
+          <attvalue for="17" value="2026-01-01" />
+          <attvalue for="18" value="" />
+          <attvalue for="19" value="concept" />
+          <attvalue for="20" value="['[[begrippen/belastingaanslag]]']" />
+          <attvalue for="21" value="[]" />
+          <attvalue for="22" value="[]" />
+          <attvalue for="23" value="[]" />
+        </attvalues>
+      </node>
+      <node id="zes-weken-na-dagtekening-aanslagbiljet" label="zes-weken-na-dagtekening-aanslagbiljet" start="2026-01-01">
+        <attvalues>
+          <attvalue for="0" value="begrip" />
+          <attvalue for="1" value="voorwaarde" />
+          <attvalue for="2" value="#7030A0" />
+          <attvalue for="8" value="zes-weken-na-dagtekening-aanslagbiljet" />
+          <attvalue for="9" value="zes weken na de dagtekening van het aanslagbiljet" />
+          <attvalue for="10" value="Art. 9 lid 1 IW 1990" />
+          <attvalue for="11" value="['Art. 9 lid 1 IW 1990']" />
+          <attvalue for="5" value="2026-01-01" />
+          <attvalue for="12" value="grammaticaal" />
+          <attvalue for="13" value="De temporele zinsnede 'zes weken na de dagtekening van het aanslagbiljet' functioneert als de conditie waaraan voldaan moet zijn voor invorderbaarheid. De aanslag is pas invorderbaar nadat dit tijdvak is verstreken. De formulering bevat twee tijdsaanduidingen: de termijn ('zes weken') en het referentiepunt ('de dagtekening')." />
+          <attvalue for="14" value="De tijdsconditie die vervuld moet zijn opdat een belastingaanslag invorderbaar wordt: het tijdstip van beoordeling moet zijn gelegen op of na het tijdstip dat resulteert uit het optellen van zes weken bij de dagtekening van het aanslagbiljet" />
+          <attvalue for="15" value="datum" />
+          <attvalue for="16" value="afgeleid" />
+          <attvalue for="17" value="2026-01-01" />
+          <attvalue for="18" value="" />
+          <attvalue for="19" value="concept" />
+          <attvalue for="20" value="[]" />
+          <attvalue for="21" value="['[[begrippen/zes-weken]]', '[[begrippen/dagtekening-aanslagbiljet]]']" />
+          <attvalue for="22" value="['[[begrippen/invorderbaarheid]]']" />
+          <attvalue for="23" value="['[[regels/AR-9-1]]']" />
+        </attvalues>
+      </node>
+      <node id="zes-weken" label="zes-weken" start="2026-01-01">
+        <attvalues>
+          <attvalue for="0" value="begrip" />
+          <attvalue for="1" value="tijdsaanduiding" />
+          <attvalue for="2" value="#F4B942" />
+          <attvalue for="8" value="zes-weken" />
+          <attvalue for="9" value="zes weken" />
+          <attvalue for="10" value="Art. 9 lid 1 IW 1990" />
+          <attvalue for="11" value="['Art. 9 lid 1 IW 1990']" />
+          <attvalue for="5" value="2026-01-01" />
+          <attvalue for="12" value="grammaticaal" />
+          <attvalue for="13" value="De tijdsduur 'zes weken' is specifieker dan een variabele: het betreft een vaste termijn (tijdvak) die voor alle belastingaanslagen onder lid 1 gelijk is. Tijdsaanduiding heeft voorrang boven variabele en parameter (kaders §Meest specifieke klasse). Lid 10 bepaalt dat de Algemene termijnenwet niet van toepassing is, wat de berekening van deze termijn beïnvloedt." />
+          <attvalue for="14" value="Een vaste termijn van zes aaneengesloten weken die als tijdvak geldt voor de berekening van het moment van invorderbaarheid van een belastingaanslag en die zonder verlenging voor weekenden of feestdagen wordt berekend" />
+          <attvalue for="15" value="getal" />
+          <attvalue for="16" value="direct" />
+          <attvalue for="17" value="2026-01-01" />
+          <attvalue for="18" value="" />
+          <attvalue for="19" value="concept" />
+          <attvalue for="20" value="[]" />
+          <attvalue for="21" value="[]" />
+          <attvalue for="22" value="[]" />
+          <attvalue for="23" value="[]" />
+        </attvalues>
+      </node>
+      <node id="AR-9-1" label="bepalen invorderbaarheid belastingaanslag" start="2026-01-01">
+        <attvalues>
+          <attvalue for="0" value="afleidingsregel" />
+          <attvalue for="1" value="afleidingsregel" />
+          <attvalue for="2" value="#00B0F0" />
+          <attvalue for="24" value="AR-9-1" />
+          <attvalue for="25" value="bepalen invorderbaarheid belastingaanslag" />
+          <attvalue for="15" value="Beslissingsregel" />
+          <attvalue for="5" value="2026-01-01" />
+          <attvalue for="26" value="['plus', 'groter-dan-of-gelijk-aan']" />
+        </attvalues>
+      </node>
+      <node id="AR-9-5a" label="bepalen invorderbaarheid voorlopige aanslag in gelijke termijnen" start="2026-01-01">
+        <attvalues>
+          <attvalue for="0" value="afleidingsregel" />
+          <attvalue for="1" value="afleidingsregel" />
+          <attvalue for="2" value="#00B0F0" />
+          <attvalue for="24" value="AR-9-5a" />
+          <attvalue for="25" value="bepalen invorderbaarheid voorlopige aanslag in gelijke termijnen" />
+          <attvalue for="15" value="Specialisatieregel" />
+          <attvalue for="5" value="2026-01-01" />
+          <attvalue for="26" value="['EN', 'OF', 'groter-dan']" />
+        </attvalues>
+      </node>
+      <node id="AR-9-5b" label="berekenen resterende maanden jaar" start="2026-01-01">
+        <attvalues>
+          <attvalue for="0" value="afleidingsregel" />
+          <attvalue for="1" value="afleidingsregel" />
+          <attvalue for="2" value="#00B0F0" />
+          <attvalue for="24" value="AR-9-5b" />
+          <attvalue for="25" value="berekenen resterende maanden jaar" />
+          <attvalue for="15" value="Rekenregel" />
+          <attvalue for="5" value="2026-01-01" />
+          <attvalue for="26" value="['min']" />
+        </attvalues>
+      </node>
+      <node id="AR-9-5c" label="berekenen vervaldag eerste termijn voorlopige aanslag" start="2026-01-01">
+        <attvalues>
+          <attvalue for="0" value="afleidingsregel" />
+          <attvalue for="1" value="afleidingsregel" />
+          <attvalue for="2" value="#00B0F0" />
+          <attvalue for="24" value="AR-9-5c" />
+          <attvalue for="25" value="berekenen vervaldag eerste termijn voorlopige aanslag" />
+          <attvalue for="15" value="Rekenregel" />
+          <attvalue for="5" value="2026-01-01" />
+          <attvalue for="26" value="['plus']" />
+        </attvalues>
+      </node>
+      <node id="AR-9-5d" label="berekenen vervaldag volgende termijnen voorlopige aanslag" start="2026-01-01">
+        <attvalues>
+          <attvalue for="0" value="afleidingsregel" />
+          <attvalue for="1" value="afleidingsregel" />
+          <attvalue for="2" value="#00B0F0" />
+          <attvalue for="24" value="AR-9-5d" />
+          <attvalue for="25" value="berekenen vervaldag volgende termijnen voorlopige aanslag" />
+          <attvalue for="15" value="Rekenregel" />
+          <attvalue for="5" value="2026-01-01" />
+          <attvalue for="26" value="['plus']" />
+        </attvalues>
+      </node>
+      <node id="AR-9-5e" label="bepalen terugval naar lid 1 bij onvoldoende termijnen" start="2026-01-01">
+        <attvalues>
+          <attvalue for="0" value="afleidingsregel" />
+          <attvalue for="1" value="afleidingsregel" />
+          <attvalue for="2" value="#00B0F0" />
+          <attvalue for="24" value="AR-9-5e" />
+          <attvalue for="25" value="bepalen terugval naar lid 1 bij onvoldoende termijnen" />
+          <attvalue for="15" value="Beslissingsregel" />
+          <attvalue for="5" value="2026-01-01" />
+          <attvalue for="26" value="['ten-hoogste', 'NIET']" />
+        </attvalues>
+      </node>
+    </nodes>
+    <edges>
+      <edge source="iw1990-art9" target="belastingaanslag" id="0" label="begrippen" />
+      <edge source="iw1990-art9" target="invorderbaarheid" id="1" label="begrippen" />
+      <edge source="iw1990-art9" target="zes-weken-na-dagtekening-aanslagbiljet" id="2" label="begrippen" />
+      <edge source="iw1990-art9" target="zes-weken" id="3" label="begrippen" />
+      <edge source="iw1990-art9" target="dagtekening-aanslagbiljet" id="4" label="begrippen" />
+      <edge source="iw1990-art9" target="invorderbaarheid-belastingaanslag" id="5" label="begrippen" />
+      <edge source="iw1990-art9" target="voorlopige-aanslag" id="6" label="begrippen" />
+      <edge source="iw1990-art9" target="logische-of" id="7" label="begrippen" />
+      <edge source="iw1990-art9" target="voorlopige-conserverende-aanslag-ib" id="8" label="begrippen" />
+      <edge source="iw1990-art9" target="in-afwijking-van-eerste-lid" id="9" label="begrippen" />
+      <edge source="iw1990-art9" target="dagtekening-in-vaststellingsjaar" id="10" label="begrippen" />
+      <edge source="iw1990-art9" target="maand-dagtekening-aanslagbiljet" id="11" label="begrippen" />
+      <edge source="iw1990-art9" target="termijnenberekening-resterende-maanden" id="12" label="begrippen" />
+      <edge source="iw1990-art9" target="resterende-maanden-jaar" id="13" label="begrippen" />
+      <edge source="iw1990-art9" target="invorderbaarheid-in-gelijke-termijnen" id="14" label="begrippen" />
+      <edge source="iw1990-art9" target="vervaldag-eerste-termijn" id="15" label="begrippen" />
+      <edge source="iw1990-art9" target="een-maand-na-dagtekening" id="16" label="begrippen" />
+      <edge source="iw1990-art9" target="vervaldag-volgende-termijnen" id="17" label="begrippen" />
+      <edge source="iw1990-art9" target="telkens-een-maand-later" id="18" label="begrippen" />
+      <edge source="iw1990-art9" target="terugvalregel-lid-1" id="19" label="begrippen" />
+      <edge source="belastingaanslag" target="dagtekening-aanslagbiljet" id="20" label="heeft" />
+      <edge source="dagtekening-aanslagbiljet" target="zes-weken-na-dagtekening-aanslagbiljet" id="21" label="leidt-tot" />
+      <edge source="dagtekening-in-vaststellingsjaar" target="dagtekening-aanslagbiljet" id="22" label="heeft" />
+      <edge source="dagtekening-in-vaststellingsjaar" target="invorderbaarheid-in-gelijke-termijnen" id="23" label="leidt-tot" />
+      <edge source="dagtekening-in-vaststellingsjaar" target="AR-9-5a" id="24" label="afleidingsregels" />
+      <edge source="een-maand-na-dagtekening" target="dagtekening-aanslagbiljet" id="25" label="heeft" />
+      <edge source="een-maand-na-dagtekening" target="vervaldag-eerste-termijn" id="26" label="leidt-tot" />
+      <edge source="een-maand-na-dagtekening" target="AR-9-5c" id="27" label="afleidingsregels" />
+      <edge source="in-afwijking-van-eerste-lid" target="invorderbaarheid-in-gelijke-termijnen" id="28" label="leidt-tot" />
+      <edge source="in-afwijking-van-eerste-lid" target="AR-9-5a" id="29" label="afleidingsregels" />
+      <edge source="invorderbaarheid-belastingaanslag" target="belastingaanslag" id="30" label="heeft" />
+      <edge source="invorderbaarheid-belastingaanslag" target="zes-weken-na-dagtekening-aanslagbiljet" id="31" label="heeft" />
+      <edge source="invorderbaarheid-belastingaanslag" target="invorderbaarheid" id="32" label="leidt-tot" />
+      <edge source="invorderbaarheid-belastingaanslag" target="AR-9-1" id="33" label="afleidingsregels" />
+      <edge source="invorderbaarheid-in-gelijke-termijnen" target="voorlopige-aanslag" id="34" label="heeft" />
+      <edge source="invorderbaarheid-in-gelijke-termijnen" target="voorlopige-conserverende-aanslag-ib" id="35" label="heeft" />
+      <edge source="invorderbaarheid-in-gelijke-termijnen" target="dagtekening-in-vaststellingsjaar" id="36" label="heeft" />
+      <edge source="invorderbaarheid-in-gelijke-termijnen" target="termijnenberekening-resterende-maanden" id="37" label="heeft" />
+      <edge source="invorderbaarheid-in-gelijke-termijnen" target="vervaldag-eerste-termijn" id="38" label="leidt-tot" />
+      <edge source="invorderbaarheid-in-gelijke-termijnen" target="vervaldag-volgende-termijnen" id="39" label="leidt-tot" />
+      <edge source="invorderbaarheid-in-gelijke-termijnen" target="AR-9-5a" id="40" label="afleidingsregels" />
+      <edge source="invorderbaarheid-in-gelijke-termijnen" target="invorderbaarheid" id="41" label="is-een" />
+      <edge source="invorderbaarheid" target="AR-9-1" id="42" label="afleidingsregels" />
+      <edge source="maand-dagtekening-aanslagbiljet" target="resterende-maanden-jaar" id="43" label="leidt-tot" />
+      <edge source="resterende-maanden-jaar" target="maand-dagtekening-aanslagbiljet" id="44" label="heeft" />
+      <edge source="resterende-maanden-jaar" target="termijnenberekening-resterende-maanden" id="45" label="leidt-tot" />
+      <edge source="resterende-maanden-jaar" target="AR-9-5b" id="46" label="afleidingsregels" />
+      <edge source="telkens-een-maand-later" target="vervaldag-volgende-termijnen" id="47" label="leidt-tot" />
+      <edge source="telkens-een-maand-later" target="AR-9-5d" id="48" label="afleidingsregels" />
+      <edge source="termijnenberekening-resterende-maanden" target="maand-dagtekening-aanslagbiljet" id="49" label="heeft" />
+      <edge source="termijnenberekening-resterende-maanden" target="resterende-maanden-jaar" id="50" label="heeft" />
+      <edge source="termijnenberekening-resterende-maanden" target="invorderbaarheid-in-gelijke-termijnen" id="51" label="leidt-tot" />
+      <edge source="termijnenberekening-resterende-maanden" target="AR-9-5b" id="52" label="afleidingsregels" />
+      <edge source="terugvalregel-lid-1" target="termijnenberekening-resterende-maanden" id="53" label="heeft" />
+      <edge source="terugvalregel-lid-1" target="resterende-maanden-jaar" id="54" label="heeft" />
+      <edge source="terugvalregel-lid-1" target="invorderbaarheid-belastingaanslag" id="55" label="leidt-tot" />
+      <edge source="terugvalregel-lid-1" target="AR-9-5e" id="56" label="afleidingsregels" />
+      <edge source="vervaldag-eerste-termijn" target="dagtekening-aanslagbiljet" id="57" label="heeft" />
+      <edge source="vervaldag-eerste-termijn" target="een-maand-na-dagtekening" id="58" label="heeft" />
+      <edge source="vervaldag-eerste-termijn" target="AR-9-5c" id="59" label="afleidingsregels" />
+      <edge source="vervaldag-volgende-termijnen" target="vervaldag-eerste-termijn" id="60" label="heeft" />
+      <edge source="vervaldag-volgende-termijnen" target="telkens-een-maand-later" id="61" label="heeft" />
+      <edge source="vervaldag-volgende-termijnen" target="AR-9-5d" id="62" label="afleidingsregels" />
+      <edge source="voorlopige-aanslag" target="belastingaanslag" id="63" label="is-een" />
+      <edge source="voorlopige-conserverende-aanslag-ib" target="belastingaanslag" id="64" label="is-een" />
+      <edge source="zes-weken-na-dagtekening-aanslagbiljet" target="zes-weken" id="65" label="heeft" />
+      <edge source="zes-weken-na-dagtekening-aanslagbiljet" target="dagtekening-aanslagbiljet" id="66" label="heeft" />
+      <edge source="zes-weken-na-dagtekening-aanslagbiljet" target="invorderbaarheid" id="67" label="leidt-tot" />
+      <edge source="zes-weken-na-dagtekening-aanslagbiljet" target="AR-9-1" id="68" label="afleidingsregels" />
+      <edge source="AR-9-1" target="iw1990-art9" id="69" label="afgeleid-van" />
+      <edge source="AR-9-1" target="invorderbaarheid-belastingaanslag" id="70" label="bepaalt" />
+      <edge source="AR-9-1" target="dagtekening-aanslagbiljet" id="71" label="invoer" />
+      <edge source="AR-9-1" target="belastingaanslag" id="72" label="invoer" />
+      <edge source="AR-9-1" target="zes-weken-na-dagtekening-aanslagbiljet" id="73" label="invoer" />
+      <edge source="AR-9-1" target="invorderbaarheid" id="74" label="uitvoer" />
+      <edge source="AR-9-5a" target="iw1990-art9" id="75" label="afgeleid-van" />
+      <edge source="AR-9-5a" target="invorderbaarheid-in-gelijke-termijnen" id="76" label="uitvoer" />
+      <edge source="AR-9-5a" target="dagtekening-aanslagbiljet" id="77" label="rechtsfeit" />
+      <edge source="AR-9-5a" target="voorlopige-aanslag" id="78" label="invoer" />
+      <edge source="AR-9-5a" target="voorlopige-conserverende-aanslag-ib" id="79" label="invoer" />
+      <edge source="AR-9-5a" target="dagtekening-in-vaststellingsjaar" id="80" label="invoer" />
+      <edge source="AR-9-5a" target="termijnenberekening-resterende-maanden" id="81" label="invoer" />
+      <edge source="AR-9-5b" target="iw1990-art9" id="82" label="afgeleid-van" />
+      <edge source="AR-9-5b" target="resterende-maanden-jaar" id="83" label="uitvoer" />
+      <edge source="AR-9-5b" target="dagtekening-aanslagbiljet" id="84" label="rechtsfeit" />
+      <edge source="AR-9-5b" target="maand-dagtekening-aanslagbiljet" id="85" label="invoer" />
+      <edge source="AR-9-5c" target="iw1990-art9" id="86" label="afgeleid-van" />
+      <edge source="AR-9-5c" target="vervaldag-eerste-termijn" id="87" label="uitvoer" />
+      <edge source="AR-9-5c" target="dagtekening-aanslagbiljet" id="88" label="invoer" />
+      <edge source="AR-9-5c" target="een-maand-na-dagtekening" id="89" label="invoer" />
+      <edge source="AR-9-5d" target="iw1990-art9" id="90" label="afgeleid-van" />
+      <edge source="AR-9-5d" target="vervaldag-volgende-termijnen" id="91" label="uitvoer" />
+      <edge source="AR-9-5d" target="dagtekening-aanslagbiljet" id="92" label="rechtsfeit" />
+      <edge source="AR-9-5d" target="vervaldag-eerste-termijn" id="93" label="invoer" />
+      <edge source="AR-9-5d" target="telkens-een-maand-later" id="94" label="invoer" />
+      <edge source="AR-9-5e" target="iw1990-art9" id="95" label="afgeleid-van" />
+      <edge source="AR-9-5e" target="terugvalregel-lid-1" id="96" label="bepaalt" />
+      <edge source="AR-9-5e" target="dagtekening-aanslagbiljet" id="97" label="rechtsfeit" />
+      <edge source="AR-9-5e" target="resterende-maanden-jaar" id="98" label="invoer" />
+      <edge source="AR-9-5e" target="termijnenberekening-resterende-maanden" id="99" label="invoer" />
+      <edge source="AR-9-5e" target="invorderbaarheid-belastingaanslag" id="100" label="uitvoer" />
+    </edges>
+  </graph>
+</gexf>

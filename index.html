@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LexNode – Belastingdienst Rules as Code</title>
+    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <style>
+        :root {
+            --rijk-blauw:  #012456;
+            --hemel-blauw: #007bc7;
+            --licht-grijs: #f3f3f3;
+            --wit:         #ffffff;
+            --tekst:       #333333;
+            --border:      #d2d2d2;
+            --accent:      #ffcc00;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: "RO Sans", Verdana, sans-serif;
+            background: var(--licht-grijs);
+            color: var(--tekst);
+        }
+
+        body { display: flex; flex-direction: column; }
+
+        header {
+            flex-shrink: 0;
+            background: var(--rijk-blauw);
+            color: var(--wit);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            z-index: 100;
+        }
+        header h1 { margin: 0; font-size: 1.1rem; font-weight: normal; }
+        .logo-box {
+            border-left: 2px solid var(--wit);
+            margin-left: 15px;
+            padding-left: 15px;
+            font-size: 0.8rem;
+        }
+
+        main { flex: 1; display: flex; overflow: hidden; min-height: 0; }
+
+        #sidebar {
+            width: 400px;
+            flex-shrink: 0;
+            background: var(--wit);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .tabs { display: flex; background: var(--rijk-blauw); }
+        .tab-btn {
+            flex: 1; padding: 12px; border: none; background: none;
+            color: white; cursor: pointer; font-size: 0.8rem; opacity: 0.7;
+        }
+        .tab-btn.active { opacity: 1; background: rgba(255,255,255,0.1); border-bottom: 3px solid var(--accent); }
+
+        .tab-content { flex: 1; padding: 20px; overflow-y: auto; display: none; }
+        .tab-content.active { display: block; }
+
+        label { display: block; font-size: 0.8rem; font-weight: bold; margin-bottom: 4px; }
+        input[type="date"] { width: 100%; padding: 10px; border: 1px solid var(--border); font-size: 0.9rem; }
+        .field { margin-bottom: 15px; }
+
+        .btn { cursor: pointer; padding: 12px; font-weight: bold; border: none; width: 100%; margin-bottom: 8px; font-size: 0.9rem; }
+        .btn-primary   { background: var(--hemel-blauw); color: white; }
+        .btn-secondary { background: white; color: var(--hemel-blauw); border: 1px solid var(--hemel-blauw); }
+        .btn-row { display: flex; gap: 10px; }
+        .btn-row .btn { width: auto; flex: 1; }
+
+        #result-panel { padding: 15px; border: 2px solid var(--border); margin-top: 15px; display: none; }
+        .invorderbaar      { border-color: #27ae60; background: #f0fff4; }
+        .niet-invorderbaar { border-color: #d93025; background: #fff5f5; }
+        #status-header { font-weight: bold; font-size: 1rem; }
+        #deadline-info { margin-top: 4px; }
+        #meta-info     { font-size: 0.75rem; margin-top: 8px; color: #555; }
+
+        .detail-row   { margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+        .detail-label { font-weight: bold; font-size: 0.7rem; color: #777; text-transform: uppercase; }
+        .detail-value { font-size: 0.85rem; word-break: break-word; }
+
+        #graph-container { flex: 1; position: relative; background: white; min-width: 0; }
+        #mynetwork { position: absolute; inset: 0; }
+
+        .legend {
+            position: absolute; bottom: 15px; right: 15px;
+            background: rgba(255,255,255,0.95); padding: 12px;
+            border: 1px solid var(--border); font-size: 0.7rem;
+            z-index: 10; pointer-events: none; max-width: 200px;
+        }
+        .legend-item { display: flex; align-items: center; margin-bottom: 4px; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; flex-shrink: 0; }
+
+        #loader {
+            position: absolute; inset: 0; display: flex;
+            align-items: center; justify-content: center;
+            background: white; z-index: 20; font-size: 0.9rem; color: #666;
+        }
+
+        @media (max-width: 850px) {
+            main { flex-direction: column; overflow-y: auto; overflow-x: hidden; }
+            #sidebar { width: 100%; flex-shrink: 0; border-right: none; border-bottom: 1px solid var(--border); overflow: visible; }
+            .tab-content { overflow-y: visible; }
+            #graph-container { flex: none; height: 60vh; min-height: 350px; width: 100%; }
+            .legend { font-size: 0.65rem; max-width: 160px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>LexNode</h1>
+    <div class="logo-box">Ministerie van Financiën<br><strong>Belastingdienst</strong></div>
+</header>
+
+<main>
+    <section id="sidebar">
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('calc')">Berekening</button>
+            <button class="tab-btn" onclick="openTab('details')">Node Details</button>
+        </div>
+
+        <div id="calc" class="tab-content active">
+            <h3 style="margin-top:0">Invorderbaarheid Check</h3>
+            <div class="field">
+                <label for="dagtekening">Dagtekening</label>
+                <input type="date" id="dagtekening" value="2026-01-01">
+            </div>
+            <div class="field">
+                <label for="peildatum">Peildatum</label>
+                <input type="date" id="peildatum" value="2026-04-29">
+            </div>
+            <button class="btn btn-primary" onclick="calculate()">Bereken</button>
+
+            <div id="result-panel">
+                <div id="status-header"></div>
+                <div id="deadline-info"></div>
+                <div id="meta-info"></div>
+            </div>
+
+            <div class="btn-row" style="margin-top:20px">
+                <button class="btn btn-secondary" onclick="exportJSON()">JSON</button>
+            </div>
+            <button class="btn btn-secondary" style="margin-top:8px; font-size:0.8rem" onclick="resetGraph()">
+                Toon volledige graaf
+            </button>
+        </div>
+
+        <div id="details" class="tab-content">
+            <h3 style="margin-top:0">Juridische Info</h3>
+            <div id="node-details-content">Klik op een node in de graaf...</div>
+        </div>
+    </section>
+
+    <section id="graph-container">
+        <div id="mynetwork"></div>
+        <div id="loader">Graaf laden...</div>
+        <div class="legend">
+            <strong>Legenda</strong>
+            <div class="legend-item"><div class="dot" style="background:#CCCCCC"></div>Annotatie (Wetsartikel)</div>
+            <div class="legend-item"><div class="dot" style="background:#70AD47"></div>Rechtsobject (Begrip)</div>
+            <div class="legend-item"><div class="dot" style="background:#F4B942"></div>Tijdsaanduiding</div>
+            <div class="legend-item"><div class="dot" style="background:#7030A0"></div>Voorwaarde</div>
+            <div class="legend-item"><div class="dot" style="background:#00B0F0"></div>Afleidingsregel</div>
+            <div class="legend-item"><div class="dot" style="background:#FF0000"></div>Uitkomst</div>
+            <hr style="border:0; border-top:1px solid #ddd; margin:5px 0">
+            <div class="legend-item">
+                <div class="dot" style="border:2px solid var(--hemel-blauw); background:transparent"></div>
+                Actieve Route
+            </div>
+        </div>
+    </section>
+</main>
+
+<script>
+    // ── GEXF-attribuut IDs (overeenkomen met graph.gexf schema) ──────────
+    const ATTR_COLOR      = '2';
+    const ATTR_BRON       = '10';
+    const ATTR_TOELICHTING = '13';
+    const ATTR_DEFINITIE  = '14';
+
+    const ACTIVE_ROUTE = [
+        'dagtekening-aanslagbiljet',
+        'zes-weken',
+        'zes-weken-na-dagtekening-aanslagbiljet',
+        'AR-9-1',
+        'invorderbaarheid',
+    ];
+
+    // ── State ─────────────────────────────────────────────────────────────
+    let network   = null;
+    let nodesDS   = new vis.DataSet();
+    let edgesDS   = new vis.DataSet();
+    let graphData = { nodes: [], edges: [] };
+    let gexfDoc   = null;   // geparseerde XML voor node-details
+
+    // ── GEXF parser ───────────────────────────────────────────────────────
+    function parseGexf(xml) {
+        const doc = new DOMParser().parseFromString(xml, 'application/xml');
+        const NS  = 'http://www.gexf.net/1.2draft';
+        const nodes = [], edges = [];
+
+        for (const node of doc.getElementsByTagNameNS(NS, 'node')) {
+            const attrs = getAttrs(node, NS);
+            nodes.push({
+                id:        node.getAttribute('id'),
+                label:     node.getAttribute('label'),
+                color:     attrs[ATTR_COLOR]     || '#97C2FC',
+                title:     attrs[ATTR_DEFINITIE] || '',
+                node_type: attrs['0']            || 'onbekend',
+            });
+        }
+        for (const edge of doc.getElementsByTagNameNS(NS, 'edge')) {
+            edges.push({
+                from:    edge.getAttribute('source'),
+                to:      edge.getAttribute('target'),
+                arrows: 'to',
+            });
+        }
+        return { nodes, edges, doc };
+    }
+
+    function getAttrs(nodeEl, NS) {
+        const map = {};
+        for (const av of nodeEl.getElementsByTagNameNS(NS, 'attvalue')) {
+            map[av.getAttribute('for')] = av.getAttribute('value');
+        }
+        return map;
+    }
+
+    function getNodeAttrs(nodeId) {
+        if (!gexfDoc) return {};
+        const NS  = 'http://www.gexf.net/1.2draft';
+        const all = gexfDoc.getElementsByTagNameNS(NS, 'node');
+        for (const node of all) {
+            if (node.getAttribute('id') === nodeId) return getAttrs(node, NS);
+        }
+        return {};
+    }
+
+    // ── Termijn uit GEXF ──────────────────────────────────────────────────
+    function getTermijnDagen() {
+        const attrs = getNodeAttrs('zes-weken');
+        const def   = (attrs[ATTR_DEFINITIE] || '').toLowerCase();
+        const match = def.match(/(?:zes|6|(\d+))\s+(?:\w+\s+)?(?:weken|dagen)/);
+        if (match) {
+            const raw    = match[0];
+            const weken  = raw.includes('weken');
+            const numStr = raw.match(/\d+/);
+            const n      = numStr ? parseInt(numStr[0]) : (raw.includes('zes') ? 6 : 42);
+            return weken ? n * 7 : n;
+        }
+        return 42;
+    }
+
+    // ── Invorderbaarheidsberekening (volledig client-side) ────────────────
+    function checkInvorderbaarheid(dagtekening, peildatum) {
+        const attrs       = getNodeAttrs('zes-weken');
+        const toelichting = (attrs[ATTR_TOELICHTING] || '').toLowerCase();
+        const bron        = attrs[ATTR_BRON] || 'Art. 9 IW 1990';
+        const dagen       = getTermijnDagen();
+        const deadline    = new Date(dagtekening);
+        deadline.setDate(deadline.getDate() + dagen);
+        const atw = toelichting.includes('algemene termijnenwet niet van toepassing')
+            ? 'Uitgesloten (Art. 9 lid 10 IW 1990)'
+            : 'Toepasbaar';
+        return {
+            invorderbaar: peildatum >= deadline,
+            deadline,
+            dagen,
+            bron,
+            atw,
+        };
+    }
+
+    // ── Graph initialisatie ───────────────────────────────────────────────
+    async function initGraph() {
+        const container = document.getElementById('mynetwork');
+        const options = {
+            nodes: { shape: 'dot', size: 16, font: { size: 12 } },
+            edges: { color: '#ccc', smooth: { type: 'continuous' } },
+            physics: { stabilization: true, barnesHut: { gravitationalConstant: -2000 } },
+        };
+        network = new vis.Network(container, { nodes: nodesDS, edges: edgesDS }, options);
+        network.on('click', p => { if (p.nodes.length) showNodeDetails(p.nodes[0]); });
+
+        try {
+            const res  = await fetch('graph.gexf');
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const xml  = await res.text();
+            const parsed = parseGexf(xml);
+            graphData = { nodes: parsed.nodes, edges: parsed.edges };
+            gexfDoc   = parsed.doc;
+
+            document.getElementById('loader').style.display = 'none';
+            resetGraph();
+            calculate();
+        } catch (e) {
+            document.getElementById('loader').textContent = 'Fout bij laden graaf: ' + e;
+        }
+    }
+
+    function resetGraph() {
+        nodesDS.clear();
+        edgesDS.clear();
+        nodesDS.add(graphData.nodes);
+        edgesDS.add(graphData.edges);
+        network.fit();
+    }
+
+    function highlightRoute() {
+        const routeNodes = graphData.nodes
+            .filter(n => ACTIVE_ROUTE.includes(n.id))
+            .map(n => ({ ...n, size: 24, borderWidth: 3,
+                color: { border: '#007bc7', background: n.color } }));
+        const routeEdges = graphData.edges
+            .filter(e => ACTIVE_ROUTE.includes(e.from) && ACTIVE_ROUTE.includes(e.to));
+        nodesDS.clear(); edgesDS.clear();
+        nodesDS.add(routeNodes);
+        edgesDS.add(routeEdges);
+        setTimeout(() => network.fit(), 150);
+    }
+
+    // ── UI ────────────────────────────────────────────────────────────────
+    function openTab(id) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.querySelector(`[onclick="openTab('${id}')"]`).classList.add('active');
+    }
+
+    function calculate() {
+        if (!gexfDoc) return;
+        const dag  = new Date(document.getElementById('dagtekening').value);
+        const peil = new Date(document.getElementById('peildatum').value);
+        const res  = checkInvorderbaarheid(dag, peil);
+
+        const panel = document.getElementById('result-panel');
+        panel.style.display = 'block';
+        panel.className = res.invorderbaar ? 'invorderbaar' : 'niet-invorderbaar';
+
+        const fmt = d => d.toLocaleDateString('nl-NL', { day:'2-digit', month:'2-digit', year:'numeric' });
+        document.getElementById('status-header').textContent =
+            res.invorderbaar ? 'INVORDERBAAR' : 'NIET INVORDERBAAR';
+        document.getElementById('deadline-info').textContent = 'Vervaldatum: ' + fmt(res.deadline);
+        document.getElementById('meta-info').textContent     = 'Bron: ' + res.bron + ' · ATW: ' + res.atw;
+
+        highlightRoute();
+    }
+
+    function showNodeDetails(nodeId) {
+        openTab('details');
+        const content = document.getElementById('node-details-content');
+        const LABELS = {
+            '0':'node_type','1':'jas_klasse','2':'kleur','3':'artikel','4':'bwb_id',
+            '5':'peildatum','6':'structuurpositie','7':'kruisreferenties','8':'begripsnaam',
+            '9':'markering','10':'bron','11':'bronnen','12':'interpretatiemethode',
+            '13':'toelichting','14':'definitie','15':'soort','16':'herkomst',
+            '17':'geldigheid_van','19':'status','20':'is_een','21':'heeft',
+            '22':'leidt_tot','23':'afleidingsregels','24':'regel_id','25':'naam','26':'operators'
+        };
+        const attrs = getNodeAttrs(nodeId);
+        content.innerHTML = '';
+        for (const [k, v] of Object.entries(attrs)) {
+            if (!v || v === '[]') continue;
+            const row = document.createElement('div');
+            row.className = 'detail-row';
+            row.innerHTML = `<div class="detail-label">${LABELS[k] || k}</div>
+                             <div class="detail-value">${v}</div>`;
+            content.appendChild(row);
+        }
+        if (!content.children.length) content.textContent = 'Geen gegevens beschikbaar.';
+    }
+
+    function exportJSON() {
+        if (!gexfDoc) return;
+        const dag  = new Date(document.getElementById('dagtekening').value);
+        const peil = new Date(document.getElementById('peildatum').value);
+        const res  = checkInvorderbaarheid(dag, peil);
+        const data = {
+            invorderbaar: res.invorderbaar,
+            deadline:     res.deadline.toISOString().slice(0,10),
+            dagen:        res.dagen,
+            bron:         res.bron,
+            atw_status:   res.atw,
+        };
+        const a = document.createElement('a');
+        a.href     = 'data:application/json,' + encodeURIComponent(JSON.stringify(data, null, 2));
+        a.download = 'bewijs.json';
+        a.click();
+    }
+
+    window.addEventListener('load', initGraph);
+</script>
+</body>
+</html>
