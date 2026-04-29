@@ -9,14 +9,18 @@ LexNode is een "Rules as Code" prototype voor de Belastingdienst. Het modelleert
 ## Commando's
 
 ```bash
+# Venv aanmaken en activeren (eenmalig)
+python3 -m venv .venv
+source .venv/bin/activate
+
+# Afhankelijkheden installeren
+pip install -r requirements.txt
+
 # Server starten (poort 8080)
 python app.py
 
 # Tests uitvoeren
-python -m pytest test_dynamisch.py -v
-
-# Eén test uitvoeren
-python -m pytest test_dynamisch.py::TestInvorderbaarheidDynamisch::test_op_deadline -v
+python test_dynamisch.py
 
 # Graaf valideren (ontbrekende referenties, ontbrekende afleidingsregels)
 python validator.py
@@ -46,10 +50,9 @@ Eenvoudige Python `http.server` zonder framework. `LexNodeEngine` laadt de GEXF 
 - `GET /graph-data` → alle nodes + edges als JSON voor vis-network
 - `GET /node-details/{id}` → ruwe attribuut-map van één node
 - `POST /calculate` → `{dagtekening, peildatum}` → invorderbaarheidsresultaat
-- `POST /export` → zelfde als calculate maar volledige JSON-dump
-- `POST /export-pdf` → minimale PDF via reportlab (optionele dependency)
+- `POST /export-pdf` → onderbouwde PDF met besluit en alle relevante kennisgraafdata (vereist `reportlab`)
 
-De termijn wordt dynamisch via regex uitgelezen uit `attribuut 14` van node `zes-weken`. Fallback is 42 dagen als de regex faalt.
+De termijn wordt dynamisch via regex uitgelezen uit `attribuut 14` van node `zes-weken`. Fallback is 42 dagen als de regex faalt. `get_route_nodes()` levert alle attributen van de 5 actieve route-nodes voor de PDF-sectie "Redeneerroute".
 
 **3. Frontend (`index.html`)**  
 Single-page app zonder build-stap. Gebruikt **vis-network** (CDN) voor graafvisualisatie. Twee tabbladen: "Berekening" en "Node Details". Na een berekening filtert de frontend de graaf naar de actieve route (`dagtekening-aanslagbiljet → zes-weken → zes-weken-na-dagtekening-aanslagbiljet → AR-9-1 → invorderbaarheid`).
