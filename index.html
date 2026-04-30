@@ -716,6 +716,11 @@
 
         if (res.lid5 && !res.terugvalLid1) {
             const aantalVervallen = res.termijnen.filter(d => peil >= d).length;
+            const totaal = res.termijnen.length;
+            if (res.invorderbaar && aantalVervallen < totaal) {
+                document.getElementById('status-header').textContent =
+                    `INVORDERBAAR (${aantalVervallen} van ${totaal} termijnen vervallen)`;
+            }
             document.getElementById('deadline-info').textContent =
                 `Eerste termijn: ${formatDatum(res.termijnen[0])} · ${res.resterendeMaanden} termijnen · ${aantalVervallen} vervallen`;
             document.getElementById('meta-info').textContent = 'Bron: ' + res.bron + ' (Art. 9 lid 5 IW 1990)';
@@ -853,7 +858,17 @@
         pdf.roundedRect(M, y, CW, 22, 3, 3, 'F');
         pdf.setTextColor(...WIT);
         pdf.setFontSize(13); setFont(true);
-        pdf.text(res.invorderbaar ? 'INVORDERBAAR' : 'NIET INVORDERBAAR', M + 5, y + 8);
+        if (res.invorderbaar && res.lid5 && !res.terugvalLid1) {
+            const aantalVervallenPdf = res.termijnen.filter(d => peil >= d).length;
+            const totaalPdf = res.termijnen.length;
+            if (aantalVervallenPdf < totaalPdf) {
+                pdf.text(`INVORDERBAAR (${aantalVervallenPdf} van ${totaalPdf} termijnen vervallen)`, M + 5, y + 8);
+            } else {
+                pdf.text('INVORDERBAAR', M + 5, y + 8);
+            }
+        } else {
+            pdf.text(res.invorderbaar ? 'INVORDERBAAR' : 'NIET INVORDERBAAR', M + 5, y + 8);
+        }
         pdf.setFontSize(8); setFont(false);
         let infoBalk;
         if (res.lid5 && !res.terugvalLid1) {
