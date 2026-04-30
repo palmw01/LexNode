@@ -538,7 +538,12 @@
         // AR-9-5c + AR-9-5d: bereken vervaldatums (dagtekening + 1 t/m n maanden)
         const termijnen = [];
         for (let i = 1; i <= resterendeMaanden; i++) {
-            termijnen.push(new Date(dagtekening.getFullYear(), dagtekening.getMonth() + i, dagtekening.getDate()));
+            const jaar = dagtekening.getFullYear();
+            const maandIdx = dagtekening.getMonth() + i;
+            const dag = dagtekening.getDate();
+            // Klem dag af op de laatste dag van de doelmaand (bijv. 31 mrt + 1 → 30 apr)
+            const laatste = new Date(jaar, maandIdx + 1, 0).getDate();
+            termijnen.push(new Date(jaar, maandIdx, Math.min(dag, laatste)));
         }
 
         const bron = getNodeAttrs('begrippen/invorderbaarheid-in-gelijke-termijnen')['10'] || 'Art. 9 lid 5 IW 1990';
