@@ -182,8 +182,10 @@
         }
 
         @media (max-width: 850px) {
-            main { flex-direction: column; overflow-x: hidden; overflow-y: auto; }
-            #sidebar { width: 100%; flex-shrink: 0; border-right: none; border-bottom: 1px solid var(--border); overflow: hidden; max-height: 55vh; }
+            html, body { height: auto; }
+            main { flex-direction: column; overflow: visible; }
+            #sidebar { width: 100%; flex-shrink: 0; border-right: none; border-bottom: 1px solid var(--border); overflow: visible; max-height: none; }
+            .tab-content { overflow: visible; }
             input[type="date"] { max-width: -webkit-fill-available; }
             #graph-container { flex: none; height: 60vh; min-height: 350px; width: 100%; }
             .legend { font-size: 0.65rem; max-width: 160px; }
@@ -492,26 +494,29 @@
         });
 
         const tooltip = document.getElementById('node-tooltip');
-        App.network.on('hoverNode', function(params) {
-            const node = App.nodesDS.get(params.node);
-            if (!node || !node.definitie) return;
-            tooltip.textContent = node.definitie;
-            tooltip.style.display = 'block';
-            requestAnimationFrame(function() {
-                const x = params.pointer.DOM.x + 14;
-                const y = params.pointer.DOM.y + 14;
-                const tw = tooltip.offsetWidth;
-                const th = tooltip.offsetHeight;
-                tooltip.style.left = (x + tw > window.innerWidth  ? x - tw - 28 : x) + 'px';
-                tooltip.style.top  = (y + th > window.innerHeight ? y - th - 28 : y) + 'px';
+        const isTouchDevice = window.matchMedia('(hover: none)').matches;
+        if (!isTouchDevice) {
+            App.network.on('hoverNode', function(params) {
+                const node = App.nodesDS.get(params.node);
+                if (!node || !node.definitie) return;
+                tooltip.textContent = node.definitie;
+                tooltip.style.display = 'block';
+                requestAnimationFrame(function() {
+                    const x = params.pointer.DOM.x + 14;
+                    const y = params.pointer.DOM.y + 14;
+                    const tw = tooltip.offsetWidth;
+                    const th = tooltip.offsetHeight;
+                    tooltip.style.left = (x + tw > window.innerWidth  ? x - tw - 28 : x) + 'px';
+                    tooltip.style.top  = (y + th > window.innerHeight ? y - th - 28 : y) + 'px';
+                });
             });
-        });
-        App.network.on('blurNode', function() {
-            tooltip.style.display = 'none';
-        });
-        container.addEventListener('mouseleave', function() {
-            tooltip.style.display = 'none';
-        });
+            App.network.on('blurNode', function() {
+                tooltip.style.display = 'none';
+            });
+            container.addEventListener('mouseleave', function() {
+                tooltip.style.display = 'none';
+            });
+        }
 
         try {
             const res    = await fetch('graph.gexf');
