@@ -83,6 +83,11 @@ Bij het laden (`window.addEventListener('load', initGraph)`) worden de datumveld
 
 Mobiele lay-out: de sidebar scrollt verticaal op kleine schermen; de graaf staat eronder en is bereikbaar door te scrollen. Tooltips worden uitgeschakeld op touchapparaten (`window.matchMedia('(hover: none)')`). Voor ontbrekende wetsartikelen (lid 2–4, lid 6–9) toont de UI informatieve notitieboxen met een verwijzing naar de GitHub-repository.
 
+**Graafinfo en navigatieknoppen:**  
+Na het laden van de GEXF worden drie metadata-velden uitgelezen en getoond: wetsartikel (hardcoded `Art. 9 IW 1990`), aantal nodes/edges uit `parsed.nodes.length` / `parsed.edges.length`, en de bijgewerkt-datum uit `<meta lastmodifieddate>` in de GEXF. Op desktop staat dit rechtsbovenin de header (`#graph-meta`). Op mobiel (≤ 850px) is `#graph-meta` verborgen en verschijnt een ronde ⓘ-knop (`#info-btn`) die een absolute popup (`#info-popup`) toont bij klikken; klikken buiten sluit de popup via een `document`-click-listener.
+
+Op desktop staan drie navigatieknoppen (`#nav-knoppen`) absoluut gepositioneerd rechtsboven in `#graph-container`: **+** (`btn-zoom-in`, factor 1.3), **−** (`btn-zoom-out`, factor 0.77) en **⤢** (`btn-fit`, roept `App.network.fit()` aan). Op mobiel zijn de knoppen verborgen via de media query.
+
 Alle logica draait volledig client-side: GEXF wordt via `fetch('graph.gexf')` geladen en geparseerd, de invorderbaarheidsberekening en PDF-export gebruiken alleen de geparseerde XML. Er is geen backend nodig; de app werkt op GitHub Pages.
 
 ## Kritische koppeling

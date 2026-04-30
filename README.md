@@ -23,6 +23,8 @@ De kennisgraafvisualisatie markeert automatisch de actieve redeneerroute. Het re
 
 De datumvelden (dagtekening en peildatum) worden bij het laden automatisch ingesteld op de datum van vandaag. De interface is responsief: op mobiel scrollt de sidebar verticaal en staat de graaf eronder; tooltips zijn uitgeschakeld op touchapparaten. Voor ontbrekende wetsartikelen (lid 2 t/m 4, lid 6 t/m 9) toont de UI informatieve notitieboxen met een verwijzing naar de GitHub-repository.
 
+Rechtsbovenin de header staat graafmetadata (wetsartikel, aantal nodes en relaties, bijgewerkt-datum) uitgelezen uit de GEXF. Op mobiel is dit verborgen achter een ⓘ-knop die een popup opent. Op de graaf staan drie navigatieknoppen (**+**, **−**, **⤢**) voor in/uitzoomen en alles tonen — alleen zichtbaar op desktop.
+
 ## Lokale installatie en opstarten
 
 **Vereisten:** Python 3.10+
@@ -117,7 +119,7 @@ Lid 5 + terugval (AR-9-5e):
 
 **Backend (`app.py` + `lexnode_engine.py`)** — `http.server` zonder framework. `LexNodeEngine` laadt de GEXF eenmalig bij startup. De termijn (zes weken = 42 dagen) wordt via regex uitgelezen uit de `definitie`-tekst van node `begrippen/zes-weken`; fallback is 42 dagen. `get_route_nodes()` levert alle attributen van de 5 actieve route-nodes voor de PDF-export.
 
-**Frontend (`index.html`)** — Geen build-stap. Gebruikt **vis-network** (CDN) voor graafvisualisatie en **jsPDF** (CDN) voor PDF-generatie in de browser. Twee tabbladen: "Berekening" en "Node Details". De gebruiker kiest het aanslagtype via een dropdown; na de berekening markeert de graafvisualisatie de relevante route. Datumvelden worden bij het laden ingesteld op de datum van vandaag. De lay-out is responsief: op mobiel scrollt de sidebar verticaal en staat de graaf eronder; tooltips zijn uitgeschakeld op touchapparaten. Alle logica — berekening, GEXF-parsing en PDF-export — draait volledig client-side, zodat de app op GitHub Pages werkt zonder backend.
+**Frontend (`index.html`)** — Geen build-stap. Gebruikt **vis-network** (CDN) voor graafvisualisatie en **jsPDF** (CDN) voor PDF-generatie in de browser. Twee tabbladen: "Berekening" en "Node Details". De gebruiker kiest het aanslagtype via een dropdown; na de berekening markeert de graafvisualisatie de relevante route. Datumvelden worden bij het laden ingesteld op de datum van vandaag. Rechtsbovenin de header staat graafmetadata (wetsartikel, nodes, relaties, bijgewerkt-datum) uitgelezen uit de GEXF; op mobiel verborgen achter een ⓘ-knop. Op de graaf staan navigatieknoppen (+/−/⤢) voor in/uitzoomen en fit, alleen op desktop. De lay-out is responsief: op mobiel scrollt de sidebar verticaal en staat de graaf eronder; tooltips zijn uitgeschakeld op touchapparaten. Alle logica — berekening, GEXF-parsing en PDF-export — draait volledig client-side, zodat de app op GitHub Pages werkt zonder backend.
 
 ## Juridische context
 
