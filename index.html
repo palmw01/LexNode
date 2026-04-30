@@ -220,11 +220,11 @@
             </div>
             <div class="field">
                 <label for="dagtekening">Dagtekening</label>
-                <input type="date" id="dagtekening" value="2026-01-01">
+                <input type="date" id="dagtekening">
             </div>
             <div class="field">
                 <label for="peildatum">Peildatum</label>
-                <input type="date" id="peildatum" value="2026-04-29">
+                <input type="date" id="peildatum">
             </div>
             <div id="lid5-veld" style="display:none">
                 <label class="checkbox-label">
@@ -480,6 +480,10 @@
 
     // ── Graph initialisatie ───────────────────────────────────────────────
     async function initGraph() {
+        const today = new Date().toISOString().slice(0, 10);
+        document.getElementById('dagtekening').value = today;
+        document.getElementById('peildatum').value   = today;
+
         const container = document.getElementById('mynetwork');
         const options = {
             nodes: { shape: 'dot', size: 16, font: { size: 12 } },

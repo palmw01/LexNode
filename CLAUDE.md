@@ -79,6 +79,10 @@ De gebruiker kiest het aanslagtype via een dropdown. Na een berekening filtert d
 
 Berekeningsfuncties: `checkInvorderbaarheid()` (lid 1) en `checkInvorderbaarheidLid5()` (lid 5). Lid-5-logica: AR-9-5b berekent `12 - maand(dagtekening)` resterende termijnen; AR-9-5e activeert terugval als ≤ 1; AR-9-5c/d genereren de vervaldatums iteratief.
 
+Bij het laden (`window.addEventListener('load', initGraph)`) worden de datumvelden `dagtekening` en `peildatum` ingesteld op `new Date().toISOString().slice(0, 10)` (vandaag).
+
+Mobiele lay-out: de sidebar scrollt verticaal op kleine schermen; de graaf staat eronder en is bereikbaar door te scrollen. Tooltips worden uitgeschakeld op touchapparaten (`window.matchMedia('(hover: none)')`). Voor ontbrekende wetsartikelen (lid 2–4, lid 6–9) toont de UI informatieve notitieboxen met een verwijzing naar de GitHub-repository.
+
 Alle logica draait volledig client-side: GEXF wordt via `fetch('graph.gexf')` geladen en geparseerd, de invorderbaarheidsberekening en PDF-export gebruiken alleen de geparseerde XML. Er is geen backend nodig; de app werkt op GitHub Pages.
 
 ## Kritische koppeling
