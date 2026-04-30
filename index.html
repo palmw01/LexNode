@@ -535,17 +535,18 @@
             return { ...res, lid5: true, terugvalLid1: true, termijnen: [], resterendeMaanden };
         }
 
-        // AR-9-5c + AR-9-5d: bereken vervaldatums iteratief (AR-9-5d: vorige vervaldatum + 1 maand)
+        // AR-9-5c + AR-9-5d: bereken vervaldatums conform Leidraad Invordering 2008 art. 9.5
+        // Dagtekening = laatste dag van de maand → elke termijn op de laatste dag van de doelmaand
+        // Dagtekening = andere dag → zelfde dagnummer in doelmaand (afklemmen als die dag niet bestaat)
+        const lasteDagDagtekening = new Date(dagtekening.getFullYear(), dagtekening.getMonth() + 1, 0).getDate();
+        const dagIsLaatste = dagtekening.getDate() === lasteDagDagtekening;
         const termijnen = [];
-        let prevDatum = dagtekening;
         for (let i = 1; i <= resterendeMaanden; i++) {
-            const jaar = prevDatum.getFullYear();
-            const maandIdx = prevDatum.getMonth() + 1;
-            const dag = prevDatum.getDate();
-            const laatste = new Date(jaar, maandIdx + 1, 0).getDate();
-            const volgendeDatum = new Date(jaar, maandIdx, Math.min(dag, laatste));
-            termijnen.push(volgendeDatum);
-            prevDatum = volgendeDatum;
+            const jaar = dagtekening.getFullYear();
+            const maandIdx = dagtekening.getMonth() + i;
+            const lasteDagDoelmaand = new Date(jaar, maandIdx + 1, 0).getDate();
+            const dag = dagIsLaatste ? lasteDagDoelmaand : Math.min(dagtekening.getDate(), lasteDagDoelmaand);
+            termijnen.push(new Date(jaar, maandIdx, dag));
         }
 
         const bron = getNodeAttrs('begrippen/invorderbaarheid-in-gelijke-termijnen')['10'] || 'Art. 9 lid 5 IW 1990';
