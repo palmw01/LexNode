@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LexNode — UI Test Suite</title>
+    <style>
+        body {
+            font-family: "RO Sans", Verdana, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        h1 { color: #012456; }
+        .test-group {
+            margin-bottom: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 4px;
+            border-left: 4px solid #007bc7;
+        }
+        .test-group h2 { margin-top: 0; font-size: 1rem; color: #012456; }
+        .test { margin: 8px 0; padding: 8px; background: #fafafa; border-radius: 3px; }
+        .pass { color: #27ae60; font-weight: bold; }
+        .fail { color: #d93025; font-weight: bold; }
+        .summary { 
+            margin: 20px 0; 
+            padding: 15px; 
+            background: white;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        code { background: #eee; padding: 2px 5px; border-radius: 3px; }
+    </style>
+</head>
+<body>
+
+<h1>LexNode — Senior Tester UI Test Suite</h1>
+<div id="results"></div>
+
+<script>
+    // ── Test Framework (eenvoudig) ────────────────────────────────────
+    let testsPassed = 0;
+    let testsFailed = 0;
+    const tests = [];
+    
+    function test(name, fn) {
+        try {
+            fn();
+            testsPassed++;
+            tests.push({ name, status: 'pass', error: null });
+            console.log(`✓ ${name}`);
+        } catch (e) {
+            testsFailed++;
+            tests.push({ name, status: 'fail', error: e.message });
+            console.error(`✗ ${name}: ${e.message}`);
+        }
+    }
+    
+    function assert(condition, message) {
+        if (!condition) throw new Error(message || 'Assertion failed');
+    }
+    
+    function assertEqual(a, b, message) {
+        if (a !== b) throw new Error(`${message || 'Assertion failed'}: Expected ${b}, got ${a}`);
+    }
+    
+    function assertDateEqual(a, b, message) {
+        if (a.getTime() !== b.getTime()) {
+            throw new Error(`${message || 'Date mismatch'}: Expected ${b.toISOString().split('T')[0]}, got ${a.toISOString().split('T')[0]}`);
+        }
+    }
+    
+    // ── Functies uit index.html (copy-paste) ───────────────────────────
+    const ATTR_COLOR       = '2';
+    const ATTR_BRON        = '11';
+    const ATTR_TOELICHTING = '14';
+    const ATTR_DEFINITIE   = '15';
+
+    function getTermijnDagen() {
+        // Deze functie haalt de termijn uit de graaf
+        // Voor testen: hardcoded 42 dagen (zes weken)
+        return 42;
+    }
+
+    function checkInvorderbaarheid(dagtekening, peildatum, options = {}) {
+        const dagen = getTermijnDagen();
+        let deadline = new Date(dagtekening);
+        deadline.setDate(deadline.getDate() + dagen);
+        
+        let meta_bron = 'Art. 9 IW 1990';
+
+        // LI 2008 § 9.1 correctie
+        if (options.isVoorlopig) {
+            if (options.afwijkendBoekjaar) {
+                // Regel AR-LI-9-1b: Laatste dag van de maand
+                const lastDay = new Date(deadline.getFullYear(), deadline.getMonth() + 1, 0).getDate();
+                deadline.setDate(lastDay);
+                meta_bron = "§ 9.1 LI 2008 (Afwijkend boekjaar)";
+            } else if (dagtekening.getMonth() <= 10) { // Nov (10) of eerder
+                const eindeJaar = new Date(dagtekening.getFullYear(), 11, 31);
+                if (deadline < eindeJaar) {
+                    deadline = eindeJaar;
+                    meta_bron = "§ 9.1 LI 2008 (31 december regel)";
+                }
+            }
+        }
+        
+        return { 
+            invorderbaar: peildatum >= deadline, 
+            deadline, 
+            dagen, 
+            bron: meta_bron
+        };
+    }
+
+    function checkInvorderbaarheidLid5(dagtekening, peildatum, options = {}) {
+        const maand = dagtekening.getMonth() + 1; // 1..12
+        const resterendeMaanden = 12 - maand; // AR-9-5b: na dagtekeningmaand
+
+        // AR-9-5e: terugval naar lid 1 als termijnen <= 1
+        if (resterendeMaanden <= 1) {
+            return checkInvorderbaarheid(dagtekening, peildatum, options);
+        }
+
+        // AR-9-5c + AR-9-5d
+        const lasteDagDagtekening = new Date(dagtekening.getFullYear(), dagtekening.getMonth() + 1, 0).getDate();
+        const dagIsLaatste = dagtekening.getDate() === lasteDagDagtekening;
+        const termijnen = [];
+        for (let i = 1; i <= resterendeMaanden; i++) {
+            const jaar = dagtekening.getFullYear();
+            const maandIdx = dagtekening.getMonth() + i;
+            const lasteDagDoelmaand = new Date(jaar, maandIdx + 1, 0).getDate();
+            const dag = dagIsLaatste ? lasteDagDoelmaand : Math.min(dagtekening.getDate(), lasteDagDoelmaand);
+            termijnen.push(new Date(jaar, maandIdx, dag));
+        }
+
+        // LI 2008 § 9.1 correctie op de LAATSTE termijn
+        const laatsteIdx = termijnen.length - 1;
+        let meta_bron = "";
+        
+        if (options.afwijkendBoekjaar) {
+            const laatsteTermijn = termijnen[laatsteIdx];
+            const lastDay = new Date(laatsteTermijn.getFullYear(), laatsteTermijn.getMonth() + 1, 0).getDate();
+            termijnen[laatsteIdx].setDate(lastDay);
+            meta_bron = " (Corr. § 9.1 LI 2008: Afwijkend boekjaar)";
+        } else if (dagtekening.getMonth() <= 10) { // Nov of eerder
+            const eindeJaar = new Date(dagtekening.getFullYear(), 11, 31);
+            if (termijnen[laatsteIdx] < eindeJaar) {
+                termijnen[laatsteIdx] = eindeJaar;
+                meta_bron = " (Corr. § 9.1 LI 2008: 31 december regel)";
+            }
+        }
+
+        const bron = 'Art. 9 lid 5 IW 1990' + meta_bron;
+        
+        return {
+            invorderbaar: peildatum >= termijnen[0],
+            termijnen,
+            resterendeMaanden,
+            bron,
+            lid5: true,
+            terugvalLid1: false,
+        };
+    }
+
+    // ──────────────────────────────────────────────────────────────────
+    // TEST SUITE: Lid 1
+    // ──────────────────────────────────────────────────────────────────
+
+    test('Lid 1: 1 mei → 12 juni (INVORDERBAAR)', () => {
+        const dag = new Date(2026, 4, 1);  // mei
+        const peil = new Date(2026, 5, 12); // juni
+        const result = checkInvorderbaarheid(dag, peil);
+        assert(result.invorderbaar, 'Moet INVORDERBAAR zijn');
+        assertEqual(result.deadline.getDate(), 12, 'Deadline moet dag 12 zijn');
+        assertEqual(result.deadline.getMonth(), 5, 'Deadline moet juni zijn');
+    });
+
+    test('Lid 1: 1 mei → 11 juni (NIET INVORDERBAAR)', () => {
+        const dag = new Date(2026, 4, 1);
+        const peil = new Date(2026, 5, 11);
+        const result = checkInvorderbaarheid(dag, peil);
+        assert(!result.invorderbaar, 'Moet NIET INVORDERBAAR zijn');
+    });
+
+    test('Lid 1: 31 jan → 14 maart (over maandgrens)', () => {
+        const dag = new Date(2026, 0, 31);  // januari
+        const peil = new Date(2026, 2, 14); // maart
+        const result = checkInvorderbaarheid(dag, peil);
+        assert(result.invorderbaar, 'Moet INVORDERBAAR zijn');
+        assertEqual(result.deadline.getDate(), 14, 'Deadline moet dag 14 zijn');
+    });
+
+    test('Lid 1: ATW niet van toepassing', () => {
+        const dag = new Date(2026, 4, 1);
+        const peil = new Date(2026, 5, 12);
+        const result = checkInvorderbaarheid(dag, peil);
+        assert(result.bron.includes('Art. 9'), 'Bron moet Art. 9 verwijzing hebben');
+    });
+
+    // ──────────────────────────────────────────────────────────────────
+    // TEST SUITE: Lid 5
+    // ──────────────────────────────────────────────────────────────────
+
+    test('Lid 5: Oktober → meerdere termijnen', () => {
+        const dag = new Date(2026, 9, 15);  // oktober
+        const peil = new Date(2026, 9, 1);
+        const result = checkInvorderbaarheidLid5(dag, peil);
+        assert(result.lid5, 'Moet Lid 5 zijn');
+        assert(result.termijnen && result.termijnen.length > 1, 'Moet meerdere termijnen hebben');
+    });
+
+    test('Lid 5: November → terugval naar Lid 1', () => {
+        const dag = new Date(2026, 10, 15);  // november
+        const peil = new Date(2026, 10, 1);
+        const result = checkInvorderbaarheidLid5(dag, peil);
+        assert(!result.lid5, 'Moet terugvallen naar Lid 1');
+        assert(result.deadline !== undefined, 'Moet deadline hebben');
+    });
+
+    test('Lid 5: December → terugval naar Lid 1', () => {
+        const dag = new Date(2026, 11, 15);  // december
+        const peil = new Date(2026, 11, 1);
+        const result = checkInvorderbaarheidLid5(dag, peil);
+        assert(!result.lid5, 'Moet terugvallen naar Lid 1');
+    });
+
+    test('Lid 5: Oktober 15 → termijnen 15 nov, 15 dec', () => {
+        const dag = new Date(2026, 9, 15);  // oktober
+        const peil = new Date(2026, 8, 1);
+        const result = checkInvorderbaarheidLid5(dag, peil);
+        assert(result.termijnen, 'Moet termijnen hebben');
+        assertEqual(result.termijnen[0].getMonth(), 10, '1e termijn oktober→november');
+        assertEqual(result.termijnen[0].getDate(), 15, '1e termijn op dag 15');
+    });
+
+    test('Lid 5: 31 mei → termijnen op 30 juni, 31 juli', () => {
+        const dag = new Date(2026, 4, 31);  // mei
+        const peil = new Date(2026, 3, 1);
+        const result = checkInvorderbaarheidLid5(dag, peil);
+        assert(result.termijnen, 'Moet termijnen hebben');
+        assertEqual(result.termijnen[0].getDate(), 30, '1e termijn 30 (juni)');
+        assertEqual(result.termijnen[1].getDate(), 31, '2e termijn 31 (juli)');
+    });
+
+    // ──────────────────────────────────────────────────────────────────
+    // TEST SUITE: LI 2008 § 9.1 Correcties
+    // ──────────────────────────────────────────────────────────────────
+
+    test('LI 9.1a: Oktober → 31 december', () => {
+        const dag = new Date(2026, 9, 15);  // oktober
+        const peil = new Date(2026, 11, 30);
+        const result = checkInvorderbaarheidLid5(dag, peil);
+        if (result.termijnen) {
+            const laatsteTermijn = result.termijnen[result.termijnen.length - 1];
+            assertEqual(laatsteTermijn.getMonth(), 11, 'Laatste termijn december');
+            assertEqual(laatsteTermijn.getDate(), 31, 'Laatste termijn dag 31');
+        }
+    });
+
+    test('LI 9.1a: September → 31 december', () => {
+        const dag = new Date(2026, 8, 15);  // september
+        const peil = new Date(2026, 11, 30);
+        const result = checkInvorderbaarheidLid5(dag, peil);
+        if (result.termijnen) {
+            const laatsteTermijn = result.termijnen[result.termijnen.length - 1];
+            assertEqual(laatsteTermijn.getDate(), 31, 'Moet 31 december zijn');
+        }
+    });
+
+    test('LI 9.1a: December → GEEN correctie', () => {
+        const dag = new Date(2026, 11, 1);  // december
+        const peil = new Date(2026, 11, 15);
+        const result = checkInvorderbaarheidLid5(dag, peil);
+        assert(!result.lid5, 'Moet terugvallen naar Lid 1 (geen termijnen)');
+    });
+
+    test('LI 9.1b: November + afwijkend boekjaar → 31 dec', () => {
+        const dag = new Date(2024, 10, 15);  // november
+        const peil = new Date(2024, 2, 28);
+        const result = checkInvorderbaarheid(dag, peil, { 
+            isVoorlopig: true, 
+            afwijkendBoekjaar: true 
+        });
+        assertEqual(result.deadline.getMonth(), 11, 'Deadline december');
+        assertEqual(result.deadline.getDate(), 31, 'Deadline 31 december');
+    });
+
+    // ──────────────────────────────────────────────────────────────────
+    // TEST SUITE: Edge Cases
+    // ──────────────────────────────────────────────────────────────────
+
+    test('Edge: Zelfde dag → NIET INVORDERBAAR', () => {
+        const dag = new Date(2026, 4, 1);
+        const peil = new Date(2026, 4, 1);
+        const result = checkInvorderbaarheid(dag, peil);
+        assert(!result.invorderbaar, 'Zelfde dag = nog geen termijn');
+    });
+
+    test('Edge: Peildatum VOOR dagtekening → NIET INVORDERBAAR', () => {
+        const dag = new Date(2026, 4, 1);
+        const peil = new Date(2026, 3, 31);
+        const result = checkInvorderbaarheid(dag, peil);
+        assert(!result.invorderbaar, 'Peildatum voor dagtekening');
+    });
+
+    test('Edge: Jaargrensovergang (1 dec + 42 = 12 jan 2027)', () => {
+        const dag = new Date(2026, 11, 1);   // december
+        const peil = new Date(2027, 0, 12);  // januari 2027
+        const result = checkInvorderbaarheid(dag, peil);
+        assert(result.invorderbaar, 'Moet INVORDERBAAR zijn');
+        assertEqual(result.deadline.getFullYear(), 2027, 'Deadline moet 2027 zijn');
+    });
+
+    test('Edge: Schrikkelaar (1 jan 2024 + 42 = 13 feb)', () => {
+        const dag = new Date(2024, 0, 1);   // 1 jan 2024 (schrikkelaar)
+        const peil = new Date(2024, 1, 13); // 13 feb 2024
+        const result = checkInvorderbaarheid(dag, peil);
+        assert(result.invorderbaar, 'Schrikkelaar moet correct zijn');
+    });
+
+    // ──────────────────────────────────────────────────────────────────
+    // RENDER RESULTS
+    // ──────────────────────────────────────────────────────────────────
+
+    function renderResults() {
+        const resultsDiv = document.getElementById('results');
+        
+        let html = '';
+        let currentGroup = '';
+        
+        tests.forEach(t => {
+            const group = t.name.split(':')[0];
+            if (group !== currentGroup) {
+                if (currentGroup) html += '</div>';
+                html += `<div class="test-group"><h2>${group}</h2>`;
+                currentGroup = group;
+            }
+            
+            const statusClass = t.status === 'pass' ? 'pass' : 'fail';
+            const statusText = t.status === 'pass' ? '✓' : '✗';
+            const errorMsg = t.error ? `<br><code>${t.error}</code>` : '';
+            
+            html += `<div class="test"><span class="${statusClass}">${statusText} ${t.name}</span>${errorMsg}</div>`;
+        });
+        
+        if (currentGroup) html += '</div>';
+        
+        const total = testsPassed + testsFailed;
+        const summaryColor = testsFailed === 0 ? '#27ae60' : '#d93025';
+        html += `<div class="summary" style="color: ${summaryColor}; border-left: 4px solid ${summaryColor}">
+            ${testsPassed}/${total} testen geslaagd
+            ${testsFailed > 0 ? `(${testsFailed} fout${testsFailed > 1 ? 'en' : ''})` : ''}
+        </div>`;
+        
+        resultsDiv.innerHTML = html;
+    }
+
+    // Voer testen uit na laden
+    window.addEventListener('DOMContentLoaded', () => {
+        renderResults();
+    });
+    
+    // Automatisch renderen
+    setTimeout(renderResults, 100);
+</script>
+
+</body>
+</html>

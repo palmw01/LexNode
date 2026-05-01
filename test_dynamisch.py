@@ -17,11 +17,11 @@ def get_termijn_van_graaf(node_id):
     if target_node is None:
         return None
         
-    # Haal de definitie op (attribuut id="14")
+    # Haal de definitie op (attribuut id="15")
     attvalues = target_node.find("g:attvalues", ns)
     definitie = ""
     for att in attvalues.findall("g:attvalue", ns):
-        if att.get('for') == "14":
+        if att.get('for') == "15":
             definitie = att.get('value')
             break
             

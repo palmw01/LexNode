@@ -19,8 +19,8 @@ class LexNodeValidator:
             # Extract attributes
             attrs = {a.get('for'): a.get('value') for a in attvalues.findall("g:attvalue", self.ns)}
             
-            # 1. Check 'leidt_tot' (Attr 22)
-            leidt_tot_str = attrs.get('22', '[]')
+            # 1. Check 'leidt_tot' (Attr 23)
+            leidt_tot_str = attrs.get('23', '[]')
             try:
                 leidt_tot = ast.literal_eval(leidt_tot_str)
                 for target in leidt_tot:
@@ -30,9 +30,9 @@ class LexNodeValidator:
             except:
                 errors.append(f"ERR: Corrupte data in leidt_tot van node '{node_id}'")
 
-            # 2. Check 'afleidingsregels' (Attr 23)
+            # 2. Check 'afleidingsregels' (Attr 24)
             # Consistentie-check: als een begrip leidt tot een ander begrip, moet er vaak een regel zijn.
-            regels_str = attrs.get('23', '[]')
+            regels_str = attrs.get('24', '[]')
             regels = ast.literal_eval(regels_str)
             
             if len(leidt_tot) > 0 and len(regels) == 0:

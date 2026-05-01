@@ -7,9 +7,9 @@ class LexNodeEngine:
     ATTR = {
         'node_type':   '0',
         'color':       '2',
-        'bron':        '10',
-        'toelichting': '13',
-        'definitie':   '14',
+        'bron':        '11',
+        'toelichting': '14',
+        'definitie':   '15',
     }
     ROUTE = [
         "begrippen/dagtekening-aanslagbiljet",
@@ -54,18 +54,19 @@ class LexNodeEngine:
                 "label":            node_el.get("label") if node_el is not None else node_id,
                 "node_type":        raw.get("0", ""),
                 "jas_klasse":       raw.get("1", ""),
-                "bron":             raw.get("10", ""),
-                "bronnen":          raw.get("11", ""),
-                "interpretatie":    raw.get("12", ""),
-                "toelichting":      raw.get("13", ""),
-                "definitie":        raw.get("14", ""),
-                "markering":        raw.get("9", ""),
-                "soort":            raw.get("15", ""),
-                "herkomst":         raw.get("16", ""),
-                "afleidingsregels": raw.get("23", ""),
-                "regel_id":         raw.get("24", ""),
-                "naam":             raw.get("25", ""),
-                "operators":        raw.get("26", ""),
+                "leden_noten":      raw.get("8", ""),
+                "bron":             raw.get("11", ""),
+                "bronnen":          raw.get("12", ""),
+                "interpretatie":    raw.get("13", ""),
+                "toelichting":      raw.get("14", ""),
+                "definitie":        raw.get("15", ""),
+                "markering":        raw.get("10", ""),
+                "soort":            raw.get("16", ""),
+                "herkomst":         raw.get("17", ""),
+                "afleidingsregels": raw.get("24", ""),
+                "regel_id":         raw.get("25", ""),
+                "naam":             raw.get("26", ""),
+                "operators":        raw.get("27", ""),
             })
         return result
 
@@ -91,11 +92,78 @@ class LexNodeEngine:
             "atw_status":    "Uitgesloten (Art. 9 lid 10 IW 1990)" if atw_uitgesloten else "Toepasbaar",
         }
 
-    def check_invorderbaarheid(self, dagtekening: datetime, peildatum: datetime) -> dict:
-        details  = self.get_full_justification("begrippen/zes-weken")
-        deadline = dagtekening + timedelta(days=details["termijn_dagen"])
+    def check_invorderbaarheid(self, dagtekening: datetime, peildatum: datetime, 
+                               aanslagtype: str = "definitief", 
+                               afwijkend_boekjaar: bool = False,
+                               vaststellingsjaar: bool = True) -> dict:
+        
+        # Basis logica voor Art 9 lid 1
+        details = self.get_full_justification("begrippen/zes-weken")
+        basis_dagen = details["termijn_dagen"]
+        
+        if aanslagtype.startswith("voorlopig") and vaststellingsjaar:
+            # Art 9 lid 5: Meerdere termijnen
+            maand = dagtekening.month
+            resterende_maanden = 12 - maand
+            
+            if resterende_maanden > 1:
+                # Meerdere termijnen berekenen
+                termijnen = []
+                # Check of dagtekening de laatste dag van de maand is
+                import calendar
+                _, last_day_month = calendar.monthrange(dagtekening.year, dagtekening.month)
+                is_laatste_dag = dagtekening.day == last_day_month
+                
+                for i in range(1, resterende_maanden + 1):
+                    doel_maand = dagtekening.month + i
+                    doel_jaar = dagtekening.year
+                    if doel_maand > 12:
+                        doel_maand -= 12
+                        doel_jaar += 1
+                    
+                    _, last_day_doel = calendar.monthrange(doel_jaar, doel_maand)
+                    dag = last_day_doel if is_laatste_dag else min(dagtekening.day, last_day_doel)
+                    termijnen.append(datetime(doel_jaar, doel_maand, dag))
+                
+                # LI 9.1 Correctie op LAATSTE termijn
+                if afwijkend_boekjaar:
+                    _, last_day = calendar.monthrange(termijnen[-1].year, termijnen[-1].month)
+                    termijnen[-1] = termijnen[-1].replace(day=last_day)
+                elif dagtekening.month <= 11:
+                    einde_jaar = datetime(dagtekening.year, 12, 31)
+                    if termijnen[-1] < einde_jaar:
+                        termijnen[-1] = einde_jaar
+                
+                return {
+                    "invorderbaar": peildatum >= termijnen[0],
+                    "deadline": termijnen[0],
+                    "termijnen": termijnen,
+                    "details": details,
+                    "bron": "Art. 9 lid 5 IW 1990" + (" (Corr. § 9.1 LI 2008)" if afwijkend_boekjaar or dagtekening.month <= 11 else "")
+                }
+            # Fallback naar lid 1 als resterende_maanden <= 1
+            # (wordt hieronder afgehandeld door de standaard 6 weken + LI 9.1 correctie)
+
+        # Standaard 6 weken (Art 9 lid 1) of Fallback van Lid 5
+        deadline = dagtekening + timedelta(days=basis_dagen)
+        bron = details["wetsartikel"]
+        
+        # LI 9.1 Correctie voor enige/laatste termijn
+        if aanslagtype.startswith("voorlopig"):
+            if afwijkend_boekjaar:
+                import calendar
+                _, last_day = calendar.monthrange(deadline.year, deadline.month)
+                deadline = deadline.replace(day=last_day)
+                bron = "§ 9.1 LI 2008 (Afwijkend boekjaar)"
+            elif dagtekening.month <= 11:
+                einde_jaar = datetime(dagtekening.year, 12, 31)
+                if deadline < einde_jaar:
+                    deadline = einde_jaar
+                    bron = "§ 9.1 LI 2008 (31 december regel)"
+
         return {
             "invorderbaar": peildatum >= deadline,
             "deadline":     deadline,
             "details":      details,
+            "bron":         bron
         }

@@ -56,9 +56,23 @@ class LexNodeHandler(http.server.SimpleHTTPRequestHandler):
             params = json.loads(body)
             dagtekening = datetime.strptime(params['dagtekening'], '%Y-%m-%d')
             peildatum   = datetime.strptime(params['peildatum'],   '%Y-%m-%d')
-            result      = engine.check_invorderbaarheid(dagtekening, peildatum)
+
+            # Nieuwe parameters ophalen
+            aanslagtype = params.get('aanslagtype', 'definitief')
+            afwijkend_boekjaar = params.get('afwijkend_boekjaar', False)
+            vaststellingsjaar = params.get('dagtekening_in_vaststellingsjaar', True)
+
+            result = engine.check_invorderbaarheid(
+                dagtekening, 
+                peildatum, 
+                aanslagtype=aanslagtype,
+                afwijkend_boekjaar=afwijkend_boekjaar,
+                vaststellingsjaar=vaststellingsjaar
+            )
+
             result["dagtekening"] = dagtekening.strftime('%d-%m-%Y')
             result["peildatum"]   = peildatum.strftime('%d-%m-%Y')
+            result["peildatum_dt"] = peildatum # Voor PDF status checks
 
             if 'export-pdf' in self.path:
                 self._handle_export_pdf(result)
@@ -70,13 +84,18 @@ class LexNodeHandler(http.server.SimpleHTTPRequestHandler):
             self.wfile.write(traceback.format_exc().encode())
 
     def _handle_calculate(self, result: dict):
-        self._json({
+        resp = {
             "invorderbaar":    result["invorderbaar"],
             "deadline":        result["deadline"].strftime('%d-%m-%Y'),
             "dagen":           result["details"]["termijn_dagen"],
             "atw_uitgesloten": "Uitgesloten" in result["details"]["atw_status"],
-            "bron":            result["details"]["wetsartikel"],
-        })
+            "bron":            result.get("bron", result["details"]["wetsartikel"]),
+        }
+        if "termijnen" in result:
+            resp["termijnen"] = [t.strftime('%d-%m-%Y') for t in result["termijnen"]]
+
+        self._json(resp)
+
 
     def _handle_export_pdf(self, result: dict):
         if not HAS_REPORTLAB:
@@ -140,14 +159,17 @@ class LexNodeHandler(http.server.SimpleHTTPRequestHandler):
         kleur_fg = colors.white
         uitslag  = "INVORDERBAAR" if invorderbaar else "NIET INVORDERBAAR"
 
+        besluit_info = [
+            f"Dagtekening: <b>{result.get('dagtekening', '—')}</b>",
+            f"Peildatum: <b>{result.get('peildatum', '—')}</b>",
+            f"Deadline: <b>{deadline.strftime('%d-%m-%Y')}</b>",
+            f"Termijn: <b>{details['termijn_dagen']} dagen</b>",
+            f"ATW: <b>{details['atw_status']}</b>"
+        ]
+
         besluit_data = [
             [Paragraph(f'<font color="white"><b>{uitslag}</b></font>', ParagraphStyle("U", parent=s_body, fontSize=13, leading=16))],
-            [Paragraph(
-                f"Dagtekening: <b>{result.get('dagtekening', '—')}</b> &nbsp;|&nbsp; "
-                f"Peildatum: <b>{result.get('peildatum', '—')}</b> &nbsp;|&nbsp; "
-                f"Deadline: <b>{deadline.strftime('%d-%m-%Y')}</b> &nbsp;|&nbsp; "
-                f"Termijn: <b>{details['termijn_dagen']} dagen</b> &nbsp;|&nbsp; "
-                f"ATW: <b>{details['atw_status']}</b>",
+            [Paragraph(" &nbsp;|&nbsp; ".join(besluit_info),
                 ParagraphStyle("BInfo", parent=s_body, fontSize=8, textColor=colors.white, leading=12),
             )],
         ]
@@ -161,6 +183,25 @@ class LexNodeHandler(http.server.SimpleHTTPRequestHandler):
             ("ROUNDEDCORNERS", [6]),
         ]))
         story.append(besluit_tbl)
+
+        # ── 1b. Termijnen (Indien van toepassing) ───────────────────────────
+        if "termijnen" in result:
+            story.append(Spacer(1, 10))
+            termijnen_data = [["Termijn", "Vervaldatum", "Status op peildatum"]]
+            for i, t in enumerate(result["termijnen"], 1):
+                status = "Vervallen" if result["peildatum_dt"] >= t else "Open"
+                termijnen_data.append([str(i), t.strftime('%d-%m-%Y'), status])
+            
+            t_termijnen = Table(termijnen_data, colWidths=[2*cm, 4*cm, 4*cm])
+            t_termijnen.setStyle(TableStyle([
+                ('FONTNAME', (0,0), (-1,0), 'Helvetica-Bold'),
+                ('FONTSIZE', (0,0), (-1,-1), 8),
+                ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#EEEEEE")),
+                ('ALIGN', (0,0), (-1,-1), 'LEFT'),
+                ('GRID', (0,0), (-1,-1), 0.5, colors.grey),
+                ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+            ]))
+            story.append(t_termijnen)
 
         # ── 2. Redeneerroute ────────────────────────────────────────────────
         story.append(Paragraph("2. Redeneerroute", s_h2))

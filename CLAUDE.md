@@ -77,7 +77,9 @@ De gebruiker kiest het aanslagtype via een dropdown. Na een berekening filtert d
 - **`LID5_ROUTE_NORMAAL`** — lid-5-pad met maandelijkse termijnen (11 nodes)
 - **`LID5_ROUTE_TERUGVAL`** — lid-5-pad met AR-9-5e terugval naar lid 1 (9 nodes)
 
-Berekeningsfuncties: `checkInvorderbaarheid()` (lid 1) en `checkInvorderbaarheidLid5()` (lid 5). Lid-5-logica: AR-9-5b berekent `12 - maand(dagtekening)` resterende termijnen; AR-9-5e activeert terugval als ≤ 1; AR-9-5c/d genereren de vervaldatums iteratief.
+Berekeningsfuncties: `checkInvorderbaarheid()` (lid 1) en `checkInvorderbaarheidLid5()` (lid 5). Lid-5-logica: AR-9-5b berekent `12 - maand(dagtekening)` resterende termijnen; AR-9-5e activeert terugval als ≤ 1; AR-9-5c/d genereren de vervaldatums iteratief conform **Leidraad Invordering 2008 art. 9.5**: als de dagtekening de laatste dag van de maand is, valt elke termijn op de laatste dag van de doelmaand; anders wordt hetzelfde dagnummer gebruikt, afgeknepen op de werkelijke maandlengte (`Math.min(dag, lasteDagDoelmaand)`).
+
+Als het lid-5-resultaat invorderbaar is maar nog niet alle termijnen vervallen zijn, toont `#status-header` `INVORDERBAAR (X van Y termijnen vervallen)`. Hetzelfde telt voor de PDF-export (besluitbalk).
 
 Bij het laden (`window.addEventListener('load', initGraph)`) worden de datumvelden `dagtekening` en `peildatum` ingesteld op `new Date().toISOString().slice(0, 10)` (vandaag).
 
