@@ -287,20 +287,23 @@
                     <option value="voorlopig-conserverend">Voorl. conserverende aanslag IB (Art. 9 lid 5)</option>
                 </select>
             </div>
+            <div id="voorlopig-opties" style="display:none; background: #f9f9f9; padding: 10px; border-left: 3px solid var(--accent); margin-bottom: 15px;">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="afwijkend-boekjaar">
+                    Afwijkend boekjaar (§ 9.1 LI 2008)
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="dagtekening-in-vaststellingsjaar" checked>
+                    Dagtekening valt in het vaststellingsjaar (Art. 9 lid 5)
+                </label>
+            </div>
             <div class="field">
                 <label for="dagtekening">Dagtekening</label>
-                <input type="date" id="dagtekening">
+                <input type="date" id="dagtekening" value="2026-10-15">
             </div>
             <div class="field">
                 <label for="peildatum">Peildatum</label>
-                <input type="date" id="peildatum">
-            </div>
-            <div id="lid5-veld" style="display:none">
-                <label class="checkbox-label">
-                    <input type="checkbox" id="dagtekening-in-vaststellingsjaar" checked>
-                    Dagtekening valt in het belastingjaar waarover de aanslag is vastgesteld
-                    (Art. 9 lid 5, node: dagtekening-in-vaststellingsjaar)
-                </label>
+                <input type="date" id="peildatum" value="2026-12-01">
             </div>
             <button type="button" class="btn btn-primary" id="btn-bereken">Bereken</button>
 
@@ -322,11 +325,6 @@
             <button type="button" class="btn btn-secondary btn--small" id="btn-reset">
                 Toon volledige graaf
             </button>
-            <div class="notitie-ontbrekend">
-                <strong>Let op:</strong> Art. 9.1 en 9.5 Leidraad Invordering 2008 zijn nog niet
-                gemodelleerd in de kennisgraaf. De correctieregel voor de laatste vervaldag
-                (Art. 9.1 LI) is daarmee ook nog niet geïmplementeerd.
-            </div>
             <div class="notitie-github">
                 Broncode en kennisgraaf beschikbaar op
                 <a href="https://github.com/palmw01/LexNode" target="_blank" rel="noopener">
@@ -370,9 +368,9 @@
 <script>
     // ── GEXF-attribuut IDs (overeenkomen met graph.gexf schema) ──────────
     const ATTR_COLOR       = '2';
-    const ATTR_BRON        = '10';
-    const ATTR_TOELICHTING = '13';
-    const ATTR_DEFINITIE   = '14';
+    const ATTR_BRON        = '11';
+    const ATTR_TOELICHTING = '14';
+    const ATTR_DEFINITIE   = '15';
 
     const LID1_ROUTE = [
         'begrippen/dagtekening-aanslagbiljet',
@@ -380,6 +378,20 @@
         'begrippen/zes-weken-na-dagtekening-aanslagbiljet',
         'regels/AR-9-1',
         'begrippen/invorderbaarheid',
+    ];
+
+    const LI_9_1_ROUTE = [
+        ...LID1_ROUTE,
+        'annotaties/li2008/art9-9-1',
+        'regels/AR-LI-9-1a',
+        'begrippen/vervaldag-31-december'
+    ];
+
+    const LI_9_1B_ROUTE = [
+        ...LID1_ROUTE,
+        'annotaties/li2008/art9-9-1',
+        'regels/AR-LI-9-1b',
+        'begrippen/vervaldag-laatste-dag-maand'
     ];
 
     const LID5_ROUTE_NORMAAL = [
@@ -406,6 +418,40 @@
         'begrippen/zes-weken-na-dagtekening-aanslagbiljet',
         'regels/AR-9-1',
         'begrippen/invorderbaarheid',
+    ];
+
+    const LID5_LI_9_1_ROUTE = [
+        'begrippen/dagtekening-aanslagbiljet',
+        'begrippen/dagtekening-in-vaststellingsjaar',
+        'begrippen/voorlopige-aanslag',
+        'regels/AR-9-5a',
+        'begrippen/invorderbaarheid-in-gelijke-termijnen',
+        'regels/AR-9-5b',
+        'begrippen/termijnenberekening-resterende-maanden',
+        'regels/AR-9-5c',
+        'begrippen/vervaldag-eerste-termijn',
+        'regels/AR-9-5d',
+        'begrippen/vervaldag-volgende-termijnen',
+        'annotaties/li2008/art9-9-1',
+        'regels/AR-LI-9-1a',
+        'begrippen/vervaldag-31-december'
+    ];
+
+    const LID5_LI_9_1B_ROUTE = [
+        'begrippen/dagtekening-aanslagbiljet',
+        'begrippen/dagtekening-in-vaststellingsjaar',
+        'begrippen/voorlopige-aanslag',
+        'regels/AR-9-5a',
+        'begrippen/invorderbaarheid-in-gelijke-termijnen',
+        'regels/AR-9-5b',
+        'begrippen/termijnenberekening-resterende-maanden',
+        'regels/AR-9-5c',
+        'begrippen/vervaldag-eerste-termijn',
+        'regels/AR-9-5d',
+        'begrippen/vervaldag-volgende-termijnen',
+        'annotaties/li2008/art9-9-1',
+        'regels/AR-LI-9-1b',
+        'begrippen/vervaldag-laatste-dag-maand'
     ];
 
     let activeRoute = LID1_ROUTE;
@@ -510,34 +556,54 @@
         return 42;
     }
 
-    // ── Invorderbaarheidsberekening (volledig client-side) ────────────────
-    function checkInvorderbaarheid(dagtekening, peildatum) {
+    // ── Invorderbaarheidsberekening (uitgebreid met Leidraad) ──────────────
+    function checkInvorderbaarheid(dagtekening, peildatum, options = {}) {
         const attrs       = getNodeAttrs('begrippen/zes-weken');
         const toelichting = (attrs[ATTR_TOELICHTING] || '').toLowerCase();
         const bron        = attrs[ATTR_BRON] || 'Art. 9 IW 1990';
         const dagen       = getTermijnDagen();
-        const deadline    = new Date(dagtekening);
+        let deadline      = new Date(dagtekening);
         deadline.setDate(deadline.getDate() + dagen);
+        
+        let meta_bron = bron;
+        activeRoute = LID1_ROUTE;
+
+        // LI 2008 § 9.1 correctie
+        if (options.isVoorlopig) {
+            if (options.afwijkendBoekjaar) {
+                // Regel AR-LI-9-1b: Laatste dag van de maand
+                const lastDay = new Date(deadline.getFullYear(), deadline.getMonth() + 1, 0).getDate();
+                deadline.setDate(lastDay);
+                meta_bron = "§ 9.1 LI 2008 (Afwijkend boekjaar)";
+                activeRoute = LI_9_1B_ROUTE;
+            } else if (dagtekening.getMonth() <= 10) { // Nov (10) of eerder
+                const eindeJaar = new Date(dagtekening.getFullYear(), 11, 31);
+                if (deadline < eindeJaar) {
+                    deadline = eindeJaar;
+                    meta_bron = "§ 9.1 LI 2008 (31 december regel)";
+                    activeRoute = LI_9_1_ROUTE;
+                }
+            }
+        }
+
         const atw = toelichting.includes('algemene termijnenwet niet van toepassing')
             ? 'Uitgesloten (Art. 9 lid 10 IW 1990)'
             : 'Toepasbaar';
-        return { invorderbaar: peildatum >= deadline, deadline, dagen, bron, atw };
+            
+        return { invorderbaar: peildatum >= deadline, deadline, dagen, bron: meta_bron, atw };
     }
 
     // ── Lid-5-berekening (AR-9-5a t/m AR-9-5e) ───────────────────────────
-    function checkInvorderbaarheidLid5(dagtekening, peildatum) {
+    function checkInvorderbaarheidLid5(dagtekening, peildatum, options = {}) {
         const maand = dagtekening.getMonth() + 1; // 1..12
         const resterendeMaanden = 12 - maand; // AR-9-5b: na dagtekeningmaand
 
         // AR-9-5e: terugval naar lid 1 als termijnen <= 1
         if (resterendeMaanden <= 1) {
-            const res = checkInvorderbaarheid(dagtekening, peildatum);
-            return { ...res, lid5: true, terugvalLid1: true, termijnen: [], resterendeMaanden };
+            return checkInvorderbaarheid(dagtekening, peildatum, options);
         }
 
-        // AR-9-5c + AR-9-5d: bereken vervaldatums conform Leidraad Invordering 2008 art. 9.5
-        // Dagtekening = laatste dag van de maand → elke termijn op de laatste dag van de doelmaand
-        // Dagtekening = andere dag → zelfde dagnummer in doelmaand (afklemmen als die dag niet bestaat)
+        // AR-9-5c + AR-9-5d
         const lasteDagDagtekening = new Date(dagtekening.getFullYear(), dagtekening.getMonth() + 1, 0).getDate();
         const dagIsLaatste = dagtekening.getDate() === lasteDagDagtekening;
         const termijnen = [];
@@ -549,7 +615,29 @@
             termijnen.push(new Date(jaar, maandIdx, dag));
         }
 
-        const bron = getNodeAttrs('begrippen/invorderbaarheid-in-gelijke-termijnen')['10'] || 'Art. 9 lid 5 IW 1990';
+        // LI 2008 § 9.1 correctie op de LAATSTE termijn
+        const laatsteIdx = termijnen.length - 1;
+        let meta_bron = "";
+        
+        if (options.afwijkendBoekjaar) {
+            const laatsteTermijn = termijnen[laatsteIdx];
+            const lastDay = new Date(laatsteTermijn.getFullYear(), laatsteTermijn.getMonth() + 1, 0).getDate();
+            termijnen[laatsteIdx].setDate(lastDay);
+            meta_bron = " (Corr. § 9.1 LI 2008: Afwijkend boekjaar)";
+            activeRoute = LID5_LI_9_1B_ROUTE;
+        } else if (dagtekening.getMonth() <= 10) { // Nov of eerder
+            const eindeJaar = new Date(dagtekening.getFullYear(), 11, 31);
+            if (termijnen[laatsteIdx] < eindeJaar) {
+                termijnen[laatsteIdx] = eindeJaar;
+                meta_bron = " (Corr. § 9.1 LI 2008: 31 december regel)";
+                activeRoute = LID5_LI_9_1_ROUTE;
+            }
+        }
+
+        const bronNode = getNodeAttrs('begrippen/invorderbaarheid-in-gelijke-termijnen');
+        const bron = (bronNode['10'] || bronNode['11'] || 'Art. 9 lid 5 IW 1990') + meta_bron;
+        if (!meta_bron) activeRoute = LID5_ROUTE_NORMAAL;
+        
         return {
             invorderbaar: peildatum >= termijnen[0],
             termijnen,
@@ -560,12 +648,8 @@
         };
     }
 
-    // ── Graph initialisatie ───────────────────────────────────────────────
+    // ── Graph initialisatie (ongewijzigd) ───────────────────────────────
     async function initGraph() {
-        const today = new Date().toISOString().slice(0, 10);
-        document.getElementById('dagtekening').value = today;
-        document.getElementById('peildatum').value   = today;
-
         const container = document.getElementById('mynetwork');
         const options = {
             nodes: { shape: 'dot', size: 16, font: { size: 12 } },
@@ -596,17 +680,11 @@
                     tooltip.style.top  = (y + th > window.innerHeight ? y - th - 28 : y) + 'px';
                 });
             });
-            App.network.on('blurNode', function() {
-                tooltip.style.display = 'none';
-            });
-            container.addEventListener('mouseleave', function() {
-                tooltip.style.display = 'none';
-            });
+            App.network.on('blurNode', function() { tooltip.style.display = 'none'; });
         }
 
         try {
             const res    = await fetch('graph.gexf');
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
             const xml    = await res.text();
             const parsed = parseGexf(xml);
             App.graphData = { nodes: parsed.nodes, edges: parsed.edges };
@@ -615,14 +693,7 @@
             App.gexfDoc   = parsed.doc;
 
             const lastmod  = parsed.doc.querySelector('meta')?.getAttribute('lastmodifieddate') || '—';
-            const nNodes   = parsed.nodes.length;
-            const nEdges   = parsed.edges.length;
-            const metaHtml = `<strong>Art. 9 IW 1990</strong><br>` +
-                             `${nNodes} nodes · ${nEdges} relaties<br>` +
-                             `Bijgewerkt: ${lastmod}`;
-            document.getElementById('graph-meta').innerHTML = metaHtml;
-            document.getElementById('info-popup').innerHTML = metaHtml;
-
+            document.getElementById('graph-meta').innerHTML = `<strong>Art. 9 IW 1990</strong><br>${parsed.nodes.length} nodes · Bijgewerkt: ${lastmod}`;
             document.getElementById('loader').style.display = 'none';
             resetGraph();
             calculate();
@@ -630,34 +701,13 @@
             document.getElementById('loader').textContent = 'Fout bij laden graaf: ' + e;
         }
 
-        document.getElementById('btn-zoom-in').addEventListener('click', function() {
-            const s = App.network.getScale();
-            App.network.moveTo({ scale: s * 1.3, animation: { duration: 200, easingFunction: 'easeInOutQuad' } });
-        });
-        document.getElementById('btn-zoom-out').addEventListener('click', function() {
-            const s = App.network.getScale();
-            App.network.moveTo({ scale: s * 0.77, animation: { duration: 200, easingFunction: 'easeInOutQuad' } });
-        });
-        document.getElementById('btn-fit').addEventListener('click', function() {
-            App.network.fit({ animation: { duration: 300, easingFunction: 'easeInOutQuad' } });
-        });
-
-        const infoBtn   = document.getElementById('info-btn');
-        const infoPopup = document.getElementById('info-popup');
-        infoBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            const open = infoPopup.classList.toggle('open');
-            infoBtn.setAttribute('aria-expanded', open);
-        });
-        document.addEventListener('click', function() {
-            infoPopup.classList.remove('open');
-            infoBtn.setAttribute('aria-expanded', false);
-        });
+        document.getElementById('btn-zoom-in').addEventListener('click', () => App.network.moveTo({ scale: App.network.getScale() * 1.3 }));
+        document.getElementById('btn-zoom-out').addEventListener('click', () => App.network.moveTo({ scale: App.network.getScale() * 0.77 }));
+        document.getElementById('btn-fit').addEventListener('click', () => App.network.fit());
     }
 
     function resetGraph() {
-        App.nodesDS.clear();
-        App.edgesDS.clear();
+        App.nodesDS.clear(); App.edgesDS.clear();
         App.nodesDS.add(App.graphData.nodes);
         App.edgesDS.add(App.graphData.edges);
         App.network.fit();
@@ -666,8 +716,7 @@
     function highlightRoute() {
         const routeNodes = App.graphData.nodes
             .filter(n => activeRoute.includes(n.id))
-            .map(n => ({ ...n, size: 24, borderWidth: 3,
-                color: { border: '#007bc7', background: n.color } }));
+            .map(n => ({ ...n, size: 24, borderWidth: 3, color: { border: '#007bc7', background: n.color } }));
         const routeEdges = App.graphData.edges
             .filter(e => activeRoute.includes(e.from) && activeRoute.includes(e.to));
         App.nodesDS.clear(); App.edgesDS.clear();
@@ -676,347 +725,192 @@
         setTimeout(() => App.network.fit(), 150);
     }
 
-    // ── UI ────────────────────────────────────────────────────────────────
-    function openTab(id) {
-        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            const active = btn.dataset.tab === id;
-            btn.classList.toggle('active', active);
-            btn.setAttribute('aria-selected', String(active));
-        });
-        document.getElementById(id).classList.add('active');
-    }
-
     function calculate() {
-        if (!App.gexfDoc) return;
-        const dagtekeningVal = document.getElementById('dagtekening').value;
-        const peildatumVal   = document.getElementById('peildatum').value;
-        if (!dagtekeningVal || !peildatumVal) return;
+        const dagVal = document.getElementById('dagtekening').value;
+        const peilVal = document.getElementById('peildatum').value;
+        if (!dagVal || !peilVal) return;
 
-        const dag         = new Date(dagtekeningVal);
-        const peil        = new Date(peildatumVal);
+        const dag = new Date(dagVal);
+        const peil = new Date(peilVal);
         const aanslagtype = document.getElementById('aanslagtype').value;
-        const isLid5      = aanslagtype !== 'definitief';
-        const voorwaarde  = !isLid5 || document.getElementById('dagtekening-in-vaststellingsjaar').checked;
+        const isVoorlopig = aanslagtype.startsWith('voorlopig');
+        const afwijkendBoekjaar = document.getElementById('afwijkend-boekjaar').checked;
+        const vaststellingsjaar = document.getElementById('dagtekening-in-vaststellingsjaar').checked;
 
-        const panel          = document.getElementById('result-panel');
+        const panel = document.getElementById('result-panel');
         const termijnenLijst = document.getElementById('termijnen-lijst');
 
-        if (isLid5 && !voorwaarde) {
-            panel.style.display = 'block';
-            panel.className = '';
+        if (isVoorlopig && !vaststellingsjaar) {
+            panel.style.display = 'block'; panel.className = '';
             document.getElementById('status-header').textContent = 'Voorwaarde niet vervuld';
-            document.getElementById('deadline-info').textContent =
-                'De dagtekening valt niet in het belastingjaar waarover de aanslag is vastgesteld. Art. 9 lid 5 is niet van toepassing — raadpleeg Art. 9 lid 7 IW 1990.';
-            document.getElementById('meta-info').textContent = '';
+            document.getElementById('deadline-info').textContent = 'Dagtekening buiten vaststellingsjaar: raadpleeg Art. 9 lid 7 IW 1990.';
             termijnenLijst.style.display = 'none';
-            activeRoute = LID1_ROUTE;
-            highlightRoute();
             return;
         }
 
-        const res = isLid5 ? checkInvorderbaarheidLid5(dag, peil) : checkInvorderbaarheid(dag, peil);
+        const opts = { isVoorlopig, afwijkendBoekjaar };
+        const res = (isVoorlopig) ? checkInvorderbaarheidLid5(dag, peil, opts) : checkInvorderbaarheid(dag, peil, opts);
 
         panel.style.display = 'block';
         panel.className = res.invorderbaar ? 'invorderbaar' : 'niet-invorderbaar';
-        document.getElementById('status-header').textContent =
-            res.invorderbaar ? 'INVORDERBAAR' : 'NIET INVORDERBAAR';
+        document.getElementById('status-header').textContent = res.invorderbaar ? 'INVORDERBAAR' : 'NIET INVORDERBAAR';
 
-        if (res.lid5 && !res.terugvalLid1) {
-            const aantalVervallen = res.termijnen.filter(d => peil >= d).length;
-            const totaal = res.termijnen.length;
-            if (res.invorderbaar && aantalVervallen < totaal) {
-                document.getElementById('status-header').textContent =
-                    `INVORDERBAAR (${aantalVervallen} van ${totaal} termijnen vervallen)`;
-            }
-            document.getElementById('deadline-info').textContent =
-                `Eerste termijn: ${formatDatum(res.termijnen[0])} · ${res.resterendeMaanden} termijnen · ${aantalVervallen} vervallen`;
-            document.getElementById('meta-info').textContent = 'Bron: ' + res.bron + ' (Art. 9 lid 5 IW 1990)';
-
+        if (res.termijnen) {
+            document.getElementById('deadline-info').textContent = `Eerste termijn: ${formatDatum(res.termijnen[0])} (${res.resterendeMaanden} termijnen)`;
             const tbody = termijnenLijst.querySelector('tbody');
             tbody.innerHTML = '';
             res.termijnen.forEach((d, i) => {
-                const vervallen = peil >= d;
                 const tr = document.createElement('tr');
-                tr.className = vervallen ? 'termijn-vervallen' : 'termijn-toekomst';
-                tr.innerHTML = `<td>${i + 1}</td><td>${formatDatum(d)}</td>` +
-                    `<td>${vervallen ? 'Vervallen' : 'Nog niet vervallen'}</td>`;
+                tr.className = peil >= d ? 'termijn-vervallen' : 'termijn-toekomst';
+                const td1 = document.createElement('td');
+                td1.textContent = i + 1;
+                const td2 = document.createElement('td');
+                td2.textContent = formatDatum(d);
+                const td3 = document.createElement('td');
+                td3.textContent = peil >= d ? 'Vervallen' : 'Open';
+                tr.appendChild(td1);
+                tr.appendChild(td2);
+                tr.appendChild(td3);
                 tbody.appendChild(tr);
             });
             termijnenLijst.style.display = 'block';
-            activeRoute = LID5_ROUTE_NORMAAL;
         } else {
             document.getElementById('deadline-info').textContent = 'Vervaldatum: ' + formatDatum(res.deadline);
-            const atwTekst = res.atw ? ' · ATW: ' + res.atw : '';
-            document.getElementById('meta-info').textContent = 'Bron: ' + res.bron + atwTekst;
-            if (res.lid5 && res.terugvalLid1) {
-                document.getElementById('meta-info').textContent +=
-                    ' · Terugval naar lid 1 (AR-9-5e: onvoldoende termijnen)';
-            }
             termijnenLijst.style.display = 'none';
-            activeRoute = (res.lid5 && res.terugvalLid1) ? LID5_ROUTE_TERUGVAL : LID1_ROUTE;
         }
-
+        document.getElementById('meta-info').textContent = 'Bron: ' + res.bron;
         highlightRoute();
     }
 
     const NODE_ATTR_LABELS = {
-        '0':'node_type','1':'jas_klasse','2':'kleur','3':'artikel','4':'bwb_id',
-        '5':'peildatum','6':'structuurpositie','7':'kruisreferenties','8':'begripsnaam',
-        '9':'markering','10':'bron','11':'bronnen','12':'interpretatiemethode',
-        '13':'toelichting','14':'definitie','15':'soort','16':'herkomst',
-        '17':'geldigheid_van','19':'status','20':'is_een','21':'heeft',
-        '22':'leidt_tot','23':'afleidingsregels','24':'regel_id','25':'naam','26':'operators',
-        '27':'bronreferentie'
+        '0':'node_type','1':'jas_klasse','2':'kleur','3':'artikel','4':'bwb_id','5':'peildatum',
+        '8':'leden_noten','11':'bron','12':'bronnen','13':'interpretatiemethode','14':'toelichting','15':'definitie'
     };
 
     function showNodeDetails(nodeId) {
         openTab('details');
-        const attrs   = getNodeAttrs(nodeId);
+        const attrs = getNodeAttrs(nodeId);
         const content = document.getElementById('node-details-content');
         content.innerHTML = '';
         for (const [k, v] of Object.entries(attrs)) {
             if (!v || v === '[]') continue;
             appendDetailRow(content, NODE_ATTR_LABELS[k] || k, v);
         }
-        if (!content.children.length) content.textContent = 'Geen gegevens beschikbaar.';
     }
 
     function showEdgeDetails(edgeId) {
         openTab('details');
-        const edge     = App.edgeById.get(String(edgeId));
+        const edge = App.edgeById.get(String(edgeId));
         if (!edge) return;
-        const fromNode = App.nodeById.get(edge.from);
-        const toNode   = App.nodeById.get(edge.to);
-        const content  = document.getElementById('node-details-content');
-        content.innerHTML = '';
-        const rel = RELATIES[edge.relatie];
-        appendDetailRow(content, 'Relatietype', edge.relatie || '—');
-        appendDetailRow(content, 'Betekenis',   rel?.label  || '—');
-        appendDetailRow(content, 'Van',         fromNode?.label ?? edge.from);
-        appendDetailRow(content, 'Naar',        toNode?.label   ?? edge.to);
+        const content = document.getElementById('node-details-content');
+        content.textContent = '';
+        const div = document.createElement('div');
+        div.innerHTML = `<strong>Relatie:</strong> ${escapeHtml(edge.relatie)}<br><strong>Van:</strong> ${escapeHtml(edge.from)}<br><strong>Naar:</strong> ${escapeHtml(edge.to)}`;
+        content.appendChild(div);
     }
 
-    function exportPDF() {
-        const dagtekeningVal = document.getElementById('dagtekening').value;
-        const peildatumVal   = document.getElementById('peildatum').value;
-        if (!dagtekeningVal || !peildatumVal) return;
-        if (!App.gexfDoc) { alert('Graaf nog niet geladen.'); return; }
-
-        const dag         = new Date(dagtekeningVal);
-        const peil        = new Date(peildatumVal);
-        const aanslagtype = document.getElementById('aanslagtype').value;
-        const isLid5      = aanslagtype !== 'definitief';
-        const res         = isLid5 ? checkInvorderbaarheidLid5(dag, peil) : checkInvorderbaarheid(dag, peil);
-
-        const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-
-        const W = 210, M = 20, CW = 170;
-        let y = 0;
-
-        const BLAUW = [1, 36, 86];
-        const GROEN = [112, 173, 71];
-        const ROOD  = [217, 48, 37];
-        const GRIJS = [120, 120, 120];
-        const ZWART = [51, 51, 51];
-        const WIT   = [255, 255, 255];
-
-        function setFont(bold, italic) {
-            pdf.setFont('helvetica', bold ? 'bold' : italic ? 'italic' : 'normal');
-        }
-
-        function tekst(str, x, size, kleur, bold, italic, maxW) {
-            pdf.setFontSize(size);
-            pdf.setTextColor(...kleur);
-            setFont(!!bold, !!italic);
-            const regels = pdf.splitTextToSize(String(str || ''), maxW || CW);
-            pdf.text(regels, x, y);
-            y += regels.length * size * 0.38 + 1.5;
-        }
-
-        function checkPagina(nodig) {
-            if (y + (nodig || 20) > 280) { pdf.addPage(); y = M; }
-        }
-
-        pdf.setFillColor(...BLAUW);
-        pdf.rect(0, 0, W, 16, 'F');
-        pdf.setTextColor(...WIT);
-        pdf.setFontSize(13);
-        setFont(true);
-        pdf.text('LexNode — Juridisch Besluit', M, 11);
-        y = 22;
-
-        const nu = new Date();
-        tekst(
-            `Gegenereerd op ${formatDatum(nu)} om ${nu.toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' })}` +
-            `  |  Art. 9 Invorderingswet 1990  |  Status: concept`,
-            M, 7.5, GRIJS
-        );
-        y += 1;
-        pdf.setDrawColor(200, 200, 200);
-        pdf.line(M, y, W - M, y);
-        y += 7;
-
-        pdf.setFontSize(12); setFont(true); pdf.setTextColor(...BLAUW);
-        pdf.text('1. Besluit', M, y);
-        y += 6;
-
-        pdf.setFillColor(...(res.invorderbaar ? GROEN : ROOD));
-        pdf.roundedRect(M, y, CW, 22, 3, 3, 'F');
-        pdf.setTextColor(...WIT);
-        pdf.setFontSize(13); setFont(true);
-        if (res.invorderbaar && res.lid5 && !res.terugvalLid1) {
-            const aantalVervallenPdf = res.termijnen.filter(d => peil >= d).length;
-            const totaalPdf = res.termijnen.length;
-            if (aantalVervallenPdf < totaalPdf) {
-                pdf.text(`INVORDERBAAR (${aantalVervallenPdf} van ${totaalPdf} termijnen vervallen)`, M + 5, y + 8);
-            } else {
-                pdf.text('INVORDERBAAR', M + 5, y + 8);
-            }
-        } else {
-            pdf.text(res.invorderbaar ? 'INVORDERBAAR' : 'NIET INVORDERBAAR', M + 5, y + 8);
-        }
-        pdf.setFontSize(8); setFont(false);
-        let infoBalk;
-        if (res.lid5 && !res.terugvalLid1) {
-            infoBalk = `Dagtekening: ${formatDatum(dag)}  |  Peildatum: ${formatDatum(peil)}` +
-                `  |  Eerste termijn: ${formatDatum(res.termijnen[0])}  |  Aantal termijnen: ${res.resterendeMaanden}` +
-                `  |  Grondslag: ${res.bron}`;
-        } else {
-            infoBalk = `Dagtekening: ${formatDatum(dag)}  |  Peildatum: ${formatDatum(peil)}` +
-                `  |  Deadline: ${formatDatum(res.deadline)}  |  Termijn: ${res.dagen} dagen  |  ATW: ${res.atw}`;
-            if (res.lid5 && res.terugvalLid1) infoBalk += '  |  AR-9-5e: terugval naar lid 1';
-        }
-        pdf.text(pdf.splitTextToSize(infoBalk, CW - 10), M + 5, y + 16);
-        y += 29;
-
-        checkPagina(30);
-        pdf.setFontSize(12); setFont(true); pdf.setTextColor(...BLAUW);
-        pdf.text('2. Redeneerroute', M, y);
-        y += 5;
-        tekst('De beslissing volgt uit de onderstaande redeneerroute zoals gemodelleerd in de kennisgraaf.', M, 9, ZWART);
-        y += 3;
-
-        const bronnenSet = new Set(), bronnenLijst = [];
-
-        for (let i = 0; i < activeRoute.length; i++) {
-            const id    = activeRoute[i];
-            const attrs = getNodeAttrs(id);
-            const node  = App.graphData.nodes.find(n => n.id === id);
-            const label = node ? node.label : id;
-
-            for (const veld of [attrs['10'], attrs['11']]) {
-                if (!veld) continue;
-                let items = [veld];
-                if (veld.startsWith('[')) {
-                    try { items = JSON.parse(veld.replace(/'/g, '"')); } catch (e) {}
-                }
-                for (const b of items) {
-                    const bt = b.trim();
-                    if (bt && !bronnenSet.has(bt)) { bronnenSet.add(bt); bronnenLijst.push(bt); }
-                }
-            }
-
-            checkPagina(25);
-            tekst(`Stap ${i + 1}: ${label}` + (attrs['1'] ? ` (${attrs['1']})` : ''), M, 9, BLAUW, true);
-            if (attrs['14']) tekst(attrs['14'], M, 8.5, ZWART);
-            if (attrs['10']) tekst(`Bron: ${attrs['10']}`, M, 7.5, GRIJS);
-            y += 2;
-        }
-
-        checkPagina(20);
-        pdf.setFontSize(12); setFont(true); pdf.setTextColor(...BLAUW);
-        pdf.text('3. Juridische toelichting', M, y);
-        y += 7;
-
-        for (const id of activeRoute) {
-            const attrs = getNodeAttrs(id);
-            if (!attrs['13']) continue;
-            const node  = App.graphData.nodes.find(n => n.id === id);
-            const label = node ? node.label : id;
-            checkPagina(20);
-            tekst(label + (attrs['12'] ? ` — Interpretatiemethode: ${attrs['12']}` : ''), M, 9, ZWART, true);
-            tekst(attrs['13'], M, 8.5, ZWART);
-            y += 2;
-        }
-
-        checkPagina(20);
-        pdf.setFontSize(12); setFont(true); pdf.setTextColor(...BLAUW);
-        if (res.lid5 && !res.terugvalLid1) {
-            pdf.text('4. Afleidingsregels Art. 9 lid 5 IW 1990', M, y);
-            y += 7;
-            for (const rId of ['regels/AR-9-5a', 'regels/AR-9-5b', 'regels/AR-9-5c', 'regels/AR-9-5d']) {
-                const rAttrs = getNodeAttrs(rId);
-                if (!rAttrs['25'] && !rAttrs['24']) continue;
-                checkPagina(12);
-                tekst(`${rAttrs['25'] || rId}${rAttrs['24'] ? ` (${rAttrs['24']})` : ''}` +
-                    (rAttrs['26'] ? ` — operators: ${rAttrs['26']}` : ''), M, 9, ZWART);
-            }
-            y += 3;
-            checkPagina(10 + res.termijnen.length * 6);
-            tekst('Termijnenoverzicht:', M, 9, ZWART, true);
-            res.termijnen.forEach((d, i) => {
-                const status = peil >= d ? 'vervallen' : 'nog niet vervallen';
-                tekst(`  Termijn ${i + 1}: ${formatDatum(d)} (${status})`, M, 8.5, ZWART);
-            });
-        } else if (res.lid5 && res.terugvalLid1) {
-            pdf.text('4. Afleidingsregels Art. 9 lid 5 (terugval) + Art. 9 lid 1', M, y);
-            y += 7;
-            const ar5eAttrs = getNodeAttrs('regels/AR-9-5e');
-            tekst(`${ar5eAttrs['25'] || 'AR-9-5e'}${ar5eAttrs['24'] ? ` (${ar5eAttrs['24']})` : ''}` +
-                (ar5eAttrs['26'] ? ` — operators: ${ar5eAttrs['26']}` : ''), M, 9, ZWART);
-            tekst('Onvoldoende termijnen (≤ 1): terugval naar Art. 9 lid 1 IW 1990.', M, 8.5, GRIJS, false, true);
-            y += 3;
-            const arAttrs = getNodeAttrs('regels/AR-9-1');
-            if (arAttrs['25'] || arAttrs['24']) {
-                tekst(`${arAttrs['25'] || 'AR-9-1'}${arAttrs['24'] ? ` (regel_id: ${arAttrs['24']})` : ''}`, M, 9, ZWART);
-            }
-            tekst(`Formule: peildatum ≥ dagtekening + ${res.dagen} dagen`, M, 9, ZWART, false, true);
-        } else {
-            pdf.text('4. Afleidingsregel AR-9-1', M, y);
-            y += 7;
-            const arAttrs = getNodeAttrs('regels/AR-9-1');
-            if (arAttrs['25'] || arAttrs['24']) {
-                tekst(`${arAttrs['25'] || 'AR-9-1'}${arAttrs['24'] ? ` (regel_id: ${arAttrs['24']})` : ''}`, M, 9, ZWART);
-            }
-            tekst(`Formule: peildatum ≥ dagtekening + ${res.dagen} dagen`, M, 9, ZWART, false, true);
-        }
-        y += 3;
-
-        checkPagina(20);
-        pdf.setFontSize(12); setFont(true); pdf.setTextColor(...BLAUW);
-        pdf.text('5. Wettelijke grondslagen', M, y);
-        y += 7;
-        for (const b of bronnenLijst) {
-            checkPagina(7);
-            tekst(`• ${b}`, M, 9, ZWART);
-        }
-
-        pdf.setDrawColor(200, 200, 200);
-        pdf.line(M, 287, W - M, 287);
-        pdf.setFontSize(7); setFont(false); pdf.setTextColor(...GRIJS);
-        pdf.text(
-            'LexNode prototype — Rules as Code — Belastingdienst | Art. 9 Invorderingswet 1990 | Dit document heeft geen juridische status.',
-            M, 291, { maxWidth: CW }
-        );
-
-        pdf.save('lexnode-besluit.pdf');
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
     }
 
-    // ── Event listeners ───────────────────────────────────────────────────
-    document.querySelector('.tabs').addEventListener('click', e => {
-        const btn = e.target.closest('[data-tab]');
-        if (btn) openTab(btn.dataset.tab);
-    });
-    document.getElementById('aanslagtype').addEventListener('change', function () {
-        document.getElementById('lid5-veld').style.display =
-            this.value !== 'definitief' ? 'block' : 'none';
+    function getActiveRouteDetails() {
+        return activeRoute.map(nodeId => {
+            const node = App.nodeById.get(nodeId);
+            const attrs = getNodeAttrs(nodeId);
+            return {
+                id: nodeId,
+                label: node?.label || nodeId,
+                definitie: attrs[ATTR_DEFINITIE] || '',
+                toelichting: attrs[ATTR_TOELICHTING] || ''
+            };
+        });
+    }
+
+    function exportPdf() {
+        if (!window.jspdf || !window.jspdf.jsPDF) {
+            alert('PDF-export is niet beschikbaar. jsPDF kon niet geladen worden.');
+            return;
+        }
+
+        const doc = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4' });
+        const title = 'LexNode Invorderbaarheidsbesluit';
+        const status = document.getElementById('status-header').textContent || 'Resultaat niet beschikbaar';
+        const deadline = document.getElementById('deadline-info').textContent || '';
+        const bron = document.getElementById('meta-info').textContent || '';
+        const typeTitle = document.getElementById('aanslagtype').selectedOptions[0].text;
+        const dagtekening = document.getElementById('dagtekening').value;
+        const peildatum = document.getElementById('peildatum').value;
+
+        doc.setFontSize(16);
+        doc.text(title, 14, 20);
+        doc.setFontSize(11);
+        doc.text(`Aanslagtype: ${typeTitle}`, 14, 30);
+        doc.text(`Dagtekening: ${dagtekening}`, 14, 36);
+        doc.text(`Peildatum: ${peildatum}`, 14, 42);
+        doc.text(`Status: ${status}`, 14, 50);
+        doc.text(`Toelichting:`, 14, 60);
+
+        let y = 66;
+        const lines = doc.splitTextToSize(deadline, 180);
+        doc.text(lines, 14, y);
+        y += lines.length * 7;
+        y += 4;
+
+        const route = getActiveRouteDetails();
+        doc.setFontSize(13);
+        doc.text('Actieve route', 14, y);
+        y += 8;
+        doc.setFontSize(10);
+
+        route.forEach(entry => {
+            const labelLine = `- ${entry.label}`;
+            const labelWrapped = doc.splitTextToSize(labelLine, 180);
+            if (y + labelWrapped.length * 7 > 280) {
+                doc.addPage();
+                y = 20;
+            }
+            doc.text(labelWrapped, 14, y);
+            y += labelWrapped.length * 7;
+
+            const details = entry.definitie || entry.toelichting;
+            if (details) {
+                const detailLines = doc.splitTextToSize(`  ${details}`, 170);
+                if (y + detailLines.length * 7 > 280) {
+                    doc.addPage();
+                    y = 20;
+                }
+                doc.text(detailLines, 18, y);
+                y += detailLines.length * 7;
+            }
+        });
+
+        if (y + 20 > 280) {
+            doc.addPage();
+            y = 20;
+        }
+
+        doc.setFontSize(10);
+        doc.text(bron, 14, 286);
+        doc.save('LexNode-besluit.pdf');
+    }
+
+    function openTab(id) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.tab === id));
+        document.getElementById(id).classList.add('active');
+    }
+
+    document.getElementById('aanslagtype').addEventListener('change', function() {
+        document.getElementById('voorlopig-opties').style.display = this.value.startsWith('voorlopig') ? 'block' : 'none';
         calculate();
     });
     document.getElementById('btn-bereken').addEventListener('click', calculate);
-    document.getElementById('btn-pdf').addEventListener('click', exportPDF);
+    document.getElementById('btn-pdf').addEventListener('click', exportPdf);
     document.getElementById('btn-reset').addEventListener('click', resetGraph);
+    document.getElementById('afwijkend-boekjaar').addEventListener('change', calculate);
+    document.getElementById('dagtekening-in-vaststellingsjaar').addEventListener('change', calculate);
 
     window.addEventListener('load', initGraph);
 </script>

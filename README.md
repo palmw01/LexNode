@@ -22,6 +22,7 @@ Gegeven een **aanslagtype**, **dagtekening** en **peildatum**, berekent LexNode 
 De kennisgraafvisualisatie markeert automatisch de actieve redeneerroute. Het resultaat is downloadbaar als PDF-besluit met volledige juridische onderbouwing (definities, toelichtingen, wetsverwijzingen en afleidingsregels). De PDF wordt volledig in de browser gegenereerd via jsPDF — er is geen server voor nodig.
 
 De datumvelden (dagtekening en peildatum) worden bij het laden automatisch ingesteld op de datum van vandaag. De interface is responsief: op mobiel scrollt de sidebar verticaal en staat de graaf eronder; tooltips zijn uitgeschakeld op touchapparaten. Voor ontbrekende wetsartikelen (lid 2 t/m 4, lid 6 t/m 9) toont de UI informatieve notitieboxen met een verwijzing naar de GitHub-repository.
+- De frontend ondersteunt een werkende PDF-exportknop via jsPDF; het onderbouwde besluit wordt direct in de browser gedownload.
 
 Rechtsbovenin de header staat graafmetadata (wetsartikel, aantal nodes en relaties, bijgewerkt-datum) uitgelezen uit de GEXF. Op mobiel is dit verborgen achter een ⓘ-knop die een popup opent. Op de graaf staan drie navigatieknoppen (**+**, **−**, **⤢**) voor in/uitzoomen en alles tonen — alleen zichtbaar op desktop.
 
