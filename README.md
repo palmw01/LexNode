@@ -68,7 +68,7 @@ De frontend laadt **vis-network** en **jsPDF** via CDN — geen installatie vere
 | `app.py` | HTTP-server (poort 8080), exposeert de REST-endpoints (alleen lokaal) |
 | `index.html` | Single-page frontend — berekening, graafvisualisatie en PDF-export volledig client-side |
 | `validator.py` | Controleert integriteit van de GEXF (kapotte referenties, ontbrekende regels) |
-| `test_dynamisch.py` | Unittests die de termijn dynamisch uit de graaf ophalen |
+| `tests/test_dynamisch.py` | Unittests die de termijn dynamisch uit de graaf ophalen |
 | `requirements.txt` | Python-afhankelijkheden |
 
 ## API-endpoints (lokale server)
@@ -91,7 +91,7 @@ Datumformaat voor POST-requests: `YYYY-MM-DD`.
 source .venv/bin/activate.fish
 
 # Unittests
-python test_dynamisch.py
+python tests/test_dynamisch.py
 
 # Graaf-integriteitscheck
 python validator.py

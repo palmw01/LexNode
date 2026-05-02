@@ -50,12 +50,12 @@ echo ""
 
 run_test_suite \
     "Backend Senior Tests" \
-    "python test_senior_backend.py -q" \
+    "python tests/test_senior_backend.py -q" \
     23
 
 run_test_suite \
     "Integration Tests (Backend ↔ Frontend)" \
-    "python test_integration.py -q" \
+    "python tests/test_integration.py -q" \
     16
 
 # ───────────────────────────────────────────────────────────────
@@ -68,7 +68,7 @@ echo ""
 
 run_test_suite \
     "UI Senior Tests (Node.js)" \
-    "node test_ui_senior.js" \
+    "node tests/test_ui_senior.js" \
     15
 
 # ───────────────────────────────────────────────────────────────

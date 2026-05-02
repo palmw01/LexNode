@@ -247,22 +247,22 @@ All test cases passed. System behavior aligns with:
 ### Backend Tests
 ```bash
 source .venv/bin/activate.fish
-python test_senior_backend.py -v      # 23 tests
-python test_integration.py -v         # 16 tests
+python tests/test_senior_backend.py -v      # 23 tests
+python tests/test_integration.py -v         # 16 tests
 ```
 
 ### Frontend Tests
 ```bash
-node test_ui_senior.js                # 15 tests
+node tests/test_ui_senior.js                # 15 tests
 # OR open in browser:
-firefox test_ui_senior.html           # 15 tests visual
+firefox tests/test_ui_senior.html           # 15 tests visual
 ```
 
 ### All Together
 ```bash
-python test_senior_backend.py -q && \
-python test_integration.py -q && \
-node test_ui_senior.js && \
+python tests/test_senior_backend.py -q && \
+python tests/test_integration.py -q && \
+node tests/test_ui_senior.js && \
 echo "✅ All 54 tests passed!"
 ```
 

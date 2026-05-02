@@ -260,21 +260,21 @@ cd /home/willardp/Documenten/Projecten/LexNode
 source .venv/bin/activate.fish
 
 # Run all tests
-python test_senior_backend.py -q      # 23 tests
-python test_integration.py -q          # 16 tests
-node test_ui_senior.js                 # 15 tests
+python tests/test_senior_backend.py -q      # 23 tests
+python tests/test_integration.py -q          # 16 tests
+node tests/test_ui_senior.js                 # 15 tests
 ```
 
 ### Visual Test (Browser)
 ```bash
-firefox test_ui_senior.html            # Opens HTML test runner
+firefox tests/test_ui_senior.html            # Opens HTML test runner
 ```
 
 ### Individual Suites
 ```bash
-python test_senior_backend.py -v       # Verbose output
-python test_integration.py -v          # Verbose output
-node test_ui_senior.js                 # Node.js runner
+python tests/test_senior_backend.py -v       # Verbose output
+python tests/test_integration.py -v          # Verbose output
+node tests/test_ui_senior.js                 # Node.js runner
 ```
 
 ---

@@ -1,10 +1,10 @@
 {
     "chat.tools.terminal.autoApprove": {
-        "/^source \\.venv/bin/activate\\.fish && echo \"━━━━━━━ BACKEND TESTS ━━━━━━━\" && python test_senior_backend\\.py -q && python test_integration\\.py -q && echo \"\" && echo \"━━━━━━━ UI TESTS \\(Node\\.js\\) ━━━━━━━\" && node test_ui_senior\\.js 2>&1 \\| grep -E \"\\(✓\\|✗\\|Results\\|tests geslaagd\\|Alle testen\\)\"$/": {
+        "/^source \.venv/bin/activate\.fish && echo \"━━━━━━━ BACKEND TESTS ━━━━━━━\" && python tests/test_senior_backend\.py -q && python tests/test_integration\.py -q && echo \"\" && echo \"━━━━━━━ UI TESTS \(Node\.js\) ━━━━━━━\" && node tests/test_ui_senior\.js 2>&1 \| grep -E \"\(✓\|✗\|Results\|tests geslaagd\|Alle testen\)\"$/": {
             "approve": true,
             "matchCommandLine": true
         },
-        "/^/home/willardp/Documenten/Projecten/LexNode/\\.venv/bin/python -m pytest test_dynamisch\\.py -v 2>&1 \\| head -50$/": {
+        "/^/home/willardp/Documenten/Projecten/LexNode/\\.venv/bin/python -m pytest tests/test_dynamisch.py -v 2>&1 \\| head -50$/": {
             "approve": true,
             "matchCommandLine": true
         }

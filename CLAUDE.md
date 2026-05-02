@@ -22,7 +22,7 @@ pip install -r requirements.txt
 python app.py
 
 # Tests uitvoeren
-python test_dynamisch.py
+python tests/test_dynamisch.py
 
 # Graaf valideren (ontbrekende referenties, ontbrekende afleidingsregels)
 python validator.py
