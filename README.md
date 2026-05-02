@@ -45,6 +45,15 @@ pip install -r requirements.txt
 # 4. Server starten (poort 8080)
 python app.py
 # Open http://localhost:8080
+
+# 5. Tests uitvoeren (optioneel)
+python tests/test_dynamisch.py
+
+# 6. Alle tests uitvoeren (54 tests)
+./run_all_tests.sh
+
+# 7. Graaf valideren
+python validator.py
 ```
 
 Voer een dagtekening en peildatum in op het tabblad "Berekening". Klik op **Exporteer PDF** voor een onderbouwd besluitdocument.
@@ -57,7 +66,7 @@ Voer een dagtekening en peildatum in op het tabblad "Berekening". Klik op **Expo
 
 Alle overige imports (`http.server`, `xml.etree`, `re`, `datetime`) zijn onderdeel van de Python standaardbibliotheek.
 
-De frontend laadt **vis-network** en **jsPDF** via CDN — geen installatie vereist.
+De frontend laadt **vis-network** en **jsPDF 2.5.1** via CDN — geen installatie vereist.
 
 ## Projectstructuur
 
@@ -68,7 +77,16 @@ De frontend laadt **vis-network** en **jsPDF** via CDN — geen installatie vere
 | `app.py` | HTTP-server (poort 8080), exposeert de REST-endpoints (alleen lokaal) |
 | `index.html` | Single-page frontend — berekening, graafvisualisatie en PDF-export volledig client-side |
 | `validator.py` | Controleert integriteit van de GEXF (kapotte referenties, ontbrekende regels) |
+| `run_all_tests.sh` | Shell-script om alle test suites uit te voeren (54 tests) |
+| `TEST_REPORT.md` | Gedetailleerde testresultaten en analyse |
+| `TESTING_SUMMARY.md` | Overzicht van de test automation suite |
 | `tests/test_dynamisch.py` | Unittests die de termijn dynamisch uit de graaf ophalen |
+| `tests/test_senior_backend.py` | Uitgebreide backend-tests (23 tests) |
+| `tests/test_integration.py` | Integratietests tussen backend en frontend (16 tests) |
+| `tests/test_ui_senior.js` | Frontend-tests in Node.js (15 tests) |
+| `tests/test_comprehensive.py` | Omvattende backend-validatie |
+| `tests/test_edge_cases.py` | Edge cases en grensgevallen |
+| `tests/test_leidraad.py` | Tests voor Leidraad Invordering 2008 correcties |
 | `requirements.txt` | Python-afhankelijkheden |
 
 ## API-endpoints (lokale server)
@@ -86,41 +104,90 @@ Datumformaat voor POST-requests: `YYYY-MM-DD`.
 
 ## Tests en validatie
 
+Het project heeft een uitgebreide test suite met 54 test cases die alle lagen valideren: backend (Python), frontend (JavaScript) en integratie.
+
 ```bash
 # Activeer eerst de venv (zie Installatie)
 source .venv/bin/activate.fish
 
-# Unittests
-python tests/test_dynamisch.py
+# Alle tests uitvoeren (54 tests)
+./run_all_tests.sh
+
+# Individuele test suites
+python tests/test_senior_backend.py  # Backend-tests (23 tests)
+python tests/test_integration.py     # Integratie-tests (16 tests)
+node tests/test_ui_senior.js         # Frontend-tests (15 tests)
+
+# Specifieke tests
+python tests/test_dynamisch.py       # Dynamische termijnextractie
+python tests/test_comprehensive.py   # Omvattende backend-validatie
+python tests/test_edge_cases.py      # Edge cases
+python tests/test_leidraad.py        # Leidraad-correcties
 
 # Graaf-integriteitscheck
 python validator.py
 ```
 
+Zie `TEST_REPORT.md` voor gedetailleerde resultaten en `TESTING_SUMMARY.md` voor een overzicht van de teststrategie.
+
 ## Architectuur
 
-De applicatie heeft drie lagen:
+De applicatie bestaat uit drie lagen:
 
-**Kennisgraaf (`graph.gexf`)** — GEXF-bestand gegenereerd door NetworkX. Bevat 30 nodes met juridische concepten, ingedeeld in vier namespaces: `begrippen/`, `regels/`, `annotaties/` en `wetteksten/`. Drie actieve redeneerroutes:
+**1. Kennisgraaf (`graph.gexf`)**  
+GEXF-bestand gegenereerd door NetworkX met juridische concepten als nodes en relaties als edges. Elke node heeft 28 vaste attributen (id 0–27). Node-IDs zijn hiërarchisch genaamd met een namespace-prefix: `begrippen/`, `regels/`, `annotaties/` of `wetteksten/`. Belangrijke attribuut-ID's:
 
-```
-Lid 1:       begrippen/dagtekening-aanslagbiljet → begrippen/zes-weken
-             → begrippen/zes-weken-na-dagtekening-aanslagbiljet → regels/AR-9-1 → begrippen/invorderbaarheid
+| ID | Titel                | Gebruik |
+|----|----------------------|---------------------------------------------------------------|
+| 0  | node_type            | Type node: `annotatie`, `begrip`, `regel`, `wettekst` |
+| 1  | jas_klasse           | ATW/JAS-klasse — PDF redeneerroute |
+| 2  | color                | Hex-kleur voor visualisatie |
+| 8  | begripsnaam          | Naam begrip — frontend node-details |
+| 9  | markering            | Wettekst-citaat — PDF sectie "Wettekst" |
+| 10 | bron                 | Primair wetsartikel |
+| 11 | bronnen              | Aanvullende bronnen als lijst — PDF grondslagen |
+| 12 | interpretatiemethode | Interpretatiemethode — PDF toelichting |
+| 13 | toelichting_klasse   | Juridische toelichting / ATW-status |
+| 14 | definitie            | Juridische definitie (bevat termijntekst voor regex-parsing) |
+| 15 | soort                | Soort begrip of regel |
+| 16 | herkomst             | Herkomst van de regel |
+| 22 | leidt_tot            | Lijst van `[[namespace/node-id]]`-refs — graaf-navigatie |
+| 23 | afleidingsregels     | Lijst van regelrefs |
+| 24 | regel_id             | ID van de afleidingsregel — PDF sectie "Afleidingsregel" |
+| 25 | naam                 | Naam van de regel — PDF sectie "Afleidingsregel" |
+| 26 | operators            | Logische operators — PDF sectie "Afleidingsregel" |
+| 27 | bronreferentie       | Externe bronverwijzing — node-details |
 
-Lid 5:       begrippen/dagtekening-aanslagbiljet → begrippen/dagtekening-in-vaststellingsjaar
-             → begrippen/voorlopige-aanslag → regels/AR-9-5a → begrippen/invorderbaarheid-in-gelijke-termijnen
-             → regels/AR-9-5b → begrippen/termijnenberekening-resterende-maanden
-             → regels/AR-9-5c → begrippen/vervaldag-eerste-termijn → regels/AR-9-5d → begrippen/vervaldag-volgende-termijnen
+**2. Backend (`app.py` + `lexnode_engine.py`)** — alleen lokaal  
+Eenvoudige Python `http.server` zonder framework. `LexNodeEngine` laadt de GEXF eenmalig bij startup en exposeert:
 
-Lid 5 + terugval (AR-9-5e):
-             begrippen/dagtekening-aanslagbiljet → begrippen/dagtekening-in-vaststellingsjaar
-             → begrippen/termijnenberekening-resterende-maanden → regels/AR-9-5e
-             → begrippen/terugvalregel-lid-1 → [lid-1-route]
-```
+- `GET /graph-data` → alle nodes + edges als JSON voor vis-network
+- `GET /node-details/{id}` → ruwe attribuut-map van één node
+- `POST /calculate` → `{dagtekening, peildatum}` → invorderbaarheidsresultaat
+- `POST /export-pdf` → onderbouwde PDF met besluit en alle relevante kennisgraafdata (vereist `reportlab`)
 
-**Backend (`app.py` + `lexnode_engine.py`)** — `http.server` zonder framework. `LexNodeEngine` laadt de GEXF eenmalig bij startup. De termijn (zes weken = 42 dagen) wordt via regex uitgelezen uit de `definitie`-tekst van node `begrippen/zes-weken`; fallback is 42 dagen. `get_route_nodes()` levert alle attributen van de 5 actieve route-nodes voor de PDF-export.
+De termijn wordt dynamisch via regex uitgelezen uit attribuut 14 van node `begrippen/zes-weken`. Fallback is 42 dagen als de regex faalt. `get_route_nodes()` levert alle attributen van de 5 actieve route-nodes voor de PDF-sectie "Redeneerroute".
 
-**Frontend (`index.html`)** — Geen build-stap. Gebruikt **vis-network** (CDN) voor graafvisualisatie en **jsPDF** (CDN) voor PDF-generatie in de browser. Twee tabbladen: "Berekening" en "Node Details". De gebruiker kiest het aanslagtype via een dropdown; na de berekening markeert de graafvisualisatie de relevante route. Datumvelden worden bij het laden ingesteld op de datum van vandaag. Rechtsbovenin de header staat graafmetadata (wetsartikel, nodes, relaties, bijgewerkt-datum) uitgelezen uit de GEXF; op mobiel verborgen achter een ⓘ-knop. Op de graaf staan navigatieknoppen (+/−/⤢) voor in/uitzoomen en fit, alleen op desktop. De lay-out is responsief: op mobiel scrollt de sidebar verticaal en staat de graaf eronder; tooltips zijn uitgeschakeld op touchapparaten. Alle logica — berekening, GEXF-parsing en PDF-export — draait volledig client-side, zodat de app op GitHub Pages werkt zonder backend.
+**De frontend gebruikt deze endpoints niet op GitHub Pages** — alle logica draait client-side.
+
+**3. Frontend (`index.html`)**  
+Single-page app zonder build-stap. Gebruikt **vis-network** (CDN) voor graafvisualisatie en **jsPDF 2.5.1** (CDN) voor PDF-generatie in de browser. Twee tabbladen: "Berekening" en "Node Details".
+
+De gebruiker kiest het aanslagtype via een dropdown. Na een berekening filtert de frontend de graaf naar één van drie dynamische routes:
+
+- **LID1_ROUTE** — lid-1-pad (5 nodes)
+- **LID5_ROUTE_NORMAAL** — lid-5-pad met maandelijkse termijnen (11 nodes)
+- **LID5_ROUTE_TERUGVAL** — lid-5-pad met AR-9-5e terugval naar lid 1 (9 nodes)
+
+Berekeningsfuncties: `checkInvorderbaarheid()` (lid 1) en `checkInvorderbaarheidLid5()` (lid 5). Lid-5-logica: AR-9-5b berekent `12 - maand(dagtekening)` resterende termijnen; AR-9-5e activeert terugval als ≤ 1; AR-9-5c/d genereren de vervaldatums iteratief conform **Leidraad Invordering 2008 art. 9.5**: als de dagtekening de laatste dag van de maand is, valt elke termijn op de laatste dag van de doelmaand; anders wordt hetzelfde dagnummer gebruikt, afgeknepen op de werkelijke maandlengte.
+
+Als het lid-5-resultaat invorderbaar is maar nog niet alle termijnen vervallen zijn, toont de UI `INVORDERBAAR (X van Y termijnen vervallen)`. Hetzelfde geldt voor de PDF-export.
+
+Bij het laden worden de datumvelden ingesteld op vandaag. Mobiele lay-out: sidebar scrollt verticaal, graaf eronder. Tooltips uitgeschakeld op touchapparaten. Voor ontbrekende wetsartikelen (lid 2–4, lid 6–9) toont de UI notitieboxen met verwijzing naar de repository.
+
+Graafinfo en navigatieknoppen: metadata (wetsartikel, aantal nodes/edges, bijgewerkt-datum) rechtsboven op desktop, verborgen achter ⓘ-knop op mobiel. Navigatieknoppen (+/−/⤢) voor zoom/fit, alleen op desktop.
+
+Alle logica draait volledig client-side: GEXF wordt gefetcht en geparseerd, berekening en PDF-export gebruiken alleen de geparseerde XML. Geen backend nodig; werkt op GitHub Pages.
 
 ## Juridische context
 
