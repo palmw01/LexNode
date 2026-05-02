@@ -149,6 +149,16 @@
             padding-right: 32px;
             cursor: pointer;
         }
+        input[type="number"] {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border);
+            font-size: 1rem;
+            background: var(--wit);
+            appearance: none;
+            text-align: left;
+        }
         input[type="date"] { text-align: center; }
         .field { margin-bottom: 15px; }
 
@@ -305,15 +315,20 @@
                 <label for="peildatum">Peildatum</label>
                 <input type="date" id="peildatum" value="2026-12-01">
             </div>
+            <div id="totaalbedrag-wrapper" class="field" style="display:none;">
+                <label for="totaalbedrag">Totaalbedrag belastingaanslag (€)</label>
+                <input type="number" id="totaalbedrag" min="0" step="1" placeholder="Bijv. 1234">
+            </div>
             <button type="button" class="btn btn-primary" id="btn-bereken">Bereken</button>
 
             <div id="result-panel" role="region" aria-live="polite" aria-label="Berekeningsresultaat">
                 <div id="status-header"></div>
                 <div id="deadline-info"></div>
+                <div id="termijnbedrag-info"></div>
                 <div id="meta-info"></div>
                 <div id="termijnen-lijst" style="display:none">
                     <table id="termijnen-tabel">
-                        <thead><tr><th>#</th><th>Vervaldatum</th><th>Status op peildatum</th></tr></thead>
+                        <thead><tr><th>#</th><th>Vervaldatum</th><th>Bedrag</th><th>Status op peildatum</th></tr></thead>
                         <tbody></tbody>
                     </table>
                 </div>
@@ -400,6 +415,9 @@
         'begrippen/voorlopige-aanslag',
         'regels/AR-9-5a',
         'begrippen/invorderbaarheid-in-gelijke-termijnen',
+        'begrippen/totaalbedrag-belastingaanslag',
+        'regels/AR-9-5f',
+        'begrippen/termijnbedrag',
         'regels/AR-9-5b',
         'begrippen/termijnenberekening-resterende-maanden',
         'regels/AR-9-5c',
@@ -426,6 +444,9 @@
         'begrippen/voorlopige-aanslag',
         'regels/AR-9-5a',
         'begrippen/invorderbaarheid-in-gelijke-termijnen',
+        'begrippen/totaalbedrag-belastingaanslag',
+        'regels/AR-9-5f',
+        'begrippen/termijnbedrag',
         'regels/AR-9-5b',
         'begrippen/termijnenberekening-resterende-maanden',
         'regels/AR-9-5c',
@@ -443,6 +464,9 @@
         'begrippen/voorlopige-aanslag',
         'regels/AR-9-5a',
         'begrippen/invorderbaarheid-in-gelijke-termijnen',
+        'begrippen/totaalbedrag-belastingaanslag',
+        'regels/AR-9-5f',
+        'begrippen/termijnbedrag',
         'regels/AR-9-5b',
         'begrippen/termijnenberekening-resterende-maanden',
         'regels/AR-9-5c',
@@ -556,6 +580,29 @@
         return 42;
     }
 
+    function getTermijnBedragen(totaalBedrag, aantalTermijnen) {
+        if (!Number.isInteger(totaalBedrag) || totaalBedrag < 0 || aantalTermijnen <= 0) {
+            return null;
+        }
+
+        const basis = Math.ceil(totaalBedrag / aantalTermijnen);
+        const bedragen = Array(aantalTermijnen).fill(basis);
+        let overschot = basis * aantalTermijnen - totaalBedrag;
+        let idx = aantalTermijnen - 1;
+
+        while (overschot > 0 && idx >= 0) {
+            bedragen[idx] -= 1;
+            overschot -= 1;
+            idx -= 1;
+        }
+
+        return bedragen;
+    }
+
+    function formatCurrency(value) {
+        return Number(value).toLocaleString('nl-NL', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+    }
+
     // ── Invorderbaarheidsberekening (uitgebreid met Leidraad) ──────────────
     function checkInvorderbaarheid(dagtekening, peildatum, options = {}) {
         const attrs       = getNodeAttrs('begrippen/zes-weken');
@@ -595,6 +642,10 @@
 
     // ── Lid-5-berekening (AR-9-5a t/m AR-9-5e) ───────────────────────────
     function checkInvorderbaarheidLid5(dagtekening, peildatum, options = {}) {
+        const totaalBedrag = (options.totaalBedrag !== undefined && options.totaalBedrag !== null)
+            ? Number(options.totaalBedrag)
+            : null;
+
         const maand = dagtekening.getMonth() + 1; // 1..12
         const resterendeMaanden = 12 - maand; // AR-9-5b: na dagtekeningmaand
 
@@ -637,8 +688,8 @@
         const bronNode = getNodeAttrs('begrippen/invorderbaarheid-in-gelijke-termijnen');
         const bron = (bronNode['10'] || bronNode['11'] || 'Art. 9 lid 5 IW 1990') + meta_bron;
         if (!meta_bron) activeRoute = LID5_ROUTE_NORMAAL;
-        
-        return {
+
+        const result = {
             invorderbaar: peildatum >= termijnen[0],
             termijnen,
             resterendeMaanden,
@@ -646,6 +697,13 @@
             lid5: true,
             terugvalLid1: false,
         };
+
+        if (Number.isInteger(totaalBedrag) && totaalBedrag >= 0) {
+            result.totaalBedrag = totaalBedrag;
+            result.termijnBedragen = getTermijnBedragen(totaalBedrag, termijnen.length);
+        }
+
+        return result;
     }
 
     // ── Graph initialisatie (ongewijzigd) ───────────────────────────────
@@ -736,19 +794,33 @@
         const isVoorlopig = aanslagtype.startsWith('voorlopig');
         const afwijkendBoekjaar = document.getElementById('afwijkend-boekjaar').checked;
         const vaststellingsjaar = document.getElementById('dagtekening-in-vaststellingsjaar').checked;
+        const totaalBedragRaw = document.getElementById('totaalbedrag').value.trim();
+        const totaalBedrag = isVoorlopig && totaalBedragRaw !== '' ? Number(totaalBedragRaw) : null;
 
         const panel = document.getElementById('result-panel');
         const termijnenLijst = document.getElementById('termijnen-lijst');
+        const termijnBedragInfo = document.getElementById('termijnbedrag-info');
 
         if (isVoorlopig && !vaststellingsjaar) {
             panel.style.display = 'block'; panel.className = '';
             document.getElementById('status-header').textContent = 'Voorwaarde niet vervuld';
             document.getElementById('deadline-info').textContent = 'Dagtekening buiten vaststellingsjaar: raadpleeg Art. 9 lid 7 IW 1990.';
             termijnenLijst.style.display = 'none';
+            termijnBedragInfo.textContent = '';
             return;
         }
 
-        const opts = { isVoorlopig, afwijkendBoekjaar };
+        if (isVoorlopig && totaalBedrag !== null && (!Number.isInteger(totaalBedrag) || totaalBedrag < 0)) {
+            document.getElementById('status-header').textContent = 'Ongeldig totaalbedrag';
+            document.getElementById('deadline-info').textContent = 'Voer een heel eurobedrag in voor het totaalbedrag.';
+            termijnenLijst.style.display = 'none';
+            termijnBedragInfo.textContent = '';
+            panel.style.display = 'block';
+            panel.className = 'niet-invorderbaar';
+            return;
+        }
+
+        const opts = { isVoorlopig, afwijkendBoekjaar, totaalBedrag };
         const res = (isVoorlopig) ? checkInvorderbaarheidLid5(dag, peil, opts) : checkInvorderbaarheid(dag, peil, opts);
 
         panel.style.display = 'block';
@@ -767,17 +839,32 @@
                 const td2 = document.createElement('td');
                 td2.textContent = formatDatum(d);
                 const td3 = document.createElement('td');
-                td3.textContent = peil >= d ? 'Vervallen' : 'Open';
+                td3.textContent = res.termijnBedragen ? '€' + formatCurrency(res.termijnBedragen[i]) : '–';
+                const td4 = document.createElement('td');
+                td4.textContent = peil >= d ? 'Vervallen' : 'Open';
                 tr.appendChild(td1);
                 tr.appendChild(td2);
                 tr.appendChild(td3);
+                tr.appendChild(td4);
                 tbody.appendChild(tr);
             });
             termijnenLijst.style.display = 'block';
         } else {
             document.getElementById('deadline-info').textContent = 'Vervaldatum: ' + formatDatum(res.deadline);
             termijnenLijst.style.display = 'none';
+            termijnBedragInfo.textContent = '';
         }
+
+        if (res.termijnBedragen) {
+            const gelijk = res.termijnBedragen.every(v => v === res.termijnBedragen[0]);
+            const termijnSummary = gelijk
+                ? `Elke termijn: €${formatCurrency(res.termijnBedragen[0])}`
+                : `Termijnen (hoog beginnen): eerste €${formatCurrency(res.termijnBedragen[0])}, laatste €${formatCurrency(res.termijnBedragen[res.termijnBedragen.length - 1])}`;
+            termijnBedragInfo.textContent = `Totaalbedrag: €${formatCurrency(res.totaalBedrag)} • ${termijnSummary}`;
+        } else {
+            termijnBedragInfo.textContent = '';
+        }
+
         document.getElementById('meta-info').textContent = 'Bron: ' + res.bron;
         highlightRoute();
     }
@@ -919,10 +1006,13 @@
     }
 
     document.getElementById('aanslagtype').addEventListener('change', function() {
-        document.getElementById('voorlopig-opties').style.display = this.value.startsWith('voorlopig') ? 'block' : 'none';
+        const isVoorlopig = this.value.startsWith('voorlopig');
+        document.getElementById('voorlopig-opties').style.display = isVoorlopig ? 'block' : 'none';
+        document.getElementById('totaalbedrag-wrapper').style.display = isVoorlopig ? 'block' : 'none';
         calculate();
     });
     document.getElementById('btn-bereken').addEventListener('click', calculate);
+    document.getElementById('totaalbedrag').addEventListener('input', calculate);
     document.getElementById('btn-pdf').addEventListener('click', exportPdf);
     document.getElementById('btn-reset').addEventListener('click', resetGraph);
     document.getElementById('afwijkend-boekjaar').addEventListener('change', calculate);

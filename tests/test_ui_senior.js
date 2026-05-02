@@ -37,6 +37,25 @@ function getTermijnDagen() {
     return 42;
 }
 
+function getTermijnBedragen(totaalBedrag, aantalTermijnen) {
+    if (!Number.isInteger(totaalBedrag) || totaalBedrag < 0 || aantalTermijnen <= 0) {
+        return null;
+    }
+
+    const basis = Math.ceil(totaalBedrag / aantalTermijnen);
+    const bedragen = Array(aantalTermijnen).fill(basis);
+    let overschot = basis * aantalTermijnen - totaalBedrag;
+    let idx = aantalTermijnen - 1;
+
+    while (overschot > 0 && idx >= 0) {
+        bedragen[idx] -= 1;
+        overschot -= 1;
+        idx -= 1;
+    }
+
+    return bedragen;
+}
+
 function checkInvorderbaarheid(dagtekening, peildatum, options = {}) {
     const dagen = getTermijnDagen();
     let deadline = new Date(dagtekening);
@@ -176,6 +195,21 @@ test('31 mei → 30 juni, 31 juli', () => {
     assert(result.termijnen, 'Moet termijnen hebben');
     assertEqual(result.termijnen[0].getDate(), 30, '1e termijn 30 juni');
     assertEqual(result.termijnen[1].getDate(), 31, '2e termijn 31 juli');
+});
+
+test('Termijnbedragen algoritme verdeelt totaalbedrag correct', () => {
+    const bedragen = getTermijnBedragen(100, 3);
+    assertEqual(bedragen.length, 3, 'Moet 3 termijnen hebben');
+    assertEqual(bedragen[0], 34, 'Eerste termijn moet 34 zijn');
+    assertEqual(bedragen[1], 33, 'Tweede termijn moet 33 zijn');
+    assertEqual(bedragen[2], 33, 'Derde termijn moet 33 zijn');
+});
+
+test('Termijnbedragen algoritme blijft totaal exact', () => {
+    const bedragen = getTermijnBedragen(101, 3);
+    assertEqual(bedragen.reduce((sum, v) => sum + v, 0), 101, 'Som moet precies 101 zijn');
+    assertEqual(bedragen[0], 34, 'Eerste termijn moet hoger zijn');
+    assertEqual(bedragen[2], 33, 'Laatste termijn moet lager zijn');
 });
 
 // LI 2008 § 9.1

@@ -8,8 +8,8 @@ class LexNodeEngine:
         'node_type':   '0',
         'color':       '2',
         'bron':        '11',
-        'toelichting': '14',
-        'definitie':   '15',
+        'toelichting': '13',
+        'definitie':   '14',
     }
     ROUTE = [
         "begrippen/dagtekening-aanslagbiljet",

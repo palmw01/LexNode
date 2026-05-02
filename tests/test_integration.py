@@ -194,6 +194,9 @@ class TestGraphDataIntegrity(unittest.TestCase):
             "regels/AR-9-1",
             "begrippen/invorderbaarheid",
             "annotaties/iw1990/art9-1",
+            "begrippen/totaalbedrag-belastingaanslag",
+            "begrippen/termijnbedrag",
+            "regels/AR-9-5f",
         ]
         
         for node_id in critical_nodes:
@@ -215,6 +218,15 @@ class TestGraphDataIntegrity(unittest.TestCase):
         
         self.assertGreater(len(edges), 0,
                           "Graaf moet minstens 1 edge hebben")
+
+    def test_graph_edge_totaalbedrag_to_termijnbedrag(self):
+        """De graaf moet een relatie hebben van totaalbedrag naar termijnbedrag"""
+        edges = self.engine.get_graph_data()['edges']
+        self.assertTrue(
+            any(e['from'] == 'begrippen/totaalbedrag-belastingaanslag' and e['to'] == 'begrippen/termijnbedrag'
+                for e in edges),
+            "Graaf moet een edge hebben van totaalbedrag-belastingaanslag naar termijnbedrag"
+        )
     
     def test_route_nodes_accessible(self):
         """Alle route nodes moeten toegankelijk zijn"""

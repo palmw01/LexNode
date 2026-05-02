@@ -13,6 +13,9 @@ echo ""
 # Activate virtual environment
 source .venv/bin/activate.fish 2>/dev/null || . .venv/bin/activate 2>/dev/null || true
 
+# Ensure Python can import project modules from the repository root
+export PYTHONPATH="$(pwd)"
+
 # Color codes
 RED='\033[0;31m'
 GREEN='\033[0;32m'
