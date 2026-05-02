@@ -774,7 +774,9 @@
             App.gexfDoc   = parsed.doc;
 
             const lastmod  = parsed.doc.querySelector('meta')?.getAttribute('lastmodifieddate') || '—';
-            document.getElementById('graph-meta').innerHTML = `<strong>Art. 9 IW 1990</strong><br>${parsed.nodes.length} nodes · Bijgewerkt: ${lastmod}`;
+            const metaHtml = `<strong>Art. 9 IW 1990</strong><br>${parsed.nodes.length} nodes · Bijgewerkt: ${lastmod}`;
+            document.getElementById('graph-meta').innerHTML = metaHtml;
+            document.getElementById('info-popup').innerHTML = metaHtml;
             document.getElementById('loader').style.display = 'none';
             resetGraph();
             calculate();
@@ -1180,9 +1182,29 @@
     document.getElementById('afwijkend-boekjaar').addEventListener('change', calculate);
     document.getElementById('dagtekening-in-vaststellingsjaar').addEventListener('change', calculate);
 
+    function initInfoBtn() {
+        const btn = document.getElementById('info-btn');
+        const popup = document.getElementById('info-popup');
+        if (!btn || !popup) return;
+
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isOpen = popup.classList.toggle('open');
+            btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (popup.classList.contains('open') && !btn.contains(e.target)) {
+                popup.classList.remove('open');
+                btn.setAttribute('aria-expanded', 'false');
+            }
+        });
+    }
+
     function initPage() {
         initTabs();
         initDates();
+        initInfoBtn();
     }
 
     window.addEventListener('load', () => {
