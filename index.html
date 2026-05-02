@@ -382,10 +382,33 @@
 <script src="https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <script>
     // ── GEXF-attribuut IDs (overeenkomen met graph.gexf schema) ──────────
-    const ATTR_COLOR       = '2';
-    const ATTR_BRON        = '11';
-    const ATTR_TOELICHTING = '14';
-    const ATTR_DEFINITIE   = '15';
+    const ATTR_NODE_TYPE = '0';
+    const ATTR_JAS_KLASSE = '1';
+    const ATTR_COLOR = '2';
+    const ATTR_BEGRIPSNAAM = '8';
+    const ATTR_MARKERING = '9';
+    const ATTR_BRON = '10';
+    const ATTR_BRONNEN = '11';
+    const ATTR_INTERPRETATIEMETHODE = '12';
+    const ATTR_TOELICHTING_KLASSE = '13';
+    const ATTR_TOELICHTING = '13'; // Alias for backward compatibility
+    const ATTR_DEFINITIE = '14';
+    const ATTR_SOORT = '15';
+    const ATTR_HERKOMST = '16';
+    const ATTR_LEIDT_TOT = '22';
+    const ATTR_AFLEIDINGSREGELS = '23';
+    const ATTR_REGEL_ID = '24';
+    const ATTR_NAAM = '25';
+    const ATTR_OPERATORS = '26';
+    const ATTR_BRONREFERENTIE = '27';
+
+    // PDF kleuren (RGB)
+    const PDF_BLAUW = [1, 36, 86];
+    const PDF_GROEN = [112, 173, 71];
+    const PDF_ROOD  = [217, 48, 37];
+    const PDF_GRIJS = [120, 120, 120];
+    const PDF_ZWART = [51, 51, 51];
+    const PDF_WIT   = [255, 255, 255];
 
     const LID1_ROUTE = [
         'begrippen/dagtekening-aanslagbiljet',
@@ -909,10 +932,60 @@
             return {
                 id: nodeId,
                 label: node?.label || nodeId,
+                nodeType: attrs[ATTR_NODE_TYPE] || '',
+                begripsnaam: attrs[ATTR_BEGRIPSNAAM] || '',
+                markering: attrs[ATTR_MARKERING] || '',
+                bron: attrs[ATTR_BRON] || '',
+                bronnen: attrs[ATTR_BRONNEN] || '',
+                interpretatiemethode: attrs[ATTR_INTERPRETATIEMETHODE] || '',
+                toelichtingKlasse: attrs[ATTR_TOELICHTING_KLASSE] || '',
+                toelichting: attrs[ATTR_TOELICHTING] || '', // For compatibility
                 definitie: attrs[ATTR_DEFINITIE] || '',
-                toelichting: attrs[ATTR_TOELICHTING] || ''
+                soort: attrs[ATTR_SOORT] || '',
+                herkomst: attrs[ATTR_HERKOMST] || '',
+                leidtTot: attrs[ATTR_LEIDT_TOT] || '',
+                afleidingsregels: attrs[ATTR_AFLEIDINGSREGELS] || '',
+                regelId: attrs[ATTR_REGEL_ID] || '',
+                naam: attrs[ATTR_NAAM] || '',
+                operators: attrs[ATTR_OPERATORS] || '',
+                bronreferentie: attrs[ATTR_BRONREFERENTIE] || ''
             };
         });
+    }
+
+    function getPdfData() {
+        const status = document.getElementById('status-header').textContent || 'Resultaat niet beschikbaar';
+        const deadline = document.getElementById('deadline-info').textContent || '';
+        const typeTitle = document.getElementById('aanslagtype').selectedOptions[0].text;
+        const dagtekening = document.getElementById('dagtekening').value;
+        const peildatum = document.getElementById('peildatum').value;
+        const route = getActiveRouteDetails();
+
+        // Vind de afleidingsregel (bijv. AR-9-1 voor lid 1)
+        const regelNode = route.find(n => n.nodeType === 'regel') || {};
+        const afleidingsregel = {
+            id: regelNode.regelId || '',
+            naam: regelNode.naam || '',
+            operators: regelNode.operators || '',
+            formule: 'peildatum ≥ dagtekening + 42 dagen' // Hardcoded voor nu, kan dynamisch uit graaf
+        };
+
+        // Verzamel grondslagen
+        const grondslagen = [...new Set(route.flatMap(n => {
+            const bronnen = n.bronnen ? n.bronnen.split(',').map(b => b.trim()) : [];
+            return [n.bron, ...bronnen].filter(b => b);
+        }))];
+
+        return {
+            status,
+            deadline,
+            typeTitle,
+            dagtekening,
+            peildatum,
+            route,
+            afleidingsregel,
+            grondslagen
+        };
     }
 
     function exportPdf() {
@@ -922,64 +995,153 @@
         }
 
         const doc = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4' });
-        const title = 'LexNode Invorderbaarheidsbesluit';
-        const status = document.getElementById('status-header').textContent || 'Resultaat niet beschikbaar';
-        const deadline = document.getElementById('deadline-info').textContent || '';
-        const bron = document.getElementById('meta-info').textContent || '';
-        const typeTitle = document.getElementById('aanslagtype').selectedOptions[0].text;
-        const dagtekening = document.getElementById('dagtekening').value;
-        const peildatum = document.getElementById('peildatum').value;
+        const data = getPdfData();
+        let y = 20;
 
+        // Titel
         doc.setFontSize(16);
-        doc.text(title, 14, 20);
-        doc.setFontSize(11);
-        doc.text(`Aanslagtype: ${typeTitle}`, 14, 30);
-        doc.text(`Dagtekening: ${dagtekening}`, 14, 36);
-        doc.text(`Peildatum: ${peildatum}`, 14, 42);
-        doc.text(`Status: ${status}`, 14, 50);
-        doc.text(`Toelichting:`, 14, 60);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(...PDF_ZWART);
+        doc.text('LexNode — Juridisch Besluit', 14, y);
+        y += 10;
 
-        let y = 66;
-        const lines = doc.splitTextToSize(deadline, 180);
-        doc.text(lines, 14, y);
-        y += lines.length * 7;
-        y += 4;
-
-        const route = getActiveRouteDetails();
-        doc.setFontSize(13);
-        doc.text('Actieve route', 14, y);
-        y += 8;
+        // Metadata
         doc.setFontSize(10);
+        doc.setFont('helvetica', 'normal');
+        const now = new Date().toLocaleString('nl-NL');
+        doc.text(`Gegenereerd op ${now} | Kennisgraaf peildatum ${data.peildatum} | Status: concept`, 14, y);
+        y += 10;
 
-        route.forEach(entry => {
-            const labelLine = `- ${entry.label}`;
-            const labelWrapped = doc.splitTextToSize(labelLine, 180);
-            if (y + labelWrapped.length * 7 > 280) {
-                doc.addPage();
-                y = 20;
-            }
-            doc.text(labelWrapped, 14, y);
-            y += labelWrapped.length * 7;
+        // Sectie 1: Besluit
+        doc.setFontSize(14);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(...PDF_ZWART);
+        doc.text('1. Besluit', 14, y);
+        y += 5; // Minder spacing voor strakkere layout
 
-            const details = entry.definitie || entry.toelichting;
-            if (details) {
-                const detailLines = doc.splitTextToSize(`  ${details}`, 170);
-                if (y + detailLines.length * 7 > 280) {
-                    doc.addPage();
-                    y = 20;
-                }
-                doc.text(detailLines, 18, y);
-                y += detailLines.length * 7;
+        // Gekleurde achtergrond voor status
+        const isInvorderbaar = data.status.includes('INVORDERBAAR');
+        const bgColor = isInvorderbaar ? PDF_GROEN : PDF_ROOD;
+        doc.setFillColor(...bgColor);
+        doc.roundedRect(14, y, 180, 35, 3, 3, 'F'); // Nog grotere hoogte voor wrapped tekst
+        doc.setTextColor(...PDF_WIT);
+        doc.setFontSize(18);
+        doc.setFont('helvetica', 'bold');
+        doc.text(data.status.toUpperCase(), 19, y + 8); // Status bovenaan
+        doc.setFontSize(11);
+        doc.setFont('helvetica', 'normal');
+        doc.text(`Dagtekening: ${data.dagtekening} | Peildatum: ${data.peildatum}`, 19, y + 15); // Details daaronder
+        const deadlineText = `Deadline: ${data.deadline} | Termijn: 42 dagen | ATW: Uitgesloten (Art. 9 lid 10 IW 1990)`;
+        const deadlineWrapped = doc.splitTextToSize(deadlineText, 170); // 170mm breedte
+        doc.text(deadlineWrapped, 19, y + 20);
+        y += 35 + 10; // Meer spacing na de box
+
+        // Reset text color
+        doc.setTextColor(...PDF_ZWART);
+
+        // Sectie 2: Redeneerroute
+        if (y > 250) { doc.addPage(); y = 20; }
+        doc.setFontSize(14);
+        doc.setFont('helvetica', 'bold');
+        doc.text('2. Redeneerroute', 14, y);
+        y += 5;
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'normal');
+        doc.text('De beslissing volgt uit de onderstaande redeneerroute zoals gemodelleerd in de kennisgraaf.', 14, y);
+        y += 8;
+
+        data.route.forEach((entry, index) => {
+            const stap = `Stap ${index + 1}: ${entry.begripsnaam || entry.label}`;
+            const stapWrapped = doc.splitTextToSize(stap, 180);
+            if (y + stapWrapped.length * 7 > 280) { doc.addPage(); y = 20; }
+            doc.text(stapWrapped, 14, y);
+            y += stapWrapped.length * 7;
+
+            if (entry.markering) {
+                const wettekst = `Wettekst: ${entry.markering}`;
+                const wettekstWrapped = doc.splitTextToSize(wettekst, 170);
+                if (y + wettekstWrapped.length * 7 > 280) { doc.addPage(); y = 20; }
+                doc.text(wettekstWrapped, 18, y);
+                y += wettekstWrapped.length * 7;
             }
+
+            if (entry.bron) {
+                const bron = `Bron: ${entry.bron}`;
+                const bronWrapped = doc.splitTextToSize(bron, 170);
+                if (y + bronWrapped.length * 7 > 280) { doc.addPage(); y = 20; }
+                doc.text(bronWrapped, 18, y);
+                y += bronWrapped.length * 7;
+            }
+
+            if (entry.definitie) {
+                const defWrapped = doc.splitTextToSize(entry.definitie, 170);
+                if (y + defWrapped.length * 7 > 280) { doc.addPage(); y = 20; }
+                doc.text(defWrapped, 18, y);
+                y += defWrapped.length * 7;
+            }
+            y += 4;
         });
 
-        if (y + 20 > 280) {
-            doc.addPage();
-            y = 20;
-        }
-
+        // Sectie 3: Juridische toelichting
+        if (y > 250) { doc.addPage(); y = 20; }
+        doc.setFontSize(14);
+        doc.setFont('helvetica', 'bold');
+        doc.text('3. Juridische toelichting', 14, y);
+        y += 5;
         doc.setFontSize(10);
-        doc.text(bron, 14, 286);
+        doc.setFont('helvetica', 'normal');
+
+        data.route.forEach(entry => {
+            const header = `${entry.begripsnaam || entry.label} — Interpretatiemethode: ${entry.interpretatiemethode || 'n.v.t.'}`;
+            const headerWrapped = doc.splitTextToSize(header, 180);
+            if (y + headerWrapped.length * 7 > 280) { doc.addPage(); y = 20; }
+            doc.text(headerWrapped, 14, y);
+            y += headerWrapped.length * 7;
+
+            if (entry.toelichtingKlasse) {
+                const toelWrapped = doc.splitTextToSize(entry.toelichtingKlasse, 170);
+                if (y + toelWrapped.length * 7 > 280) { doc.addPage(); y = 20; }
+                doc.text(toelWrapped, 18, y);
+                y += toelWrapped.length * 7;
+            }
+            y += 4;
+        });
+
+        // Sectie 4: Afleidingsregel
+        if (y > 250) { doc.addPage(); y = 20; }
+        doc.setFontSize(14);
+        doc.setFont('helvetica', 'bold');
+        doc.text('4. Afleidingsregel', 14, y);
+        y += 5;
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'normal');
+        doc.text(`${data.afleidingsregel.naam} (${data.afleidingsregel.id})`, 14, y);
+        y += 6;
+        doc.text(`Operators: ${data.afleidingsregel.operators}`, 14, y);
+        y += 6;
+        doc.text(`Formule: ${data.afleidingsregel.formule}`, 14, y);
+        y += 10;
+
+        // Sectie 5: Wettelijke grondslagen
+        if (y > 250) { doc.addPage(); y = 20; }
+        doc.setFontSize(14);
+        doc.setFont('helvetica', 'bold');
+        doc.text('5. Wettelijke grondslagen', 14, y);
+        y += 5;
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'normal');
+        data.grondslagen.forEach(bron => {
+            const bronLine = `• ${bron}`;
+            const bronWrapped = doc.splitTextToSize(bronLine, 180);
+            if (y + bronWrapped.length * 7 > 280) { doc.addPage(); y = 20; }
+            doc.text(bronWrapped, 14, y);
+            y += bronWrapped.length * 7;
+        });
+
+        // Footer
+        doc.setFontSize(8);
+        doc.text('LexNode prototype — Rules as Code — Belastingdienst | Gegenereerd op basis van Art. 9 Invorderingswet 1990 kennisgraaf (GEXF). Dit document heeft geen juridische status.', 14, 286);
+
         doc.save('LexNode-besluit.pdf');
     }
 
