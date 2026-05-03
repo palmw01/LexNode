@@ -563,6 +563,12 @@
     const PDF_GRIJS = [120, 120, 120];
     const PDF_ZWART = [51, 51, 51];
     const PDF_WIT   = [255, 255, 255];
+    const DEFAULT_PHYSICS_SETTINGS = {
+        gravitational: -100,
+        central: 0.05,
+        spring: 50,
+        avoidOverlap: true,
+    };
 
     const LID1_ROUTE = [
         'begrippen/dagtekening-aanslagbiljet',
@@ -680,6 +686,7 @@
     // ── Helpers ───────────────────────────────────────────────────────────
     const formatDatum = d =>
         d.toLocaleDateString('nl-NL', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    const NODE_DETAILS_HINT = 'Klik op een node in de graaf...';
 
     function appendDetailRow(container, label, value) {
         const row = document.createElement('div');
@@ -692,6 +699,20 @@
         vEl.textContent = value;
         row.append(lEl, vEl);
         container.appendChild(row);
+    }
+
+    function clearNodeDetails(showHint = false) {
+        const content = document.getElementById('node-details-content');
+        if (!content) return;
+        content.textContent = showHint ? NODE_DETAILS_HINT : '';
+    }
+
+    function fitGraphToView() {
+        if (!App.network) return;
+        App.network.fit();
+        setTimeout(() => {
+            if (App.network) App.network.fit();
+        }, 150);
     }
 
     // ── GEXF parser ───────────────────────────────────────────────────────
@@ -909,18 +930,20 @@
                 stabilization: false,
                 solver: "forceAtlas2Based",
                 forceAtlas2Based: {
-                    gravitationalConstant: -50,
-                    centralGravity: 0.01,
-                    springLength: 100,
-                    avoidOverlap: 0
+                    gravitationalConstant: DEFAULT_PHYSICS_SETTINGS.gravitational,
+                    centralGravity: DEFAULT_PHYSICS_SETTINGS.central,
+                    springLength: DEFAULT_PHYSICS_SETTINGS.spring,
+                    avoidOverlap: DEFAULT_PHYSICS_SETTINGS.avoidOverlap ? 1 : 0
                 }
             },
             interaction: { hover: true },
         };
         App.network = new vis.Network(container, { nodes: App.nodesDS, edges: App.edgesDS }, options);
+        updatePhysics();
         App.network.on('click', p => {
             if (p.nodes.length)      showNodeDetails(p.nodes[0]);
             else if (p.edges.length) showEdgeDetails(p.edges[0]);
+            else                     clearNodeDetails(true);
         });
 
         const tooltip = document.getElementById('node-tooltip');
@@ -959,14 +982,14 @@
             document.getElementById('info-popup').innerHTML = metaHtml;
             document.getElementById('loader').style.display = 'none';
             resetGraph();
-            calculate();
+            clearNodeDetails(true);
         } catch (e) {
             document.getElementById('loader').textContent = 'Fout bij laden graaf: ' + e;
         }
 
         document.getElementById('btn-zoom-in').addEventListener('click', () => App.network.moveTo({ scale: App.network.getScale() * 1.3 }));
         document.getElementById('btn-zoom-out').addEventListener('click', () => App.network.moveTo({ scale: App.network.getScale() * 0.77 }));
-        document.getElementById('btn-fit').addEventListener('click', () => App.network.fit());
+        document.getElementById('btn-fit').addEventListener('click', fitGraphToView);
         document.getElementById('btn-fullscreen').addEventListener('click', toggleFullscreen);
 
         // Fullscreen event listener
@@ -980,29 +1003,29 @@
         App.nodesDS.clear(); App.edgesDS.clear();
         App.nodesDS.add(App.graphData.nodes);
         App.edgesDS.add(App.graphData.edges);
-        App.network.fit();
+        fitGraphToView();
     }
 
     // ── Physics controls ─────────────────────────────────────────────────
     function updatePhysics() {
-        if (!App.network) return;
-        
         const gravitational = parseFloat(document.getElementById('gravitational-constant').value);
         const central = parseFloat(document.getElementById('central-gravity').value);
         const spring = parseFloat(document.getElementById('spring-length').value);
         const avoidOverlap = document.getElementById('avoid-overlap').checked ? 1 : 0;
-        
-        App.network.setOptions({
-            physics: {
-                forceAtlas2Based: {
-                    gravitationalConstant: gravitational,
-                    centralGravity: central,
-                    springLength: spring,
-                    avoidOverlap: avoidOverlap
+
+        if (App.network) {
+            App.network.setOptions({
+                physics: {
+                    forceAtlas2Based: {
+                        gravitationalConstant: gravitational,
+                        centralGravity: central,
+                        springLength: spring,
+                        avoidOverlap: avoidOverlap
+                    }
                 }
-            }
-        });
-        
+            });
+        }
+
         // Update display values
         document.getElementById('gravitational-value').textContent = gravitational;
         document.getElementById('central-value').textContent = central.toFixed(3);
@@ -1014,23 +1037,21 @@
     }
 
     function resetPhysicsDefaults() {
-        document.getElementById('gravitational-constant').value = -50;
-        document.getElementById('central-gravity').value = 0.01;
-        document.getElementById('spring-length').value = 100;
-        document.getElementById('avoid-overlap').checked = false;
+        document.getElementById('gravitational-constant').value = DEFAULT_PHYSICS_SETTINGS.gravitational;
+        document.getElementById('central-gravity').value = DEFAULT_PHYSICS_SETTINGS.central;
+        document.getElementById('spring-length').value = DEFAULT_PHYSICS_SETTINGS.spring;
+        document.getElementById('avoid-overlap').checked = DEFAULT_PHYSICS_SETTINGS.avoidOverlap;
         updatePhysics();
     }
 
     function loadPhysicsSettings() {
         const saved = localStorage.getItem('lexnode-physics');
-        if (saved) {
-            const settings = JSON.parse(saved);
-            document.getElementById('gravitational-constant').value = settings.gravitational;
-            document.getElementById('central-gravity').value = settings.central;
-            document.getElementById('spring-length').value = settings.spring;
-            document.getElementById('avoid-overlap').checked = settings.avoidOverlap;
-            updatePhysics();
-        }
+        const settings = saved ? JSON.parse(saved) : DEFAULT_PHYSICS_SETTINGS;
+        document.getElementById('gravitational-constant').value = settings.gravitational;
+        document.getElementById('central-gravity').value = settings.central;
+        document.getElementById('spring-length').value = settings.spring;
+        document.getElementById('avoid-overlap').checked = settings.avoidOverlap;
+        updatePhysics();
     }
 
     function applyPreset(preset) {
