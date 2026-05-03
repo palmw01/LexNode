@@ -42,7 +42,18 @@
             align-items: center;
             z-index: 100;
         }
-        header h1 { margin: 0; font-size: 1.1rem; font-weight: normal; }
+        #home-btn {
+            margin: 0;
+            padding: 0;
+            border: none;
+            background: none;
+            color: var(--wit);
+            font-size: 1.1rem;
+            font-weight: normal;
+            font-family: inherit;
+            cursor: pointer;
+        }
+        #home-btn:hover { text-decoration: underline; }
         .logo-box {
             border-left: 2px solid var(--wit);
             margin-left: 15px;
@@ -77,18 +88,25 @@
             position: absolute;
             top: calc(100% + 8px);
             right: 0;
-            background: var(--rijk-blauw);
-            border: 1px solid rgba(255,255,255,0.3);
+            background: var(--wit);
+            border: 1px solid var(--border);
             border-radius: 4px;
-            padding: 10px 14px;
+            padding: 15px;
             font-size: 0.75rem;
-            color: rgba(255,255,255,0.85);
-            line-height: 1.7;
-            white-space: nowrap;
+            color: var(--tekst);
+            line-height: 1.6;
+            white-space: normal;
+            width: min(280px, calc(100vw - 24px));
             z-index: 200;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
-        #info-popup strong { color: var(--wit); }
+        #info-popup strong {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 0.85rem;
+            color: var(--rijk-blauw);
+        }
+        #info-popup .notitie-github { margin-top: 12px; }
         #info-popup.open { display: block; }
 
         #nav-knoppen {
@@ -457,7 +475,7 @@
 <body>
 
 <header>
-    <h1>LexNode</h1>
+    <button type="button" id="home-btn" aria-label="Terug naar volledige graaf">LexNode</button>
     <div class="logo-box">Ministerie van Financiën<br><strong>Belastingdienst</strong></div>
     <div id="graph-meta">Laden…</div>
     <button type="button" id="info-btn" aria-label="Graaf-informatie" aria-expanded="false">ⓘ
@@ -525,15 +543,6 @@
 
             <div class="btn-row">
                 <button type="button" class="btn btn-secondary" id="btn-pdf">Exporteer PDF</button>
-            </div>
-            <button type="button" class="btn btn-secondary btn--small" id="btn-reset">
-                Toon volledige graaf
-            </button>
-            <div class="notitie-github">
-                Broncode en kennisgraaf beschikbaar op
-                <a href="https://github.com/palmw01/LexNode" target="_blank" rel="noopener">
-                    github.com/palmw01/LexNode
-                </a>
             </div>
         </div>
 
@@ -1078,9 +1087,10 @@
             App.nodeAttrLabels = getNodeAttrLabels(parsed.doc);
 
             const lastmod  = parsed.doc.querySelector('meta')?.getAttribute('lastmodifieddate') || '—';
-            const metaHtml = `<strong>Art. 9 IW 1990</strong><br>${parsed.nodes.length} nodes · Bijgewerkt: ${lastmod}`;
-            document.getElementById('graph-meta').innerHTML = metaHtml;
-            document.getElementById('info-popup').innerHTML = metaHtml;
+            const graphMetaHtml = `<strong>Art. 9 IW 1990</strong><br>${parsed.nodes.length} nodes · Bijgewerkt: ${lastmod}`;
+            const infoHtml = `<strong>Art. 9 IW 1990</strong>${parsed.nodes.length} nodes · Bijgewerkt: ${lastmod}<div class="notitie-github">Broncode en kennisgraaf beschikbaar op <a href="https://github.com/palmw01/LexNode" target="_blank" rel="noopener">github.com/palmw01/LexNode</a></div>`;
+            document.getElementById('graph-meta').innerHTML = graphMetaHtml;
+            document.getElementById('info-popup').innerHTML = infoHtml;
             document.getElementById('loader').style.display = 'none';
             resetGraph();
             clearNodeDetails(true);
@@ -1105,6 +1115,31 @@
         App.nodesDS.add(App.graphData.nodes);
         App.edgesDS.add(App.graphData.edges);
         fitGraphToView();
+    }
+
+    function resetResultPanel() {
+        const panel = document.getElementById('result-panel');
+        const termijnenLijst = document.getElementById('termijnen-lijst');
+        if (!panel || !termijnenLijst) return;
+
+        panel.style.display = 'none';
+        panel.className = '';
+        document.getElementById('status-header').textContent = '';
+        document.getElementById('deadline-info').textContent = '';
+        document.getElementById('termijnbedrag-info').textContent = '';
+        document.getElementById('meta-info').textContent = '';
+        termijnenLijst.style.display = 'none';
+        termijnenLijst.querySelector('tbody').innerHTML = '';
+    }
+
+    function resetHomeView() {
+        activeRoute = LID1_ROUTE;
+        if (App.popupController) App.popupController.closeAll();
+        if (App.network) App.network.unselectAll();
+        clearNodeDetails(true);
+        resetResultPanel();
+        openTab('calc');
+        resetGraph();
     }
 
     // ── Physics controls ─────────────────────────────────────────────────
@@ -1137,12 +1172,23 @@
         localStorage.setItem('lexnode-physics', JSON.stringify(settings));
     }
 
+    function refreshGraphViewport() {
+        if (!App.network) return;
+        App.network.startSimulation();
+        App.network.stabilize(150);
+        fitGraphToView();
+        setTimeout(() => {
+            if (App.network) fitGraphToView();
+        }, 200);
+    }
+
     function resetPhysicsDefaults() {
         document.getElementById('gravitational-constant').value = DEFAULT_PHYSICS_SETTINGS.gravitational;
         document.getElementById('central-gravity').value = DEFAULT_PHYSICS_SETTINGS.central;
         document.getElementById('spring-length').value = DEFAULT_PHYSICS_SETTINGS.spring;
         document.getElementById('avoid-overlap').checked = DEFAULT_PHYSICS_SETTINGS.avoidOverlap;
         updatePhysics();
+        refreshGraphViewport();
     }
 
     function loadPhysicsSettings() {
@@ -1153,6 +1199,7 @@
         document.getElementById('spring-length').value = settings.spring;
         document.getElementById('avoid-overlap').checked = settings.avoidOverlap;
         updatePhysics();
+        refreshGraphViewport();
     }
 
     function applyPreset(preset) {
@@ -1627,10 +1674,10 @@
         document.getElementById('totaalbedrag-wrapper').style.display = isVoorlopig ? 'block' : 'none';
         calculate();
     });
+    document.getElementById('home-btn').addEventListener('click', resetHomeView);
     document.getElementById('btn-bereken').addEventListener('click', calculate);
     document.getElementById('totaalbedrag').addEventListener('input', calculate);
     document.getElementById('btn-pdf').addEventListener('click', exportPdf);
-    document.getElementById('btn-reset').addEventListener('click', resetGraph);
     document.getElementById('afwijkend-boekjaar').addEventListener('change', calculate);
     document.getElementById('dagtekening-in-vaststellingsjaar').addEventListener('change', calculate);
 
