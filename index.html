@@ -17,7 +17,8 @@
             --groen-licht: #f0fff4;
             --rood:        #d93025;
             --rood-licht:  #fff5f5;
-            --mobile-bar-height: calc(50px + env(safe-area-inset-bottom, 0px));
+            --header-height: 72px;
+            --mobile-bar-height: calc(58px + env(safe-area-inset-bottom, 0px));
         }
 
         *, *::before, *::after { box-sizing: border-box; }
@@ -110,6 +111,7 @@
             color: var(--tekst);
         }
         .nav-btn:hover { background: var(--wit); box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+        .nav-btn.active { background: var(--hemel-blauw); border-color: var(--hemel-blauw); color: var(--wit); }
 
         main { flex: 1; display: flex; overflow: hidden; min-height: 0; }
 
@@ -267,7 +269,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            min-height: 50px;
+            min-height: 58px;
             padding-bottom: env(safe-area-inset-bottom, 0px);
             background: var(--rijk-blauw);
             z-index: 1000;
@@ -278,15 +280,15 @@
             transform: translateZ(0);
         }
 
-        #btn-mobile-legend {
+        .mobile-bar-btn {
             flex: 1;
             background: none;
             color: white;
             border: none;
-            padding: 0;
+            padding: 8px 6px;
             border-radius: 0;
             font-weight: normal;
-            font-size: 0.8rem;
+            font-size: 0.72rem;
             cursor: pointer;
             opacity: 0.8;
             text-transform: uppercase;
@@ -294,10 +296,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            text-align: center;
+            line-height: 1.2;
             border-bottom: 3px solid transparent;
         }
 
-        #btn-mobile-legend.active {
+        .mobile-bar-btn.active {
             opacity: 1;
             background: rgba(255,255,255,0.1);
             border-bottom: 3px solid var(--accent);
@@ -332,45 +336,115 @@
             main { flex-direction: column; overflow: visible; }
             #sidebar {
                 width: 100%;
+                height: 0;
+                min-height: 0;
                 flex-shrink: 0;
-                border-right: none;
-                border-bottom: 1px solid var(--border);
+                border: none;
                 overflow: visible;
-                max-height: none;
+                max-height: 0;
                 position: relative;
                 top: auto;
                 left: auto;
                 right: auto;
-                background: var(--wit);
+                background: transparent;
                 z-index: auto;
                 transform: none;
                 transition: none;
                 display: block;
             }
-            .tab-content { overflow: visible; }
+            .tabs { display: none; }
+            .tab-content,
+            .tab-content.active { overflow: visible; }
+            .tab-content,
+            .tab-content.active,
+            .legend-popup {
+                display: block;
+                position: fixed;
+                left: 0;
+                right: 0;
+                top: auto;
+                bottom: calc(-100dvh - var(--mobile-bar-height));
+                width: 100%;
+                max-height: calc(100dvh - var(--header-height) - var(--mobile-bar-height));
+                padding: 20px 18px calc(20px + env(safe-area-inset-bottom, 0px));
+                border: 1px solid var(--border);
+                border-bottom: none;
+                border-radius: 12px 12px 0 0;
+                background: var(--wit);
+                box-shadow: 0 -8px 24px rgba(0,0,0,0.18);
+                overflow-y: auto;
+                visibility: hidden;
+                pointer-events: none;
+                z-index: 2000;
+                transition: bottom 0.3s ease, visibility 0.3s ease;
+            }
+            .tab-content::before,
+            .legend-popup::before {
+                content: "";
+                display: block;
+                width: 52px;
+                height: 5px;
+                margin: 0 auto 16px;
+                border-radius: 999px;
+                background: #c8d2de;
+            }
+            .tab-content h3,
+            .legend-popup strong {
+                margin-bottom: 16px;
+                padding-bottom: 10px;
+                border-bottom: 1px solid #dfe7f0;
+                color: var(--rijk-blauw);
+                font-size: 1rem;
+                letter-spacing: 0.02em;
+            }
+            .tab-content .btn,
+            .tab-content select,
+            .tab-content input[type="date"],
+            .tab-content input[type="number"],
+            .tab-content input[type="range"],
+            .tab-content #result-panel,
+            .tab-content .notitie-github,
+            .tab-content .notitie-ontbrekend {
+                border-radius: 10px;
+            }
+            .tab-content .btn {
+                min-height: 46px;
+            }
+            .tab-content .btn-row {
+                flex-direction: column;
+            }
+            .tab-content .btn-row .btn {
+                width: 100%;
+            }
+            .tab-content .field,
+            .tab-content #result-panel,
+            .tab-content .notitie-github,
+            .tab-content .notitie-ontbrekend {
+                margin-bottom: 14px;
+            }
+            .tab-content .detail-row {
+                padding: 10px 0 8px;
+            }
             input[type="date"] { max-width: -webkit-fill-available; }
+            main {
+                min-height: calc(100dvh - var(--header-height) - var(--mobile-bar-height));
+            }
             #graph-container {
-                flex: none;
-                height: 60vh;
-                min-height: 350px;
+                flex: 1 1 auto;
+                height: calc(100dvh - var(--header-height) - var(--mobile-bar-height));
+                min-height: calc(100dvh - var(--header-height) - var(--mobile-bar-height));
                 width: 100%;
                 margin-top: 0;
                 position: relative;
                 z-index: 1;
-                overflow-y: auto;
+                overflow: hidden;
             }
-            .legend-popup { 
-                position: fixed;
-                top: auto;
-                bottom: -100%;
-                left: 0;
-                right: 0;
-                width: 100%;
-                border-radius: 12px 12px 0 0;
-                transition: bottom 0.3s ease;
-                z-index: 2000;
+            .tab-content.mobile-popup-open,
+            .legend-popup.open {
+                bottom: var(--mobile-bar-height);
+                visibility: visible;
+                pointer-events: auto;
             }
-            .legend-popup.open { bottom: var(--mobile-bar-height); }
 
             #mobile-bottom-bar { display: flex; }
             #graph-meta { display: none; }
@@ -494,7 +568,7 @@
         </div>
 
         <div id="details" class="tab-content" role="tabpanel">
-            <h3>Juridische Info</h3>
+            <h3>Node details</h3>
             <div id="node-details-content" role="region" aria-live="polite" aria-label="Node details">
                 Klik op een node in de graaf...
             </div>
@@ -509,7 +583,8 @@
             <button type="button" class="nav-btn" id="btn-zoom-out" title="Uitzoomen">−</button>
             <button type="button" class="nav-btn" id="btn-fit"      title="Alles tonen">⤢</button>
             <button type="button" class="nav-btn" id="btn-fullscreen" title="Fullscreen">⛶</button>
-            <button type="button" class="nav-btn" id="btn-legend" title="Legenda" aria-label="Toon legenda">L</button>
+            <button type="button" class="nav-btn" id="btn-legend" title="Legenda" aria-label="Toon legenda"
+                    data-popup-target="legend-popup" aria-controls="legend-popup" aria-expanded="false">L</button>
         </div>
 
     </div>
@@ -529,7 +604,14 @@
 </div>
 
 <nav id="mobile-bottom-bar">
-    <button type="button" id="btn-mobile-legend">Legenda</button>
+    <button type="button" class="mobile-bar-btn" id="btn-mobile-calc"
+            data-popup-target="calc" aria-controls="calc" aria-expanded="false">Berekening</button>
+    <button type="button" class="mobile-bar-btn" id="btn-mobile-physics"
+            data-popup-target="physics" aria-controls="physics" aria-expanded="false">Physics</button>
+    <button type="button" class="mobile-bar-btn" id="btn-mobile-details"
+            data-popup-target="details" aria-controls="details" aria-expanded="false">Node details</button>
+    <button type="button" class="mobile-bar-btn" id="btn-mobile-legend"
+            data-popup-target="legend-popup" aria-controls="legend-popup" aria-expanded="false">Legenda</button>
 </nav>
 
 <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
@@ -673,6 +755,7 @@
         edgeById:  new Map(),
         gexfDoc:   null,
         nodeAttrLabels: {},
+        popupController: null,
     };
 
     const RELATIES = {
@@ -705,6 +788,16 @@
         const content = document.getElementById('node-details-content');
         if (!content) return;
         content.textContent = showHint ? NODE_DETAILS_HINT : '';
+    }
+
+    function isMobileLayout() {
+        return window.innerWidth <= 850;
+    }
+
+    function updateLayoutMetrics() {
+        const header = document.querySelector('header');
+        if (!header) return;
+        document.documentElement.style.setProperty('--header-height', `${header.offsetHeight}px`);
     }
 
     function fitGraphToView() {
@@ -940,6 +1033,14 @@
         };
         App.network = new vis.Network(container, { nodes: App.nodesDS, edges: App.edgesDS }, options);
         updatePhysics();
+        App.network.on('selectNode', ({ nodes }) => {
+            if (nodes.length) showNodeDetails(nodes[0]);
+        });
+        App.network.on('selectEdge', ({ edges }) => {
+            if (edges.length) showEdgeDetails(edges[0]);
+        });
+        App.network.on('deselectNode', () => clearNodeDetails(true));
+        App.network.on('deselectEdge', () => clearNodeDetails(true));
         App.network.on('click', p => {
             if (p.nodes.length)      showNodeDetails(p.nodes[0]);
             else if (p.edges.length) showEdgeDetails(p.edges[0]);
@@ -1246,18 +1347,21 @@
     }
 
     function showNodeDetails(nodeId) {
-        openTab('details');
+        const node = App.nodeById.get(String(nodeId));
         const attrs = getNodeAttrs(nodeId);
         const content = document.getElementById('node-details-content');
         content.innerHTML = '';
+        appendDetailRow(content, 'id', String(nodeId));
+        if (node?.label) appendDetailRow(content, 'label', node.label);
         for (const [k, v] of Object.entries(attrs)) {
             if (!v || v === '[]') continue;
             appendDetailRow(content, resolveNodeAttrLabel(k), v);
         }
+        openTab('details');
+        if (isMobileLayout() && App.popupController) App.popupController.open('details');
     }
 
     function showEdgeDetails(edgeId) {
-        openTab('details');
         const edge = App.edgeById.get(String(edgeId));
         if (!edge) return;
         const content = document.getElementById('node-details-content');
@@ -1265,6 +1369,8 @@
         const div = document.createElement('div');
         div.innerHTML = `<strong>Relatie:</strong> ${escapeHtml(edge.relatie)}<br><strong>Van:</strong> ${escapeHtml(edge.from)}<br><strong>Naar:</strong> ${escapeHtml(edge.to)}`;
         content.appendChild(div);
+        openTab('details');
+        if (isMobileLayout() && App.popupController) App.popupController.open('details');
     }
 
     function escapeHtml(text) {
@@ -1557,30 +1663,87 @@
         });
     }
 
-    function initLegend() {
-        const btnDesktop = document.getElementById('btn-legend');
-        const btnMobile = document.getElementById('btn-mobile-legend');
-        const popup = document.getElementById('legend-popup');
+    function initPopups() {
         const overlay = document.getElementById('legend-overlay');
+        const popupClassNames = {
+            'legend-popup': 'open',
+            'calc': 'mobile-popup-open',
+            'physics': 'mobile-popup-open',
+            'details': 'mobile-popup-open'
+        };
+        const popupButtons = Array.from(document.querySelectorAll('[data-popup-target]'));
 
-        function toggle(e) {
-            if (e) e.stopPropagation();
-            const isOpen = popup.classList.toggle('open');
-            overlay.classList.toggle('active', isOpen);
-            if (btnDesktop) btnDesktop.setAttribute('aria-expanded', isOpen);
-            if (btnMobile) btnMobile.classList.toggle('active', isOpen);
+        function setButtonState(button, isActive) {
+            button.classList.toggle('active', isActive);
+            button.setAttribute('aria-expanded', isActive ? 'true' : 'false');
         }
 
-        if (btnDesktop) btnDesktop.addEventListener('click', toggle);
-        if (btnMobile) btnMobile.addEventListener('click', toggle);
-        if (overlay) overlay.addEventListener('click', toggle);
+        function closeAllPopups() {
+            Object.entries(popupClassNames).forEach(([popupId, className]) => {
+                const popup = document.getElementById(popupId);
+                if (popup) popup.classList.remove(className);
+            });
+            if (overlay) overlay.classList.remove('active');
+            popupButtons.forEach(button => setButtonState(button, false));
+        }
+
+        function openPopup(targetId) {
+            const popup = document.getElementById(targetId);
+            const openClass = popupClassNames[targetId];
+            if (!popup || !openClass) return;
+
+            const isOpen = popup.classList.contains(openClass);
+            closeAllPopups();
+            if (isOpen) return;
+
+            if (targetId !== 'legend-popup') openTab(targetId);
+
+            popup.classList.add(openClass);
+            if (overlay) overlay.classList.add('active');
+            popupButtons.forEach(button => setButtonState(button, button.dataset.popupTarget === targetId));
+        }
+
+        function togglePopup(targetId) {
+            const popup = document.getElementById(targetId);
+            const openClass = popupClassNames[targetId];
+            if (!popup || !openClass) return;
+
+            if (popup.classList.contains(openClass)) {
+                closeAllPopups();
+                return;
+            }
+
+            openPopup(targetId);
+        }
+
+        App.popupController = {
+            open: openPopup,
+            closeAll: closeAllPopups,
+        };
+
+        popupButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.stopPropagation();
+                togglePopup(button.dataset.popupTarget);
+            });
+        });
+
+        if (overlay) overlay.addEventListener('click', closeAllPopups);
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeAllPopups();
+        });
+        window.addEventListener('resize', () => {
+            updateLayoutMetrics();
+            if (window.innerWidth > 850) closeAllPopups();
+        });
     }
 
     function initPage() {
+        updateLayoutMetrics();
         initTabs();
         initDates();
         initInfoBtn();
-        initLegend();
+        initPopups();
         loadPhysicsSettings();
     }
 
