@@ -227,16 +227,63 @@
         #graph-container { flex: 1; position: relative; background: white; min-width: 0; }
         #mynetwork { position: absolute; inset: 0; }
 
-        .legend {
-            position: absolute; bottom: 15px; right: 15px;
-            background: rgba(255,255,255,0.95); padding: 12px;
-            border: 1px solid var(--border); font-size: 0.7rem;
-            z-index: 10; pointer-events: none; max-width: 200px;
+        /* Legend Styles */
+        .legend-popup {
+            display: none;
+            position: absolute;
+            top: 210px; /* Below fullscreen button which is at ~170px */
+            right: 12px;
+            background: white;
+            padding: 15px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.75rem;
+            z-index: 200;
+            width: 220px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
-        .legend-item { display: flex; align-items: center; margin-bottom: 4px; }
-        .dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; flex-shrink: 0; }
+
+        .legend-popup.open { display: block; }
+
+        .legend-item { display: flex; align-items: center; margin-bottom: 8px; }
+        .dot { width: 12px; height: 12px; border-radius: 50%; margin-right: 10px; flex-shrink: 0; }
         .dot--actief { border: 2px solid var(--hemel-blauw); background: transparent; }
-        .legend-divider { border-top: 1px solid #ddd; margin: 5px 0; }
+        .legend-divider { border-top: 1px solid #eee; margin: 10px 0; }
+        .legend-popup strong { display: block; margin-bottom: 10px; font-size: 0.85rem; color: var(--rijk-blauw); }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            z-index: 150;
+        }
+        .overlay.active { display: block; }
+
+        #mobile-bottom-bar {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: var(--rijk-blauw);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+
+        #btn-mobile-legend {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
 
         #loader {
             position: absolute; inset: 0; display: flex;
@@ -294,10 +341,24 @@
                 z-index: 1;
                 overflow-y: auto;
             }
-            .legend { font-size: 0.65rem; max-width: 160px; }
+            .legend-popup { 
+                position: fixed;
+                top: auto;
+                bottom: -100%;
+                left: 0;
+                right: 0;
+                width: 100%;
+                border-radius: 12px 12px 0 0;
+                transition: bottom 0.3s ease;
+                z-index: 2000;
+            }
+            .legend-popup.open { bottom: 60px; }
+
+            #mobile-bottom-bar { display: flex; }
             #graph-meta { display: none; }
             #info-btn   { display: flex; align-items: center; justify-content: center; }
             #nav-knoppen { display: none; }
+            body { padding-bottom: 60px; }
         }
     </style>
 </head>
@@ -430,9 +491,12 @@
             <button type="button" class="nav-btn" id="btn-zoom-out" title="Uitzoomen">−</button>
             <button type="button" class="nav-btn" id="btn-fit"      title="Alles tonen">⤢</button>
             <button type="button" class="nav-btn" id="btn-fullscreen" title="Fullscreen">⛶</button>
+            <button type="button" class="nav-btn" id="btn-legend" title="Legenda" aria-label="Toon legenda">L</button>
         </div>
-        <div class="legend" aria-hidden="true">
-            <strong>Legenda</strong>
+
+        <div id="legend-overlay" class="overlay"></div>
+        <div id="legend-popup" class="legend-popup" role="dialog" aria-labelledby="legend-title">
+            <strong id="legend-title">Legenda</strong>
             <div class="legend-item"><div class="dot" style="background:#CCCCCC"></div>Annotatie (Wetsartikel)</div>
             <div class="legend-item"><div class="dot" style="background:#70AD47"></div>Rechtsobject (Begrip)</div>
             <div class="legend-item"><div class="dot" style="background:#F4B942"></div>Tijdsaanduiding</div>
@@ -442,6 +506,10 @@
             <div class="legend-divider"></div>
             <div class="legend-item"><div class="dot dot--actief"></div>Actieve Route</div>
         </div>
+
+        <nav id="mobile-bottom-bar">
+            <button type="button" id="btn-mobile-legend">Legenda</button>
+        </nav>
     </div>
 </main>
 
@@ -1402,10 +1470,29 @@
         });
     }
 
+    function initLegend() {
+        const btnDesktop = document.getElementById('btn-legend');
+        const btnMobile = document.getElementById('btn-mobile-legend');
+        const popup = document.getElementById('legend-popup');
+        const overlay = document.getElementById('legend-overlay');
+
+        function toggle(e) {
+            if (e) e.stopPropagation();
+            const isOpen = popup.classList.toggle('open');
+            overlay.classList.toggle('active', isOpen);
+            if (btnDesktop) btnDesktop.setAttribute('aria-expanded', isOpen);
+        }
+
+        if (btnDesktop) btnDesktop.addEventListener('click', toggle);
+        if (btnMobile) btnMobile.addEventListener('click', toggle);
+        if (overlay) overlay.addEventListener('click', toggle);
+    }
+
     function initPage() {
         initTabs();
         initDates();
         initInfoBtn();
+        initLegend();
         loadPhysicsSettings();
     }
 
