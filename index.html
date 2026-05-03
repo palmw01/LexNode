@@ -17,6 +17,7 @@
             --groen-licht: #f0fff4;
             --rood:        #d93025;
             --rood-licht:  #fff5f5;
+            --mobile-bar-height: calc(50px + env(safe-area-inset-bottom, 0px));
         }
 
         *, *::before, *::after { box-sizing: border-box; }
@@ -266,12 +267,15 @@
             bottom: 0;
             left: 0;
             right: 0;
-            height: 50px;
+            min-height: 50px;
+            padding-bottom: env(safe-area-inset-bottom, 0px);
             background: var(--rijk-blauw);
             z-index: 1000;
             align-items: stretch;
             justify-content: center;
             box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
         }
 
         #btn-mobile-legend {
@@ -366,13 +370,13 @@
                 transition: bottom 0.3s ease;
                 z-index: 2000;
             }
-            .legend-popup.open { bottom: 50px; }
+            .legend-popup.open { bottom: var(--mobile-bar-height); }
 
             #mobile-bottom-bar { display: flex; }
             #graph-meta { display: none; }
             #info-btn   { display: flex; align-items: center; justify-content: center; }
             #nav-knoppen { display: none; }
-            body { padding-bottom: 50px; }
+            body { padding-bottom: var(--mobile-bar-height); }
         }
     </style>
 </head>
@@ -508,24 +512,25 @@
             <button type="button" class="nav-btn" id="btn-legend" title="Legenda" aria-label="Toon legenda">L</button>
         </div>
 
-        <div id="legend-overlay" class="overlay"></div>
-        <div id="legend-popup" class="legend-popup" role="dialog" aria-labelledby="legend-title">
-            <strong id="legend-title">Legenda</strong>
-            <div class="legend-item"><div class="dot" style="background:#CCCCCC"></div>Annotatie (Wetsartikel)</div>
-            <div class="legend-item"><div class="dot" style="background:#70AD47"></div>Rechtsobject (Begrip)</div>
-            <div class="legend-item"><div class="dot" style="background:#F4B942"></div>Tijdsaanduiding</div>
-            <div class="legend-item"><div class="dot" style="background:#7030A0"></div>Voorwaarde</div>
-            <div class="legend-item"><div class="dot" style="background:#00B0F0"></div>Afleidingsregel</div>
-            <div class="legend-item"><div class="dot" style="background:#FF0000"></div>Uitkomst</div>
-            <div class="legend-divider"></div>
-            <div class="legend-item"><div class="dot dot--actief"></div>Actieve Route</div>
-        </div>
-
-        <nav id="mobile-bottom-bar">
-            <button type="button" id="btn-mobile-legend">Legenda</button>
-        </nav>
     </div>
 </main>
+
+<div id="legend-overlay" class="overlay"></div>
+<div id="legend-popup" class="legend-popup" role="dialog" aria-labelledby="legend-title">
+    <strong id="legend-title">Legenda</strong>
+    <div class="legend-item"><div class="dot" style="background:#CCCCCC"></div>Annotatie (Wetsartikel)</div>
+    <div class="legend-item"><div class="dot" style="background:#70AD47"></div>Rechtsobject (Begrip)</div>
+    <div class="legend-item"><div class="dot" style="background:#F4B942"></div>Tijdsaanduiding</div>
+    <div class="legend-item"><div class="dot" style="background:#7030A0"></div>Voorwaarde</div>
+    <div class="legend-item"><div class="dot" style="background:#00B0F0"></div>Afleidingsregel</div>
+    <div class="legend-item"><div class="dot" style="background:#FF0000"></div>Uitkomst</div>
+    <div class="legend-divider"></div>
+    <div class="legend-item"><div class="dot dot--actief"></div>Actieve Route</div>
+</div>
+
+<nav id="mobile-bottom-bar">
+    <button type="button" id="btn-mobile-legend">Legenda</button>
+</nav>
 
 <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
 <script src="https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
