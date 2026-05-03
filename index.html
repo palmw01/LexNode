@@ -266,23 +266,37 @@
             bottom: 0;
             left: 0;
             right: 0;
-            height: 60px;
+            height: 50px;
             background: var(--rijk-blauw);
             z-index: 1000;
-            align-items: center;
+            align-items: stretch;
             justify-content: center;
             box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
         }
 
         #btn-mobile-legend {
-            background: var(--accent);
+            flex: 1;
+            background: none;
             color: white;
             border: none;
-            padding: 10px 24px;
+            padding: 0;
             border-radius: 0;
-            font-weight: bold;
-            font-size: 0.9rem;
+            font-weight: normal;
+            font-size: 0.8rem;
             cursor: pointer;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 3px solid transparent;
+        }
+
+        #btn-mobile-legend.active {
+            opacity: 1;
+            background: rgba(255,255,255,0.1);
+            border-bottom: 3px solid var(--accent);
         }
 
         #loader {
@@ -352,13 +366,13 @@
                 transition: bottom 0.3s ease;
                 z-index: 2000;
             }
-            .legend-popup.open { bottom: 60px; }
+            .legend-popup.open { bottom: 50px; }
 
             #mobile-bottom-bar { display: flex; }
             #graph-meta { display: none; }
             #info-btn   { display: flex; align-items: center; justify-content: center; }
             #nav-knoppen { display: none; }
-            body { padding-bottom: 60px; }
+            body { padding-bottom: 50px; }
         }
     </style>
 </head>
@@ -1481,6 +1495,7 @@
             const isOpen = popup.classList.toggle('open');
             overlay.classList.toggle('active', isOpen);
             if (btnDesktop) btnDesktop.setAttribute('aria-expanded', isOpen);
+            if (btnMobile) btnMobile.classList.toggle('active', isOpen);
         }
 
         if (btnDesktop) btnDesktop.addEventListener('click', toggle);
