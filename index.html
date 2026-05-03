@@ -770,12 +770,12 @@
                 </div>
             </div>
             <div class="field">
-                <label for="gravitational-constant">Gravitational Constant: <span id="gravitational-value">-100</span></label>
-                <input type="range" id="gravitational-constant" min="-250" max="-20" value="-100" step="5">
+                <label for="gravitational-constant">Gravitational Constant: <span id="gravitational-value">-400</span></label>
+                <input type="range" id="gravitational-constant" min="-2000" max="-50" value="-400" step="50">
             </div>
             <div class="field">
                 <label for="central-gravity">Central Gravity: <span id="central-value">0.05</span></label>
-                <input type="range" id="central-gravity" min="0" max="0.2" value="0.05" step="0.005">
+                <input type="range" id="central-gravity" min="0" max="1" value="0.05" step="0.01">
             </div>
             <div class="field">
                 <label for="avoid-overlap">Avoid Overlap: <span id="avoid-overlap-value">1</span></label>
@@ -877,12 +877,12 @@
     const ATTR_BRONREFERENTIE = '27';
 
     const DEFAULT_PHYSICS_SETTINGS = {
-        gravitationalConstant: -100,
+        gravitationalConstant: -400,
         centralGravity: 0.05,
-        springLength: 50,
-        springConstant: 0.04,
-        damping: 0.65,
-        avoidOverlap: 1.0,
+        springLength: 160,
+        springConstant: 0.03,
+        damping: 0.7,
+        avoidOverlap: 0.6,
     };
     const PHYSICS_STORAGE_KEY = 'lexnode-physics';
     const INITIAL_STABILIZATION_ITERATIONS = 400;
@@ -1602,12 +1602,15 @@
             App.edgesDS.clear();
             
             // Door x:0, y:0 te geven, voorkomen we de cirkel-lay-out flash.
-            // De nodes starten in een klomp in het midden en exploderen organisch.
             const centerNodes = App.graphData.nodes.map(n => ({ ...n, x: 0, y: 0 }));
             App.nodesDS.add(centerNodes);
             App.edgesDS.add(App.graphData.edges);
             
-            // Trigger stabilisatie (loader wordt getoond/verborgen door runInitialStabilization)
+            // Dwing Cluster preset af voor de home view
+            App.physicsSettings = { ...DEFAULT_PHYSICS_SETTINGS };
+            applyPhysicsSettings(App.physicsSettings, { enablePhysics: true });
+            
+            // Trigger stabilisatie
             runInitialStabilization();
         }
     }
@@ -1622,9 +1625,9 @@
     }
 
     const PHYSICS_PRESETS = {
-        compact:   { gravitationalConstant: -80, centralGravity: 0.1, avoidOverlap: 1.0 },
-        clustered: { gravitationalConstant: -120, centralGravity: 0.15, avoidOverlap: 0.5 },
-        spread:    { gravitationalConstant: -180, centralGravity: 0.01, avoidOverlap: 0.8 }
+        compact:   { gravitationalConstant: -100, centralGravity: 0.15, avoidOverlap: 1.0, springLength: 60 },
+        clustered: { gravitationalConstant: -400, centralGravity: 0.05, avoidOverlap: 0.6, springLength: 160 },
+        spread:    { gravitationalConstant: -1200, centralGravity: 0.01, avoidOverlap: 0.8, springLength: 350 }
     };
 
     function applyPreset(type) {
@@ -1725,8 +1728,8 @@
         App.nodesDS.add(routeNodes);
         App.edgesDS.add(routeEdges);
 
-        // Activeer tijdelijk physics voor het ForceAtlas2 gevoel
-        App.physicsEnabled = true;
+        // Dwing Cluster preset af voor de berekeningsview
+        App.physicsSettings = { ...DEFAULT_PHYSICS_SETTINGS };
         applyPhysicsSettings(App.physicsSettings, { enablePhysics: true });
         
         // Stabiliseer kort en focus daarna op de route
