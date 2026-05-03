@@ -120,7 +120,16 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            transition: transform 0.3s ease;
         }
+
+        #sidebar.collapsed {
+            display: none;
+        }
+
+
+
+        .overlay.active { display: block; }
 
         .tabs { display: flex; background: var(--rijk-blauw); }
         .tab-btn {
@@ -254,12 +263,37 @@
         }
 
         @media (max-width: 850px) {
-            html, body { height: auto; }
+            html, body { height: auto; overflow-x: hidden; }
             main { flex-direction: column; overflow: visible; }
-            #sidebar { width: 100%; flex-shrink: 0; border-right: none; border-bottom: 1px solid var(--border); overflow: visible; max-height: none; }
+            #sidebar {
+                width: 100%;
+                flex-shrink: 0;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                overflow: visible;
+                max-height: none;
+                position: relative;
+                top: auto;
+                left: auto;
+                right: auto;
+                background: var(--wit);
+                z-index: auto;
+                transform: none;
+                transition: none;
+                display: block;
+            }
             .tab-content { overflow: visible; }
             input[type="date"] { max-width: -webkit-fill-available; }
-            #graph-container { flex: none; height: 60vh; min-height: 350px; width: 100%; }
+            #graph-container {
+                flex: none;
+                height: 60vh;
+                min-height: 350px;
+                width: 100%;
+                margin-top: 0;
+                position: relative;
+                z-index: 1;
+                overflow-y: auto;
+            }
             .legend { font-size: 0.65rem; max-width: 160px; }
             #graph-meta { display: none; }
             #info-btn   { display: flex; align-items: center; justify-content: center; }
@@ -283,6 +317,8 @@
         <div class="tabs" role="tablist">
             <button type="button" class="tab-btn active"
                     data-tab="calc" role="tab" aria-selected="true" aria-controls="calc">Berekening</button>
+            <button type="button" class="tab-btn"
+                    data-tab="physics" role="tab" aria-selected="false" aria-controls="physics">Physics</button>
             <button type="button" class="tab-btn"
                     data-tab="details" role="tab" aria-selected="false" aria-controls="details">Node Details</button>
         </div>
@@ -348,6 +384,36 @@
             </div>
         </div>
 
+        <div id="physics" class="tab-content" role="tabpanel">
+            <h3>Physics Parameters</h3>
+            <div class="field">
+                <label for="gravitational-constant">Gravitational Constant: <span id="gravitational-value">-50</span></label>
+                <input type="range" id="gravitational-constant" min="-200" max="0" value="-50" step="1">
+            </div>
+            <div class="field">
+                <label for="central-gravity">Central Gravity: <span id="central-value">0.01</span></label>
+                <input type="range" id="central-gravity" min="0" max="0.1" value="0.01" step="0.005">
+            </div>
+            <div class="field">
+                <label for="spring-length">Spring Length: <span id="spring-value">100</span></label>
+                <input type="range" id="spring-length" min="50" max="300" value="100" step="5">
+            </div>
+            <div class="field">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="avoid-overlap">
+                    Avoid Overlap
+                </label>
+            </div>
+            <div class="btn-row">
+                <button type="button" class="btn btn-secondary" id="btn-reset-physics">Reset to Defaults</button>
+            </div>
+            <div class="btn-row">
+                <button type="button" class="btn btn-secondary btn--small" id="btn-preset-compact">Compact</button>
+                <button type="button" class="btn btn-secondary btn--small" id="btn-preset-spread">Spread</button>
+                <button type="button" class="btn btn-secondary btn--small" id="btn-preset-clustered">Clustered</button>
+            </div>
+        </div>
+
         <div id="details" class="tab-content" role="tabpanel">
             <h3>Juridische Info</h3>
             <div id="node-details-content" role="region" aria-live="polite" aria-label="Node details">
@@ -363,6 +429,7 @@
             <button type="button" class="nav-btn" id="btn-zoom-in"  title="Inzoomen">+</button>
             <button type="button" class="nav-btn" id="btn-zoom-out" title="Uitzoomen">−</button>
             <button type="button" class="nav-btn" id="btn-fit"      title="Alles tonen">⤢</button>
+            <button type="button" class="nav-btn" id="btn-fullscreen" title="Fullscreen">⛶</button>
         </div>
         <div class="legend" aria-hidden="true">
             <strong>Legenda</strong>
@@ -729,13 +796,22 @@
         return result;
     }
 
-    // ── Graph initialisatie (ongewijzigd) ───────────────────────────────
+    // ── Graph initialisatie (met forceAtlas2Based physics) ───────────────────────────────
     async function initGraph() {
         const container = document.getElementById('mynetwork');
         const options = {
             nodes: { shape: 'dot', size: 16, font: { size: 12 } },
             edges: { smooth: { type: 'continuous' } },
-            physics: { stabilization: true, barnesHut: { gravitationalConstant: -2000 } },
+            physics: {
+                stabilization: false,
+                solver: "forceAtlas2Based",
+                forceAtlas2Based: {
+                    gravitationalConstant: -50,
+                    centralGravity: 0.01,
+                    springLength: 100,
+                    avoidOverlap: 0
+                }
+            },
             interaction: { hover: true },
         };
         App.network = new vis.Network(container, { nodes: App.nodesDS, edges: App.edgesDS }, options);
@@ -787,6 +863,13 @@
         document.getElementById('btn-zoom-in').addEventListener('click', () => App.network.moveTo({ scale: App.network.getScale() * 1.3 }));
         document.getElementById('btn-zoom-out').addEventListener('click', () => App.network.moveTo({ scale: App.network.getScale() * 0.77 }));
         document.getElementById('btn-fit').addEventListener('click', () => App.network.fit());
+        document.getElementById('btn-fullscreen').addEventListener('click', toggleFullscreen);
+
+        // Fullscreen event listener
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+
+        // Mobile sidebar
+        // Sidebar is now always visible on mobile
     }
 
     function resetGraph() {
@@ -795,6 +878,114 @@
         App.edgesDS.add(App.graphData.edges);
         App.network.fit();
     }
+
+    // ── Physics controls ─────────────────────────────────────────────────
+    function updatePhysics() {
+        if (!App.network) return;
+        
+        const gravitational = parseFloat(document.getElementById('gravitational-constant').value);
+        const central = parseFloat(document.getElementById('central-gravity').value);
+        const spring = parseFloat(document.getElementById('spring-length').value);
+        const avoidOverlap = document.getElementById('avoid-overlap').checked ? 1 : 0;
+        
+        App.network.setOptions({
+            physics: {
+                forceAtlas2Based: {
+                    gravitationalConstant: gravitational,
+                    centralGravity: central,
+                    springLength: spring,
+                    avoidOverlap: avoidOverlap
+                }
+            }
+        });
+        
+        // Update display values
+        document.getElementById('gravitational-value').textContent = gravitational;
+        document.getElementById('central-value').textContent = central.toFixed(3);
+        document.getElementById('spring-value').textContent = spring;
+        
+        // Save to localStorage
+        const settings = { gravitational, central, spring, avoidOverlap };
+        localStorage.setItem('lexnode-physics', JSON.stringify(settings));
+    }
+
+    function resetPhysicsDefaults() {
+        document.getElementById('gravitational-constant').value = -50;
+        document.getElementById('central-gravity').value = 0.01;
+        document.getElementById('spring-length').value = 100;
+        document.getElementById('avoid-overlap').checked = false;
+        updatePhysics();
+    }
+
+    function loadPhysicsSettings() {
+        const saved = localStorage.getItem('lexnode-physics');
+        if (saved) {
+            const settings = JSON.parse(saved);
+            document.getElementById('gravitational-constant').value = settings.gravitational;
+            document.getElementById('central-gravity').value = settings.central;
+            document.getElementById('spring-length').value = settings.spring;
+            document.getElementById('avoid-overlap').checked = settings.avoidOverlap;
+            updatePhysics();
+        }
+    }
+
+    function applyPreset(preset) {
+        let settings;
+        switch (preset) {
+            case 'compact':
+                settings = { gravitational: -100, central: 0.05, spring: 50, avoidOverlap: true };
+                break;
+            case 'spread':
+                settings = { gravitational: -20, central: 0.005, spring: 200, avoidOverlap: false };
+                break;
+            case 'clustered':
+                settings = { gravitational: -80, central: 0.02, spring: 80, avoidOverlap: true };
+                break;
+            default:
+                return;
+        }
+        
+        document.getElementById('gravitational-constant').value = settings.gravitational;
+        document.getElementById('central-gravity').value = settings.central;
+        document.getElementById('spring-length').value = settings.spring;
+        document.getElementById('avoid-overlap').checked = settings.avoidOverlap;
+        updatePhysics();
+    }
+
+    // ── Fullscreen functionaliteit ───────────────────────────────────────
+    let isFullscreen = false;
+
+    function toggleFullscreen() {
+        const container = document.getElementById('graph-container');
+        if (!document.fullscreenElement) {
+            container.requestFullscreen().then(() => {
+                isFullscreen = true;
+                document.getElementById('btn-fullscreen').textContent = '⛶'; // Exit icon
+                setTimeout(() => App.network.redraw(), 100);
+            }).catch(err => {
+                console.error('Error attempting to enable fullscreen:', err);
+            });
+        } else {
+            document.exitFullscreen().then(() => {
+                isFullscreen = false;
+                document.getElementById('btn-fullscreen').textContent = '⛶'; // Enter icon
+                setTimeout(() => App.network.redraw(), 100);
+            });
+        }
+    }
+
+    function handleFullscreenChange() {
+        if (!document.fullscreenElement) {
+            isFullscreen = false;
+            document.getElementById('btn-fullscreen').textContent = '⛶';
+        }
+        setTimeout(() => {
+            if (App.network) App.network.redraw();
+        }, 100);
+    }
+
+    // ── Mobile sidebar ───────────────────────────────────────────────────
+    // Sidebar is now always visible on mobile, no toggle needed
 
     function highlightRoute() {
         const routeNodes = App.graphData.nodes
@@ -1182,6 +1373,16 @@
     document.getElementById('afwijkend-boekjaar').addEventListener('change', calculate);
     document.getElementById('dagtekening-in-vaststellingsjaar').addEventListener('change', calculate);
 
+    // Physics controls
+    document.getElementById('gravitational-constant').addEventListener('input', updatePhysics);
+    document.getElementById('central-gravity').addEventListener('input', updatePhysics);
+    document.getElementById('spring-length').addEventListener('input', updatePhysics);
+    document.getElementById('avoid-overlap').addEventListener('change', updatePhysics);
+    document.getElementById('btn-reset-physics').addEventListener('click', resetPhysicsDefaults);
+    document.getElementById('btn-preset-compact').addEventListener('click', () => applyPreset('compact'));
+    document.getElementById('btn-preset-spread').addEventListener('click', () => applyPreset('spread'));
+    document.getElementById('btn-preset-clustered').addEventListener('click', () => applyPreset('clustered'));
+
     function initInfoBtn() {
         const btn = document.getElementById('info-btn');
         const popup = document.getElementById('info-popup');
@@ -1205,6 +1406,7 @@
         initTabs();
         initDates();
         initInfoBtn();
+        loadPhysicsSettings();
     }
 
     window.addEventListener('load', () => {
