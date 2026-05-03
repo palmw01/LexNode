@@ -770,16 +770,16 @@
                 </div>
             </div>
             <div class="field">
-                <label for="gravitational-constant">Gravitational Constant: <span id="gravitational-value">-1500</span></label>
-                <input type="range" id="gravitational-constant" min="-3000" max="-200" value="-1500" step="50">
+                <label for="gravitational-constant">Gravitational Constant: <span id="gravitational-value">-120</span></label>
+                <input type="range" id="gravitational-constant" min="-250" max="-20" value="-120" step="5">
             </div>
             <div class="field">
-                <label for="central-gravity">Central Gravity: <span id="central-value">0.55</span></label>
-                <input type="range" id="central-gravity" min="0" max="1" value="0.55" step="0.01">
+                <label for="central-gravity">Central Gravity: <span id="central-value">0.05</span></label>
+                <input type="range" id="central-gravity" min="0" max="0.2" value="0.05" step="0.005">
             </div>
             <div class="field">
-                <label for="avoid-overlap">Avoid Overlap: <span id="avoid-overlap-value">0.35</span></label>
-                <input type="range" id="avoid-overlap" min="0" max="1" value="0.35" step="0.05">
+                <label for="avoid-overlap">Avoid Overlap: <span id="avoid-overlap-value">0.5</span></label>
+                <input type="range" id="avoid-overlap" min="0" max="1" value="0.5" step="0.05">
             </div>
             <div class="field" style="margin-top: 15px;">
                 <label>Layout Presets</label>
@@ -877,12 +877,12 @@
     const ATTR_BRONREFERENTIE = '27';
 
     const DEFAULT_PHYSICS_SETTINGS = {
-        gravitationalConstant: -1500,
-        centralGravity: 0.55,
+        gravitationalConstant: -120,
+        centralGravity: 0.05,
         springLength: 120,
         springConstant: 0.04,
-        damping: 0.5,
-        avoidOverlap: 0.35,
+        damping: 0.65,
+        avoidOverlap: 0.5,
     };
     const PHYSICS_STORAGE_KEY = 'lexnode-physics';
     const INITIAL_STABILIZATION_ITERATIONS = 400;
@@ -1622,9 +1622,9 @@
     }
 
     const PHYSICS_PRESETS = {
-        compact:   { gravitationalConstant: -1000, centralGravity: 0.7, avoidOverlap: 1.0 },
-        clustered: { gravitationalConstant: -2000, centralGravity: 0.8, avoidOverlap: 0.5 },
-        spread:    { gravitationalConstant: -2500, centralGravity: 0.3, avoidOverlap: 0.8 }
+        compact:   { gravitationalConstant: -80, centralGravity: 0.1, avoidOverlap: 1.0 },
+        clustered: { gravitationalConstant: -120, centralGravity: 0.15, avoidOverlap: 0.5 },
+        spread:    { gravitationalConstant: -180, centralGravity: 0.01, avoidOverlap: 0.8 }
     };
 
     function applyPreset(type) {
