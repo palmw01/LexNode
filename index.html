@@ -271,6 +271,10 @@
         .dot--actief { border: 2px solid var(--hemel-blauw); background: transparent; }
         .legend-divider { border-top: 1px solid #eee; margin: 10px 0; }
         .legend-popup strong { display: block; margin-bottom: 10px; font-size: 0.85rem; color: var(--rijk-blauw); }
+        .legend-mobile-only,
+        .mobile-only-inline { display: none; }
+        .desktop-only-inline { display: inline; }
+        .legend-meta { font-size: 0.8rem; line-height: 1.6; color: #555; }
 
         .overlay {
             display: none;
@@ -466,8 +470,20 @@
 
             #mobile-bottom-bar { display: flex; }
             #graph-meta { display: none; }
-            #info-btn   { display: flex; align-items: center; justify-content: center; }
+            #info-btn   { display: none; }
             #nav-knoppen { display: none; }
+            .legend-mobile-only { display: block; }
+            .mobile-only-inline { display: inline; }
+            .desktop-only-inline { display: none; }
+            .legend-mobile-only strong {
+                margin-bottom: 10px;
+                padding-bottom: 0;
+                border-bottom: none;
+                font-size: 0.85rem;
+            }
+            .legend-mobile-only .notitie-github {
+                margin-top: 12px;
+            }
             body { padding-bottom: var(--mobile-bar-height); }
         }
     </style>
@@ -601,7 +617,7 @@
 
 <div id="legend-overlay" class="overlay"></div>
 <div id="legend-popup" class="legend-popup" role="dialog" aria-labelledby="legend-title">
-    <strong id="legend-title">Legenda</strong>
+    <strong id="legend-title"><span class="desktop-only-inline">Legenda</span><span class="mobile-only-inline">Info</span></strong>
     <div class="legend-item"><div class="dot" style="background:#CCCCCC"></div>Annotatie (Wetsartikel)</div>
     <div class="legend-item"><div class="dot" style="background:#70AD47"></div>Rechtsobject (Begrip)</div>
     <div class="legend-item"><div class="dot" style="background:#F4B942"></div>Tijdsaanduiding</div>
@@ -610,6 +626,17 @@
     <div class="legend-item"><div class="dot" style="background:#FF0000"></div>Uitkomst</div>
     <div class="legend-divider"></div>
     <div class="legend-item"><div class="dot dot--actief"></div>Actieve Route</div>
+    <div class="legend-mobile-only">
+        <div class="legend-divider"></div>
+        <strong>Graafinfo</strong>
+        <div class="legend-meta" id="legend-mobile-graph-info">Laden…</div>
+        <div class="notitie-github">
+            Broncode en kennisgraaf beschikbaar op
+            <a href="https://github.com/palmw01/LexNode" target="_blank" rel="noopener">
+                github.com/palmw01/LexNode
+            </a>
+        </div>
+    </div>
 </div>
 
 <nav id="mobile-bottom-bar">
@@ -620,7 +647,7 @@
     <button type="button" class="mobile-bar-btn" id="btn-mobile-details"
             data-popup-target="details" aria-controls="details" aria-expanded="false">Node details</button>
     <button type="button" class="mobile-bar-btn" id="btn-mobile-legend"
-            data-popup-target="legend-popup" aria-controls="legend-popup" aria-expanded="false">Legenda</button>
+            data-popup-target="legend-popup" aria-controls="legend-popup" aria-expanded="false">Info</button>
 </nav>
 
 <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
@@ -1091,6 +1118,7 @@
             const infoHtml = `<strong>Art. 9 IW 1990</strong>${parsed.nodes.length} nodes · Bijgewerkt: ${lastmod}<div class="notitie-github">Broncode en kennisgraaf beschikbaar op <a href="https://github.com/palmw01/LexNode" target="_blank" rel="noopener">github.com/palmw01/LexNode</a></div>`;
             document.getElementById('graph-meta').innerHTML = graphMetaHtml;
             document.getElementById('info-popup').innerHTML = infoHtml;
+            document.getElementById('legend-mobile-graph-info').innerHTML = `${parsed.nodes.length} nodes · Bijgewerkt: ${lastmod}`;
             document.getElementById('loader').style.display = 'none';
             resetGraph();
             clearNodeDetails(true);
