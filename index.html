@@ -661,6 +661,7 @@
         nodeById:  new Map(),
         edgeById:  new Map(),
         gexfDoc:   null,
+        nodeAttrLabels: {},
     };
 
     const RELATIES = {
@@ -735,6 +736,21 @@
             if (node.getAttribute('id') === nodeId) return getAttrs(node, NS);
         }
         return {};
+    }
+
+    function getNodeAttrLabels(doc) {
+        if (!doc) return {};
+        const NS = 'http://www.gexf.net/1.2draft';
+        const labels = {};
+        for (const attrsEl of doc.getElementsByTagNameNS(NS, 'attributes')) {
+            if (attrsEl.getAttribute('class') !== 'node') continue;
+            for (const attrEl of attrsEl.getElementsByTagNameNS(NS, 'attribute')) {
+                const id = attrEl.getAttribute('id');
+                const title = attrEl.getAttribute('title');
+                if (id && title) labels[id] = title;
+            }
+        }
+        return labels;
     }
 
     // ── Termijn uit GEXF ──────────────────────────────────────────────────
@@ -930,6 +946,7 @@
             App.nodeById  = new Map(parsed.nodes.map(n => [n.id, n]));
             App.edgeById  = new Map(parsed.edges.map(e => [e.id, e]));
             App.gexfDoc   = parsed.doc;
+            App.nodeAttrLabels = getNodeAttrLabels(parsed.doc);
 
             const lastmod  = parsed.doc.querySelector('meta')?.getAttribute('lastmodifieddate') || '—';
             const metaHtml = `<strong>Art. 9 IW 1990</strong><br>${parsed.nodes.length} nodes · Bijgewerkt: ${lastmod}`;
@@ -1167,10 +1184,40 @@
         highlightRoute();
     }
 
-    const NODE_ATTR_LABELS = {
-        '0':'node_type','1':'jas_klasse','2':'kleur','3':'artikel','4':'bwb_id','5':'peildatum',
-        '8':'leden_noten','11':'bron','12':'bronnen','13':'interpretatiemethode','14':'toelichting','15':'definitie'
+    const NODE_ATTR_LABEL_OVERRIDES = {
+        '0': 'node_type',
+        '1': 'jas_klasse',
+        '2': 'kleur',
+        '3': 'artikel',
+        '4': 'bwb_id',
+        '5': 'peildatum',
+        '6': 'structuurpositie',
+        '7': 'kruisreferenties',
+        '8': 'begripsnaam',
+        '9': 'markering',
+        '10': 'bron',
+        '11': 'bronnen',
+        '12': 'interpretatiemethode',
+        '13': 'toelichting_klasse',
+        '14': 'definitie',
+        '15': 'soort',
+        '16': 'herkomst',
+        '17': 'geldigheid_van',
+        '18': 'geldigheid_tot',
+        '19': 'status',
+        '20': 'is_een',
+        '21': 'heeft',
+        '22': 'leidt_tot',
+        '23': 'afleidingsregels',
+        '24': 'regel_id',
+        '25': 'naam',
+        '26': 'operators',
+        '27': 'bronreferentie'
     };
+
+    function resolveNodeAttrLabel(attrId) {
+        return NODE_ATTR_LABEL_OVERRIDES[attrId] || App.nodeAttrLabels[attrId] || `attribuut ${attrId}`;
+    }
 
     function showNodeDetails(nodeId) {
         openTab('details');
@@ -1179,7 +1226,7 @@
         content.innerHTML = '';
         for (const [k, v] of Object.entries(attrs)) {
             if (!v || v === '[]') continue;
-            appendDetailRow(content, NODE_ATTR_LABELS[k] || k, v);
+            appendDetailRow(content, resolveNodeAttrLabel(k), v);
         }
     }
 
