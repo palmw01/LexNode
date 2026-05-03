@@ -121,7 +121,7 @@
             width: 34px; height: 34px;
             background: rgba(255,255,255,0.92);
             border: 1px solid var(--border);
-            border-radius: 4px;
+            border-radius: 6px;
             font-size: 1.1rem;
             cursor: pointer;
             display: flex; align-items: center; justify-content: center;
@@ -163,55 +163,101 @@
         .tab-content.active { display: block; }
         .tab-content h3:first-child { margin-top: 0; }
 
-        label { display: block; font-size: 0.8rem; font-weight: bold; margin-bottom: 4px; }
+        label { display: block; font-size: 0.85rem; font-weight: bold; margin-bottom: 6px; color: var(--rijk-blauw); }
         input[type="date"],
+        input[type="number"],
         select {
             display: block;
             width: 100%;
-            padding: 10px;
+            padding: 10px 12px;
             border: 1px solid var(--border);
-            font-size: 1rem;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-family: inherit;
             background: var(--wit);
+            color: var(--tekst);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        select {
             appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23555' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23012456' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 12px center;
-            padding-right: 32px;
+            padding-right: 36px;
             cursor: pointer;
         }
-        input[type="number"] {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            border: 1px solid var(--border);
-            font-size: 1rem;
-            background: var(--wit);
-            appearance: none;
-            text-align: left;
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--hemel-blauw);
+            box-shadow: 0 0 0 3px rgba(0, 123, 199, 0.2);
         }
         input[type="range"] {
             display: block;
             width: 100%;
-            margin: 0;
+            margin: 10px 0;
+            cursor: pointer;
         }
-        input[type="date"] { text-align: center; }
-        .field { margin-bottom: 15px; }
+        input[type="date"] { text-align: left; }
+        .field { margin-bottom: 18px; }
 
-        .btn { cursor: pointer; padding: 14px; font-weight: bold; border: none; width: 100%; margin-bottom: 8px; font-size: 0.9rem; }
-        .btn-primary   { background: var(--hemel-blauw); color: white; }
-        .btn-secondary { background: white; color: var(--hemel-blauw); border: 1px solid var(--hemel-blauw); }
+        .btn {
+            cursor: pointer;
+            padding: 12px 16px;
+            font-weight: bold;
+            border: 2px solid transparent;
+            border-radius: 6px;
+            width: 100%;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: background 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-primary {
+            background: var(--hemel-blauw);
+            color: white;
+        }
+        .btn-primary:hover {
+            background: var(--rijk-blauw);
+        }
+        .btn-primary:focus {
+            box-shadow: 0 0 0 3px rgba(0, 123, 199, 0.4);
+            outline: none;
+        }
+        .btn-secondary {
+            background: white;
+            color: var(--hemel-blauw);
+            border-color: var(--hemel-blauw);
+        }
+        .btn-secondary:hover {
+            background: #f0f7ff;
+            border-color: var(--rijk-blauw);
+            color: var(--rijk-blauw);
+        }
+        .btn-secondary:focus {
+            box-shadow: 0 0 0 3px rgba(0, 123, 199, 0.2);
+            outline: none;
+        }
         .btn-row { display: flex; gap: 10px; margin-top: 20px; }
-        .btn-row .btn { width: auto; flex: 1; }
-        .btn--small { font-size: 0.8rem; margin-top: 0; }
+        .btn-row .btn { width: auto; flex: 1; margin-bottom: 0; }
+        .btn--small { font-size: 0.8rem; padding: 8px 12px; }
+
         .toggle-control {
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 12px;
-            padding: 12px 14px;
+            padding: 14px;
             border: 1px solid var(--border);
-            border-radius: 10px;
+            border-radius: 6px;
             background: #f8fbff;
+            transition: background 0.2s;
+        }
+        .toggle-control:hover {
+            background: #f0f6ff;
         }
         .toggle-control__text {
             font-size: 0.9rem;
@@ -296,8 +342,49 @@
         #termijnen-tabel td { padding: 4px 8px; border-bottom: 1px solid #eee; }
         .termijn-vervallen td { color: #2d6a0f; }
         .termijn-toekomst td { color: #555; }
-        .checkbox-label { display: flex; align-items: flex-start; gap: 8px; font-size: 0.82rem; cursor: pointer; margin: 6px 0; line-height: 1.4; }
-        .checkbox-label input { margin-top: 2px; flex-shrink: 0; }
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            margin: 10px 0;
+            line-height: 1.4;
+            color: var(--tekst);
+            padding: 4px 0;
+        }
+        .checkbox-label input[type="checkbox"] {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-radius: 4px;
+            background: var(--wit);
+            cursor: pointer;
+            position: relative;
+            transition: background 0.2s, border-color 0.2s;
+            flex-shrink: 0;
+            margin: 0;
+        }
+        .checkbox-label input[type="checkbox"]:checked {
+            background: var(--hemel-blauw);
+            border-color: var(--hemel-blauw);
+        }
+        .checkbox-label input[type="checkbox"]:checked::after {
+            content: "";
+            position: absolute;
+            left: 6px;
+            top: 2px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+        .checkbox-label input[type="checkbox"]:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 123, 199, 0.2);
+        }
         #lid5-veld { margin: 8px 0; padding: 8px 10px; background: #f7f7ff; border-left: 3px solid #7030A0; font-size: 0.82rem; }
 
         .detail-row   { margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
@@ -322,6 +409,36 @@
             right: 16px;
             z-index: 30;
         }
+        #btn-fullscreen-close {
+            display: none;
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            z-index: 1001;
+            padding: 10px 16px;
+            background: var(--rijk-blauw);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        #graph-container:fullscreen #btn-fullscreen-close {
+            display: block;
+        }
+        /* Fallback for pseudo-fullscreen */
+        .pseudo-fullscreen {
+            position: fixed !important;
+            inset: 0 !important;
+            z-index: 9999 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            background: white !important;
+        }
+        .pseudo-fullscreen #btn-fullscreen-close {
+            display: block !important;
+        }
 
         /* Legend Styles */
         .legend-popup {
@@ -332,11 +449,11 @@
             background: white;
             padding: 15px;
             border: 1px solid var(--border);
-            border-radius: 4px;
+            border-radius: 6px;
             font-size: 0.75rem;
             z-index: 200;
             width: 220px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
         }
 
         .legend-popup.open { display: block; }
@@ -502,7 +619,7 @@
             .tab-content #result-panel,
             .tab-content .notitie-github,
             .tab-content .notitie-ontbrekend {
-                border-radius: 10px;
+                border-radius: 6px;
             }
             .tab-content .btn {
                 min-height: 46px;
@@ -653,16 +770,24 @@
                 </div>
             </div>
             <div class="field">
-                <label for="gravitational-constant">Gravitational Constant: <span id="gravitational-value">-1500</span></label>
-                <input type="range" id="gravitational-constant" min="-3000" max="-200" value="-1500" step="50">
+                <label for="gravitational-constant">Gravitational Constant: <span id="gravitational-value">-50</span></label>
+                <input type="range" id="gravitational-constant" min="-250" max="-10" value="-50" step="1">
             </div>
             <div class="field">
-                <label for="central-gravity">Central Gravity: <span id="central-value">0.55</span></label>
-                <input type="range" id="central-gravity" min="0.2" max="0.8" value="0.55" step="0.01">
+                <label for="central-gravity">Central Gravity: <span id="central-value">0.01</span></label>
+                <input type="range" id="central-gravity" min="0" max="0.1" value="0.01" step="0.001">
             </div>
             <div class="field">
-                <label for="avoid-overlap">Avoid Overlap: <span id="avoid-overlap-value">0.35</span></label>
-                <input type="range" id="avoid-overlap" min="0" max="1" value="0.35" step="0.05">
+                <label for="avoid-overlap">Avoid Overlap: <span id="avoid-overlap-value">1</span></label>
+                <input type="range" id="avoid-overlap" min="0" max="1" value="1" step="0.05">
+            </div>
+            <div class="field" style="margin-top: 15px;">
+                <label>Layout Presets</label>
+                <div class="btn-row" style="margin-top: 5px;">
+                    <button type="button" class="btn btn-secondary btn--small" id="btn-preset-compact">Compact</button>
+                    <button type="button" class="btn btn-secondary btn--small" id="btn-preset-clustered">Cluster</button>
+                    <button type="button" class="btn btn-secondary btn--small" id="btn-preset-spread">Spread</button>
+                </div>
             </div>
             <div class="btn-row">
                 <button type="button" class="btn btn-secondary" id="btn-reset-physics">Reset to Defaults</button>
@@ -678,6 +803,7 @@
     </aside>
 
     <div id="graph-container">
+        <button type="button" id="btn-fullscreen-close">Sluiten</button>
         <div id="mynetwork" role="application" aria-label="Kennisgraaf Art. 9 Invorderingswet 1990"></div>
         <div id="loader" role="status" aria-live="polite">Graaf laden...</div>
         <div id="nav-knoppen" aria-label="Graafnavigatie">
@@ -751,17 +877,17 @@
     const ATTR_BRONREFERENTIE = '27';
 
     const DEFAULT_PHYSICS_SETTINGS = {
-        gravitationalConstant: -1500,
-        centralGravity: 0.55,
-        springLength: 120,
-        springConstant: 0.04,
-        damping: 0.5,
-        avoidOverlap: 0.35,
+        gravitationalConstant: -50,
+        centralGravity: 0.01,
+        springLength: 100,
+        springConstant: 0.08,
+        damping: 0.4,
+        avoidOverlap: 1,
     };
     const PHYSICS_STORAGE_KEY = 'lexnode-physics';
-    const INITIAL_STABILIZATION_ITERATIONS = 250;
-    const DRAG_STABILIZATION_ITERATIONS = 40;
-    const RESET_STABILIZATION_ITERATIONS = 120;
+    const INITIAL_STABILIZATION_ITERATIONS = 400;
+    const DRAG_STABILIZATION_ITERATIONS = 60;
+    const RESET_STABILIZATION_ITERATIONS = 150;
 
     const LID1_ROUTE = [
         'begrippen/dagtekening-aanslagbiljet',
@@ -1198,7 +1324,7 @@
             },
             physics: {
                 enabled: true,
-                solver: 'barnesHut',
+                solver: 'forceAtlas2Based',
                 stabilization: {
                     enabled: true,
                     iterations: INITIAL_STABILIZATION_ITERATIONS,
@@ -1207,7 +1333,7 @@
                     fit: false,
                 },
                 adaptiveTimestep: true,
-                barnesHut: {
+                forceAtlas2Based: {
                     gravitationalConstant: settings.gravitationalConstant,
                     centralGravity: settings.centralGravity,
                     springLength: settings.springLength,
@@ -1233,7 +1359,7 @@
         App.network.setOptions({
             physics: {
                 enabled: enablePhysics,
-                solver: 'barnesHut',
+                solver: 'forceAtlas2Based',
                 stabilization: {
                     enabled: true,
                     iterations: INITIAL_STABILIZATION_ITERATIONS,
@@ -1242,7 +1368,7 @@
                     fit: false,
                 },
                 adaptiveTimestep: true,
-                barnesHut: {
+                forceAtlas2Based: {
                     gravitationalConstant: App.physicsSettings.gravitationalConstant,
                     centralGravity: App.physicsSettings.centralGravity,
                     springLength: App.physicsSettings.springLength,
@@ -1265,27 +1391,41 @@
         persistPhysicsSettings();
     }
 
-    function scheduleFitToView({ animate = true } = {}) {
+    function scheduleFitToView({ animate = true, padding = 60 } = {}) {
         if (!App.network) return;
         App.network.fit({
+            padding: padding,
             animation: animate ? {
-                duration: 250,
+                duration: 600,
                 easingFunction: 'easeInOutQuad',
             } : false
         });
     }
 
-    function runInitialStabilization() {
+    function runInitialStabilization(onDone) {
         if (!App.network) return;
+        
+        const loader = document.getElementById('loader');
+        if (loader) {
+            loader.textContent = 'Lay-out optimaliseren...';
+            loader.style.display = 'flex';
+        }
+
         App.isStabilizing = true;
         App.physicsEnabled = true;
-        syncPhysicsControlsFromState();
-        persistPhysicsSettings();
+        
+        // Forceer de engine instellingen
+        applyPhysicsSettings(App.physicsSettings, { enablePhysics: true });
+        
         App.network.once('stabilizationIterationsDone', () => {
             disablePhysicsAndFreeze();
             App.hasInitialFitCompleted = true;
             scheduleFitToView({ animate: true });
+            
+            if (loader) loader.style.display = 'none';
+            if (onDone) onDone();
         });
+        
         App.network.stabilize(INITIAL_STABILIZATION_ITERATIONS);
     }
 
@@ -1380,7 +1520,6 @@
 
     async function initGraph() {
         const container = document.getElementById('mynetwork');
-        const loader = document.getElementById('loader');
 
         try {
             const response = await fetch('graph.gexf');
@@ -1404,12 +1543,12 @@
             updateGraphMeta(parsed.doc, parsed);
             App.network = createNetwork(container);
             attachNetworkEventHandlers();
-            applyPhysicsSettings(App.physicsSettings, { enablePhysics: true });
-            loader.style.display = 'none';
-            clearNodeDetails(true);
+            
+            // Start stabilisatie (loader wordt in runInitialStabilization beheerd)
             runInitialStabilization();
         } catch (error) {
-            loader.textContent = `Fout bij laden graaf: ${error.message}`;
+            const loader = document.getElementById('loader');
+            if (loader) loader.textContent = `Fout bij laden graaf: ${error.message}`;
             return;
         }
 
@@ -1456,7 +1595,21 @@
         clearNodeDetails(true);
         resetResultPanel();
         openTab('calc');
-        resetGraph();
+        
+        // Data herstellen
+        if (App.network && App.graphData.nodes.length) {
+            App.nodesDS.clear();
+            App.edgesDS.clear();
+            
+            // Door x:0, y:0 te geven, voorkomen we de cirkel-lay-out flash.
+            // De nodes starten in een klomp in het midden en exploderen organisch.
+            const centerNodes = App.graphData.nodes.map(n => ({ ...n, x: 0, y: 0 }));
+            App.nodesDS.add(centerNodes);
+            App.edgesDS.add(App.graphData.edges);
+            
+            // Trigger stabilisatie (loader wordt getoond/verborgen door runInitialStabilization)
+            runInitialStabilization();
+        }
     }
 
     // ── Physics controls ─────────────────────────────────────────────────
@@ -1468,36 +1621,79 @@
         }, { enablePhysics: App.physicsEnabled });
     }
 
+    const PHYSICS_PRESETS = {
+        compact:   { gravitationalConstant: -30, centralGravity: 0.05, avoidOverlap: 1.0 },
+        clustered: { gravitationalConstant: -80, centralGravity: 0.10, avoidOverlap: 0.5 },
+        spread:    { gravitationalConstant: -60, centralGravity: 0.001, avoidOverlap: 0.8 }
+    };
+
+    function applyPreset(type) {
+        const settings = PHYSICS_PRESETS[type];
+        if (!settings) return;
+        
+        App.physicsSettings = { ...App.physicsSettings, ...settings };
+        applyPhysicsSettings(App.physicsSettings, { enablePhysics: true });
+        
+        if (App.network) {
+            App.network.startSimulation();
+            App.network.stabilize(RESET_STABILIZATION_ITERATIONS);
+            // Na stabilisatie weer bevriezen volgens de lifecycle
+            App.network.once('stabilizationIterationsDone', () => {
+                disablePhysicsAndFreeze();
+            });
+        }
+    }
+
     function resetPhysicsDefaults() {
         applyPhysicsSettings({ ...DEFAULT_PHYSICS_SETTINGS }, { enablePhysics: true });
         if (App.network) {
             App.network.startSimulation();
             App.network.stabilize(RESET_STABILIZATION_ITERATIONS);
+            App.network.once('stabilizationIterationsDone', () => {
+                disablePhysicsAndFreeze();
+                scheduleFitToView({ animate: true });
+            });
         }
-        disablePhysicsAndFreeze();
-        scheduleFitToView({ animate: true });
     }
 
     // ── Fullscreen functionaliteit ───────────────────────────────────────
     function toggleFullscreen() {
         const container = document.getElementById('graph-container');
-        if (!container.requestFullscreen || !document.exitFullscreen) {
-            console.warn('Fullscreen is niet beschikbaar in deze browser.');
-            return;
-        }
-
-        if (!document.fullscreenElement) {
-            container.requestFullscreen().catch((error) => {
-                console.warn('Fullscreen kon niet worden gestart:', error);
-            });
+        
+        // Native Fullscreen API
+        if (container.requestFullscreen) {
+            if (!document.fullscreenElement) {
+                container.requestFullscreen().catch(() => {
+                    // Fallback naar pseudo-fullscreen als native faalt (bijv. op sommige mobiele browsers)
+                    enterPseudoFullscreen(container);
+                });
+            } else {
+                document.exitFullscreen();
+            }
         } else {
-            document.exitFullscreen().catch((error) => {
-                console.warn('Fullscreen kon niet worden afgesloten:', error);
-            });
+            // Geen native ondersteuning (oudere iOS?), gebruik pseudo-fullscreen
+            if (!container.classList.contains('pseudo-fullscreen')) {
+                enterPseudoFullscreen(container);
+            } else {
+                exitPseudoFullscreen(container);
+            }
         }
     }
 
+    function enterPseudoFullscreen(container) {
+        container.classList.add('pseudo-fullscreen');
+        document.body.style.overflow = 'hidden';
+        handleFullscreenChange();
+    }
+
+    function exitPseudoFullscreen(container) {
+        container.classList.remove('pseudo-fullscreen');
+        document.body.style.overflow = '';
+        handleFullscreenChange();
+    }
+
     function handleFullscreenChange() {
+        // Kleine delay om browser layout tijd te geven
         setTimeout(() => {
             if (!App.network) return;
             updateLayoutMetrics();
@@ -1505,7 +1701,7 @@
             if (!App.dragPhysicsActive) {
                 scheduleFitToView({ animate: false });
             }
-        }, 100);
+        }, 150);
     }
 
     // ── Mobile sidebar ───────────────────────────────────────────────────
@@ -1514,13 +1710,32 @@
     function highlightRoute() {
         const routeNodes = App.graphData.nodes
             .filter(n => activeRoute.includes(n.id))
-            .map(n => ({ ...n, size: 24, borderWidth: 3, color: { border: '#007bc7', background: n.color } }));
+            .map(n => ({ 
+                ...n, 
+                size: 26, 
+                borderWidth: 4, 
+                color: { border: '#007bc7', background: n.color },
+                x: 0, y: 0 // Start vanuit het midden voor het 'explosie' effect
+            }));
         const routeEdges = App.graphData.edges
             .filter(e => activeRoute.includes(e.from) && activeRoute.includes(e.to));
-        App.nodesDS.clear(); App.edgesDS.clear();
+        
+        App.nodesDS.clear(); 
+        App.edgesDS.clear();
         App.nodesDS.add(routeNodes);
         App.edgesDS.add(routeEdges);
-        setTimeout(() => scheduleFitToView({ animate: true }), 150);
+
+        // Activeer tijdelijk physics voor het ForceAtlas2 gevoel
+        App.physicsEnabled = true;
+        applyPhysicsSettings(App.physicsSettings, { enablePhysics: true });
+        
+        // Stabiliseer kort en focus daarna op de route
+        App.network.once('stabilizationIterationsDone', () => {
+            disablePhysicsAndFreeze();
+            scheduleFitToView({ animate: true, padding: 80 });
+        });
+        
+        App.network.stabilize(120); 
     }
 
     function calculate() {
@@ -1726,6 +1941,20 @@
     document.getElementById('central-gravity').addEventListener('input', updatePhysics);
     document.getElementById('avoid-overlap').addEventListener('input', updatePhysics);
     document.getElementById('btn-reset-physics').addEventListener('click', resetPhysicsDefaults);
+    
+    // Preset buttons
+    document.getElementById('btn-preset-compact').addEventListener('click', () => applyPreset('compact'));
+    document.getElementById('btn-preset-clustered').addEventListener('click', () => applyPreset('clustered'));
+    document.getElementById('btn-preset-spread').addEventListener('click', () => applyPreset('spread'));
+    
+    // Fullscreen close
+    document.getElementById('btn-fullscreen-close').addEventListener('click', () => {
+        if (document.fullscreenElement) {
+            document.exitFullscreen();
+        } else {
+            exitPseudoFullscreen(document.getElementById('graph-container'));
+        }
+    });
 
     function initInfoBtn() {
         const btn = document.getElementById('info-btn');
