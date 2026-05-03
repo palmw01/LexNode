@@ -409,24 +409,6 @@
             right: 16px;
             z-index: 30;
         }
-        #btn-fullscreen-close {
-            display: none;
-            position: absolute;
-            top: 16px;
-            left: 16px;
-            z-index: 1001;
-            padding: 10px 16px;
-            background: var(--rijk-blauw);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-        }
-        #graph-container:fullscreen #btn-fullscreen-close {
-            display: block;
-        }
         /* Fallback for pseudo-fullscreen */
         .pseudo-fullscreen {
             position: fixed !important;
@@ -435,9 +417,6 @@
             width: 100vw !important;
             height: 100vh !important;
             background: white !important;
-        }
-        .pseudo-fullscreen #btn-fullscreen-close {
-            display: block !important;
         }
 
         /* Legend Styles */
@@ -803,7 +782,6 @@
     </aside>
 
     <div id="graph-container">
-        <button type="button" id="btn-fullscreen-close">Sluiten</button>
         <div id="mynetwork" role="application" aria-label="Kennisgraaf Art. 9 Invorderingswet 1990"></div>
         <div id="loader" role="status" aria-live="polite">Graaf laden...</div>
         <div id="nav-knoppen" aria-label="Graafnavigatie">
@@ -1696,6 +1674,15 @@
     }
 
     function handleFullscreenChange() {
+        // Update fullscreen icon
+        const fsBtn = document.getElementById('btn-fullscreen');
+        const container = document.getElementById('graph-container');
+        if (fsBtn && container) {
+            const isFS = document.fullscreenElement || container.classList.contains('pseudo-fullscreen');
+            fsBtn.innerHTML = isFS ? '✕' : '⛶';
+            fsBtn.title = isFS ? 'Fullscreen afsluiten' : 'Fullscreen';
+        }
+
         // Kleine delay om browser layout tijd te geven
         setTimeout(() => {
             if (!App.network) return;
@@ -1950,16 +1937,9 @@
     document.getElementById('btn-preset-clustered').addEventListener('click', () => applyPreset('clustered'));
     document.getElementById('btn-preset-spread').addEventListener('click', () => applyPreset('spread'));
     
-    // Fullscreen close
-    document.getElementById('btn-fullscreen-close').addEventListener('click', () => {
-        if (document.fullscreenElement) {
-            document.exitFullscreen();
-        } else {
-            exitPseudoFullscreen(document.getElementById('graph-container'));
-        }
-    });
+    // Fullscreen close (removed - toggle button now handles this)
 
-    function initInfoBtn() {
+    // Help functionaliteit (optioneel)
         const btn = document.getElementById('info-btn');
         const popup = document.getElementById('info-popup');
         if (!btn || !popup) return;
