@@ -70,44 +70,6 @@
         }
         #graph-meta strong { color: var(--wit); }
 
-        #info-btn {
-            display: none;
-            margin-left: auto;
-            background: none;
-            border: 1px solid rgba(255,255,255,0.5);
-            color: var(--wit);
-            border-radius: 50%;
-            width: 30px; height: 30px;
-            font-size: 0.95rem;
-            cursor: pointer;
-            line-height: 1;
-            position: relative;
-        }
-        #info-popup {
-            display: none;
-            position: absolute;
-            top: calc(100% + 8px);
-            right: 0;
-            background: var(--wit);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            padding: 15px;
-            font-size: 0.75rem;
-            color: var(--tekst);
-            line-height: 1.6;
-            white-space: normal;
-            width: min(280px, calc(100vw - 24px));
-            z-index: 200;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-        #info-popup strong {
-            display: block;
-            margin-bottom: 10px;
-            font-size: 0.85rem;
-            color: var(--rijk-blauw);
-        }
-        #info-popup .notitie-github { margin-top: 12px; }
-        #info-popup.open { display: block; }
 
         #nav-knoppen {
             position: absolute;
@@ -443,7 +405,6 @@
         .dot--actief { border: 2px solid var(--hemel-blauw); background: transparent; }
         .legend-divider { border-top: 1px solid #eee; margin: 10px 0; }
         .legend-popup strong { display: block; margin-bottom: 10px; font-size: 0.85rem; color: var(--rijk-blauw); }
-        .legend-mobile-only,
         .mobile-only-inline { display: none; }
         .desktop-only-inline { display: inline; }
         .legend-meta { font-size: 0.8rem; line-height: 1.6; color: #555; }
@@ -651,18 +612,8 @@
             #nav-knoppen #btn-legend {
                 display: none;
             }
-            .legend-mobile-only { display: block; }
             .mobile-only-inline { display: inline; }
             .desktop-only-inline { display: none; }
-            .legend-mobile-only strong {
-                margin-bottom: 10px;
-                padding-bottom: 0;
-                border-bottom: none;
-                font-size: 0.85rem;
-            }
-            .legend-mobile-only .notitie-github {
-                margin-top: 12px;
-            }
             body { padding-bottom: var(--mobile-bar-height); }
         }
     </style>
@@ -673,9 +624,6 @@
     <button type="button" id="home-btn" aria-label="Terug naar volledige graaf">LexNode</button>
     <div class="logo-box">Ministerie van Financiën<br><strong>Belastingdienst</strong></div>
     <div id="graph-meta">Laden…</div>
-    <button type="button" id="info-btn" aria-label="Graaf-informatie" aria-expanded="false">ⓘ
-        <div id="info-popup" role="tooltip">Laden…</div>
-    </button>
 </header>
 
 <main>
@@ -789,8 +737,8 @@
             <button type="button" class="nav-btn" id="btn-zoom-out" title="Uitzoomen">−</button>
             <button type="button" class="nav-btn" id="btn-fit"      title="Alles tonen">⤢</button>
             <button type="button" class="nav-btn" id="btn-fullscreen" title="Fullscreen">⛶</button>
-            <button type="button" class="nav-btn" id="btn-legend" title="Legenda" aria-label="Toon legenda"
-                    data-popup-target="legend-popup" aria-controls="legend-popup" aria-expanded="false">L</button>
+            <button type="button" class="nav-btn" id="btn-legend" title="Info" aria-label="Toon info"
+                    data-popup-target="legend-popup" aria-controls="legend-popup" aria-expanded="false">ℹ</button>
         </div>
 
     </div>
@@ -798,7 +746,7 @@
 
 <div id="legend-overlay" class="overlay"></div>
 <div id="legend-popup" class="legend-popup" role="dialog" aria-labelledby="legend-title">
-    <strong id="legend-title"><span class="desktop-only-inline">Legenda</span><span class="mobile-only-inline">Info</span></strong>
+    <strong id="legend-title">Info</strong>
     <div class="legend-item"><div class="dot" style="background:#CCCCCC"></div>Annotatie (Wetsartikel)</div>
     <div class="legend-item"><div class="dot" style="background:#70AD47"></div>Rechtsobject (Begrip)</div>
     <div class="legend-item"><div class="dot" style="background:#F4B942"></div>Tijdsaanduiding</div>
@@ -1422,11 +1370,10 @@
 
     function updateGraphMeta(doc, parsed) {
         const lastmod  = doc.querySelector('meta')?.getAttribute('lastmodifieddate') || '—';
-        const graphMetaHtml = `<strong>Art. 9 IW 1990</strong><br>${parsed.nodes.length} nodes · Bijgewerkt: ${lastmod}`;
-        const infoHtml = `<strong>Art. 9 IW 1990</strong>${parsed.nodes.length} nodes · Bijgewerkt: ${lastmod}<div class="notitie-github">Broncode en kennisgraaf beschikbaar op <a href="https://github.com/palmw01/LexNode" target="_blank" rel="noopener">github.com/palmw01/LexNode</a></div>`;
-        document.getElementById('graph-meta').innerHTML = graphMetaHtml;
-        document.getElementById('info-popup').innerHTML = infoHtml;
-        document.getElementById('legend-mobile-graph-info').innerHTML = `${parsed.nodes.length} nodes · Bijgewerkt: ${lastmod}`;
+        document.getElementById('graph-meta').innerHTML =
+            `<strong>Art. 9 IW 1990</strong><br>${parsed.nodes.length} nodes · Bijgewerkt: ${lastmod}`;
+        document.getElementById('legend-mobile-graph-info').innerHTML =
+            `${parsed.nodes.length} nodes · Bijgewerkt: ${lastmod}`;
     }
 
     function attachNetworkEventHandlers() {
@@ -1944,25 +1891,6 @@
     
     // Fullscreen close (removed - toggle button now handles this)
 
-    function initInfoBtn() {
-        const btn = document.getElementById('info-btn');
-        const popup = document.getElementById('info-popup');
-        if (!btn || !popup) return;
-
-        btn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const isOpen = popup.classList.toggle('open');
-            btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-        });
-
-        document.addEventListener('click', (e) => {
-            if (popup.classList.contains('open') && !btn.contains(e.target)) {
-                popup.classList.remove('open');
-                btn.setAttribute('aria-expanded', 'false');
-            }
-        });
-    }
-
     function initPopups() {
         const overlay = document.getElementById('legend-overlay');
         const popupClassNames = {
@@ -2038,7 +1966,6 @@
         updateLayoutMetrics();
         initTabs();
         initDates();
-        initInfoBtn();
         initPopups();
         loadPhysicsSettings();
         attachViewportEventHandlers();
