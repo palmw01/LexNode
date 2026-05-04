@@ -123,10 +123,6 @@ class LexNodeEngine:
                 for i in range(1, resterende_maanden + 1):
                     doel_maand = dagtekening.month + i
                     doel_jaar = dagtekening.year
-                    if doel_maand > 12:
-                        doel_maand -= 12
-                        doel_jaar += 1
-                    
                     _, last_day_doel = calendar.monthrange(doel_jaar, doel_maand)
                     dag = last_day_doel if is_laatste_dag else min(dagtekening.day, last_day_doel)
                     termijnen.append(datetime(doel_jaar, doel_maand, dag))

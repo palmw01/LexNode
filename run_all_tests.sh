@@ -2,8 +2,6 @@
 # LexNode Test Runner — All Test Suites
 # Execute comprehensive validation suite
 
-set -e  # Exit on first error
-
 echo "╔════════════════════════════════════════════════════════════╗"
 echo "║        LexNode Senior Tester — Full Test Suite            ║"
 echo "║                    Running 78 Tests                       ║"

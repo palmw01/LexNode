@@ -124,22 +124,22 @@
 
     // ── State ─────────────────────────────────────────────────────────────
     const App = {
-        network:   null,
-        nodesDS:   new vis.DataSet(),
-        edgesDS:   new vis.DataSet(),
-        graphData: { nodes: [], edges: [] },
-        nodeById:  new Map(),
-        edgeById:  new Map(),
-        gexfDoc:   null,
-        nodeAttrLabels: {},
+        network:        null,
+        nodesDS:        new vis.DataSet(),
+        edgesDS:        new vis.DataSet(),
+        graphData:      { nodes: [], edges: [] },
+        nodeById:       new Map(),
+        edgeById:       new Map(),
+        nodeAttrsById:  new Map(),
+        gexfDoc:        null,
         popupController: null,
         physicsEnabled: false,
-        isStabilizing: false,
+        isStabilizing:  false,
         dragPhysicsActive: false,
-        resizeRaf: null,
+        resizeRaf:      null,
         hasInitialFitCompleted: false,
         physicsSettings: { ...DEFAULT_PHYSICS_SETTINGS },
-        activeRoute: LID1_ROUTE,
+        activeRoute:    LID1_ROUTE,
     };
 
     const RELATIES = {
@@ -157,6 +157,11 @@
     function getTodayLocal() {
         const d = new Date();
         return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
+
+    function parseLocalDate(str) {
+        const [y, m, d] = str.split('-').map(Number);
+        return new Date(y, m - 1, d);
     }
 
     function debounce(fn, ms) {
@@ -208,17 +213,19 @@
     function parseGexf(xml) {
         const doc = new DOMParser().parseFromString(xml, 'application/xml');
         const NS  = 'http://www.gexf.net/1.2draft';
-        const nodes = [], edges = [];
+        const nodes = [], edges = [], nodeAttrs = new Map();
 
         for (const node of doc.getElementsByTagNameNS(NS, 'node')) {
             const attrs = getAttrs(node, NS);
+            const id    = node.getAttribute('id');
             nodes.push({
-                id:        node.getAttribute('id'),
+                id,
                 label:     node.getAttribute('label'),
                 color:     attrs[ATTR_COLOR]     || '#97C2FC',
                 definitie: attrs[ATTR_DEFINITIE] || '',
                 node_type: attrs['0']            || 'onbekend',
             });
+            nodeAttrs.set(id, attrs);
         }
         for (const edge of doc.getElementsByTagNameNS(NS, 'edge')) {
             const rel   = edge.getAttribute('label') || '';
@@ -233,7 +240,7 @@
                 title:   rel || undefined,
             });
         }
-        return { nodes, edges, doc };
+        return { nodes, edges, doc, nodeAttrs };
     }
 
     function getAttrs(nodeEl, NS) {
@@ -245,27 +252,7 @@
     }
 
     function getNodeAttrs(nodeId) {
-        if (!App.gexfDoc) return {};
-        const NS = 'http://www.gexf.net/1.2draft';
-        for (const node of App.gexfDoc.getElementsByTagNameNS(NS, 'node')) {
-            if (node.getAttribute('id') === nodeId) return getAttrs(node, NS);
-        }
-        return {};
-    }
-
-    function getNodeAttrLabels(doc) {
-        if (!doc) return {};
-        const NS = 'http://www.gexf.net/1.2draft';
-        const labels = {};
-        for (const attrsEl of doc.getElementsByTagNameNS(NS, 'attributes')) {
-            if (attrsEl.getAttribute('class') !== 'node') continue;
-            for (const attrEl of attrsEl.getElementsByTagNameNS(NS, 'attribute')) {
-                const id = attrEl.getAttribute('id');
-                const title = attrEl.getAttribute('title');
-                if (id && title) labels[id] = title;
-            }
-        }
-        return labels;
+        return App.nodeAttrsById.get(String(nodeId)) || {};
     }
 
     // ── Termijn uit GEXF ──────────────────────────────────────────────────
@@ -606,7 +593,9 @@
     }
 
     function updateGraphMeta(doc, parsed) {
-        const lastmod  = doc.querySelector('meta')?.getAttribute('lastmodifieddate') || '—';
+        const NS      = 'http://www.gexf.net/1.2draft';
+        const metaEl  = doc.getElementsByTagNameNS(NS, 'meta')[0];
+        const lastmod = metaEl?.getAttribute('lastmodifieddate') || '—';
         document.getElementById('graph-meta').innerHTML =
             `<strong>Art. 9 IW 1990</strong><br>${parsed.nodes.length} nodes · Bijgewerkt: ${lastmod}`;
         document.getElementById('legend-mobile-graph-info').innerHTML =
@@ -693,11 +682,11 @@
 
             const xml = await response.text();
             const parsed = parseGexf(xml);
-            App.graphData = { nodes: parsed.nodes, edges: parsed.edges };
-            App.nodeById = new Map(parsed.nodes.map((node) => [node.id, node]));
-            App.edgeById = new Map(parsed.edges.map((edge) => [edge.id, edge]));
-            App.gexfDoc = parsed.doc;
-            App.nodeAttrLabels = getNodeAttrLabels(parsed.doc);
+            App.graphData     = { nodes: parsed.nodes, edges: parsed.edges };
+            App.nodeById      = new Map(parsed.nodes.map(n => [n.id, n]));
+            App.edgeById      = new Map(parsed.edges.map(e => [e.id, e]));
+            App.nodeAttrsById = parsed.nodeAttrs;
+            App.gexfDoc       = parsed.doc;
 
             App.nodesDS.clear();
             App.edgesDS.clear();
@@ -867,7 +856,6 @@
     }
 
     function handleFullscreenChange() {
-        // Update fullscreen icon
         const fsBtn = document.getElementById('btn-fullscreen');
         const container = document.getElementById('graph-container');
         if (fsBtn && container) {
@@ -876,15 +864,14 @@
             fsBtn.title = isFS ? 'Fullscreen afsluiten' : 'Fullscreen';
         }
 
-        // Kleine delay om browser layout tijd te geven
-        setTimeout(() => {
-            if (!App.network) return;
+        if (!App.network || !container) return;
+        const observer = new ResizeObserver(() => {
+            observer.disconnect();
             updateLayoutMetrics();
             App.network.redraw();
-            if (!App.dragPhysicsActive) {
-                scheduleFitToView({ animate: false });
-            }
-        }, 150);
+            if (!App.dragPhysicsActive) scheduleFitToView({ animate: false });
+        });
+        observer.observe(container);
     }
 
     // ── Mobile sidebar ───────────────────────────────────────────────────
@@ -925,8 +912,8 @@
         if (!dagVal || !peilVal) return;
         if (!document.getElementById('aanslagtype').value) return;
 
-        const dag = new Date(dagVal);
-        const peil = new Date(peilVal);
+        const dag = parseLocalDate(dagVal);
+        const peil = parseLocalDate(peilVal);
         const aanslagtype = document.getElementById('aanslagtype').value;
         const isVoorlopig = aanslagtype.startsWith('voorlopig');
         const afwijkendBoekjaar = document.getElementById('afwijkend-boekjaar').checked;
@@ -1039,7 +1026,7 @@
     };
 
     function resolveNodeAttrLabel(attrId) {
-        return NODE_ATTR_LABEL_OVERRIDES[attrId] || App.nodeAttrLabels[attrId] || `attribuut ${attrId}`;
+        return NODE_ATTR_LABEL_OVERRIDES[attrId] || `attribuut ${attrId}`;
     }
 
     function showNodeDetails(nodeId) {
