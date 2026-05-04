@@ -896,6 +896,7 @@
         const dagVal = document.getElementById('dagtekening').value;
         const peilVal = document.getElementById('peildatum').value;
         if (!dagVal || !peilVal) return;
+        if (!document.getElementById('aanslagtype').value) return;
 
         const dag = new Date(dagVal);
         const peil = new Date(peilVal);
@@ -1068,7 +1069,17 @@
         document.getElementById('peildatum').value = today;
     }
 
+    (function initAanslagtypePlaceholder() {
+        const sel = document.getElementById('aanslagtype');
+        const placeholder = new Option('— Selecteer aanslagtype —', '');
+        placeholder.disabled = true;
+        sel.insertBefore(placeholder, sel.firstChild);
+        sel.value = '';
+    })();
+
     document.getElementById('aanslagtype').addEventListener('change', function() {
+        const placeholder = this.querySelector('option[value=""]');
+        if (placeholder) placeholder.remove();
         const isVoorlopig = this.value.startsWith('voorlopig');
         document.getElementById('voorlopig-opties').style.display = isVoorlopig ? 'block' : 'none';
         document.getElementById('totaalbedrag-wrapper').style.display = isVoorlopig ? 'block' : 'none';
