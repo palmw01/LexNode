@@ -134,7 +134,7 @@
         main { flex: 1; display: flex; overflow: hidden; min-height: 0; }
 
         #sidebar {
-            width: 400px;
+            width: 320px;
             flex-shrink: 0;
             background: var(--wit);
             border-right: 1px solid var(--border);
@@ -390,6 +390,7 @@
         .detail-row   { margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
         .detail-label { font-weight: bold; font-size: 0.7rem; color: #777; text-transform: uppercase; }
         .detail-value { font-size: 0.85rem; word-break: break-word; overflow-wrap: break-word; white-space: normal; max-width: 100%; }
+        .detail-hint  { font-size: 0.85rem; color: #999; padding: 8px 0; font-style: italic; }
 
         #graph-container { flex: 1; position: relative; background: white; min-width: 0; }
         #mynetwork { position: absolute; inset: 0; }
@@ -647,7 +648,7 @@
                 top: 12px;
                 right: 12px;
             }
-            #nav-knoppen .nav-btn:not(#btn-fullscreen) {
+            #nav-knoppen #btn-legend {
                 display: none;
             }
             .legend-mobile-only { display: block; }
@@ -737,7 +738,7 @@
         </div>
 
         <div id="physics" class="tab-content" role="tabpanel">
-            <h3>Physics Parameters</h3>
+            <h3>Grafische weergave</h3>
             <div class="field">
                 <div class="toggle-control">
                     <span class="toggle-control__text">Physics actief</span>
@@ -748,19 +749,19 @@
                 </div>
             </div>
             <div class="field">
-                <label for="gravitational-constant">Gravitational Constant: <span id="gravitational-value">-400</span></label>
+                <label for="gravitational-constant">Zwaartekracht: <span id="gravitational-value">-400</span></label>
                 <input type="range" id="gravitational-constant" min="-2000" max="-50" value="-400" step="50">
             </div>
             <div class="field">
-                <label for="central-gravity">Central Gravity: <span id="central-value">0.05</span></label>
+                <label for="central-gravity">Centrale aantrekking: <span id="central-value">0.05</span></label>
                 <input type="range" id="central-gravity" min="0" max="1" value="0.05" step="0.01">
             </div>
             <div class="field">
-                <label for="avoid-overlap">Avoid Overlap: <span id="avoid-overlap-value">1</span></label>
+                <label for="avoid-overlap">Overlap vermijden: <span id="avoid-overlap-value">1</span></label>
                 <input type="range" id="avoid-overlap" min="0" max="1" value="1" step="0.05">
             </div>
             <div class="field" style="margin-top: 15px;">
-                <label>Layout Presets</label>
+                <label>Lay-outpresets</label>
                 <div class="btn-row" style="margin-top: 5px;">
                     <button type="button" class="btn btn-secondary btn--small" id="btn-preset-compact">Compact</button>
                     <button type="button" class="btn btn-secondary btn--small" id="btn-preset-clustered">Cluster</button>
@@ -768,14 +769,14 @@
                 </div>
             </div>
             <div class="btn-row">
-                <button type="button" class="btn btn-secondary" id="btn-reset-physics">Reset to Defaults</button>
+                <button type="button" class="btn btn-secondary" id="btn-reset-physics">Herstel standaardinstellingen</button>
             </div>
         </div>
 
         <div id="details" class="tab-content" role="tabpanel">
             <h3>Node details</h3>
             <div id="node-details-content" role="region" aria-live="polite" aria-label="Node details">
-                Klik op een node in de graaf...
+                <p class="detail-hint">Klik op een node in de graaf...</p>
             </div>
         </div>
     </aside>
@@ -1007,7 +1008,7 @@
     function clearNodeDetails(showHint = false) {
         const content = document.getElementById('node-details-content');
         if (!content) return;
-        content.textContent = showHint ? NODE_DETAILS_HINT : '';
+        content.innerHTML = showHint ? `<p class="detail-hint">${NODE_DETAILS_HINT}</p>` : '';
     }
 
     function isMobileLayout() {
@@ -1237,6 +1238,8 @@
 
     function syncPhysicsControlsFromState() {
         document.getElementById('physics-toggle').checked = App.physicsEnabled;
+        document.querySelector('.toggle-control__text').textContent =
+            App.physicsEnabled ? 'Physics actief' : 'Physics inactief';
         document.getElementById('gravitational-constant').value = String(App.physicsSettings.gravitationalConstant);
         document.getElementById('central-gravity').value = String(App.physicsSettings.centralGravity);
         document.getElementById('avoid-overlap').value = String(App.physicsSettings.avoidOverlap);
@@ -1919,6 +1922,8 @@
     // Physics controls
     document.getElementById('physics-toggle').addEventListener('change', (event) => {
         const enablePhysics = event.target.checked;
+        event.target.closest('.toggle-control').querySelector('.toggle-control__text').textContent =
+            enablePhysics ? 'Physics actief' : 'Physics inactief';
         applyPhysicsSettings(App.physicsSettings, { enablePhysics });
         if (!App.network) return;
         if (enablePhysics) {
