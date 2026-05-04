@@ -29,7 +29,7 @@ class LexNodeHandler(http.server.SimpleHTTPRequestHandler):
                 self._json(engine.get_graph_data())
                 return
             if 'node-details/' in self.path:
-                node_id = self.path.split('/')[-1]
+                node_id = self.path.split('node-details/', 1)[1].split('?')[0]
                 self._json(engine.get_node_attrs(node_id))
                 return
             super().do_GET()

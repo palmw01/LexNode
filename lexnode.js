@@ -153,6 +153,16 @@
     // ── Helpers ───────────────────────────────────────────────────────────
     const formatDatum = d =>
         d.toLocaleDateString('nl-NL', { day: '2-digit', month: '2-digit', year: 'numeric' });
+
+    function getTodayLocal() {
+        const d = new Date();
+        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
+
+    function debounce(fn, ms) {
+        let timer;
+        return (...args) => { clearTimeout(timer); timer = setTimeout(() => fn(...args), ms); };
+    }
     const NODE_DETAILS_HINT = 'Klik op een node in de graaf...';
 
     function appendDetailRow(container, label, value) {
@@ -304,24 +314,22 @@
         const dagen       = getTermijnDagen();
         let deadline      = new Date(dagtekening);
         deadline.setDate(deadline.getDate() + dagen);
-        
-        let meta_bron = bron;
-        App.activeRoute = LID1_ROUTE;
 
-        // LI 2008 § 9.1 correctie
+        let meta_bron = bron;
+        let route = LID1_ROUTE;
+
         if (options.isVoorlopig) {
             if (options.afwijkendBoekjaar) {
-                // Regel AR-LI-9-1b: Laatste dag van de maand
                 const lastDay = new Date(deadline.getFullYear(), deadline.getMonth() + 1, 0).getDate();
                 deadline.setDate(lastDay);
                 meta_bron = "§ 9.1 LI 2008 (Afwijkend boekjaar)";
-                App.activeRoute = LI_9_1B_ROUTE;
-            } else if (dagtekening.getMonth() <= 10) { // Nov (10) of eerder
+                route = LI_9_1B_ROUTE;
+            } else if (dagtekening.getMonth() <= 10) {
                 const eindeJaar = new Date(dagtekening.getFullYear(), 11, 31);
                 if (deadline < eindeJaar) {
                     deadline = eindeJaar;
                     meta_bron = "§ 9.1 LI 2008 (31 december regel)";
-                    App.activeRoute = LI_9_1_ROUTE;
+                    route = LI_9_1_ROUTE;
                 }
             }
         }
@@ -329,8 +337,8 @@
         const atw = toelichting.includes('algemene termijnenwet niet van toepassing')
             ? 'Uitgesloten (Art. 9 lid 10 IW 1990)'
             : 'Toepasbaar';
-            
-        return { invorderbaar: peildatum >= deadline, deadline, dagen, bron: meta_bron, atw };
+
+        return { invorderbaar: peildatum >= deadline, deadline, dagen, bron: meta_bron, atw, route };
     }
 
     // ── Lid-5-berekening (AR-9-5a t/m AR-9-5e) ───────────────────────────
@@ -339,12 +347,26 @@
             ? Number(options.totaalBedrag)
             : null;
 
-        const maand = dagtekening.getMonth() + 1; // 1..12
-        const resterendeMaanden = 12 - maand; // AR-9-5b: na dagtekeningmaand
+        const maand = dagtekening.getMonth() + 1;
+        const resterendeMaanden = 12 - maand;
 
         // AR-9-5e: terugval naar lid 1 als termijnen <= 1
         if (resterendeMaanden <= 1) {
-            return checkInvorderbaarheid(dagtekening, peildatum, options);
+            const result = checkInvorderbaarheid(dagtekening, peildatum, options);
+            if (result.route === LI_9_1_ROUTE) {
+                result.route = [
+                    ...LID5_ROUTE_TERUGVAL,
+                    'annotaties/li2008/art9-9-1', 'regels/AR-LI-9-1a', 'begrippen/vervaldag-31-december',
+                ];
+            } else if (result.route === LI_9_1B_ROUTE) {
+                result.route = [
+                    ...LID5_ROUTE_TERUGVAL,
+                    'annotaties/li2008/art9-9-1', 'regels/AR-LI-9-1b', 'begrippen/vervaldag-laatste-dag-maand',
+                ];
+            } else {
+                result.route = LID5_ROUTE_TERUGVAL;
+            }
+            return result;
         }
 
         // AR-9-5c + AR-9-5d
@@ -362,25 +384,24 @@
         // LI 2008 § 9.1 correctie op de LAATSTE termijn
         const laatsteIdx = termijnen.length - 1;
         let meta_bron = "";
-        
+        let route = LID5_ROUTE_NORMAAL;
+
         if (options.afwijkendBoekjaar) {
-            const laatsteTermijn = termijnen[laatsteIdx];
-            const lastDay = new Date(laatsteTermijn.getFullYear(), laatsteTermijn.getMonth() + 1, 0).getDate();
+            const lastDay = new Date(termijnen[laatsteIdx].getFullYear(), termijnen[laatsteIdx].getMonth() + 1, 0).getDate();
             termijnen[laatsteIdx].setDate(lastDay);
             meta_bron = " (Corr. § 9.1 LI 2008: Afwijkend boekjaar)";
-            App.activeRoute = LID5_LI_9_1B_ROUTE;
-        } else if (dagtekening.getMonth() <= 10) { // Nov of eerder
+            route = LID5_LI_9_1B_ROUTE;
+        } else if (dagtekening.getMonth() <= 10) {
             const eindeJaar = new Date(dagtekening.getFullYear(), 11, 31);
             if (termijnen[laatsteIdx] < eindeJaar) {
                 termijnen[laatsteIdx] = eindeJaar;
                 meta_bron = " (Corr. § 9.1 LI 2008: 31 december regel)";
-                App.activeRoute = LID5_LI_9_1_ROUTE;
+                route = LID5_LI_9_1_ROUTE;
             }
         }
 
         const bronNode = getNodeAttrs('begrippen/invorderbaarheid-in-gelijke-termijnen');
         const bron = (bronNode['10'] || bronNode['11'] || 'Art. 9 lid 5 IW 1990') + meta_bron;
-        if (!meta_bron) App.activeRoute = LID5_ROUTE_NORMAAL;
 
         const result = {
             invorderbaar: peildatum >= termijnen[0],
@@ -389,6 +410,7 @@
             bron,
             lid5: true,
             terugvalLid1: false,
+            route,
         };
 
         if (Number.isInteger(totaalBedrag) && totaalBedrag >= 0) {
@@ -614,8 +636,8 @@
         });
         App.network.on('dragEnd', () => {
             if (!App.dragPhysicsActive) return;
+            App.network.once('stabilizationIterationsDone', disablePhysicsAndFreeze);
             App.network.stabilize(DRAG_STABILIZATION_ITERATIONS);
-            disablePhysicsAndFreeze();
         });
 
         if (!isTouchDevice) {
@@ -708,10 +730,12 @@
 
     function resetGraph() {
         if (!App.network || !App.graphData.nodes.length) return;
-        App.nodesDS.clear();
-        App.edgesDS.clear();
-        App.nodesDS.add(App.graphData.nodes);
-        App.edgesDS.add(App.graphData.edges);
+        App.nodesDS.update(App.graphData.nodes.map(n => ({
+            id: n.id, size: 16, borderWidth: 1, color: n.color, font: { color: '#343434' },
+        })));
+        App.edgesDS.update(App.graphData.edges.map(e => ({
+            id: e.id, color: e.color, width: 1,
+        })));
         scheduleFitToView({ animate: true });
     }
 
@@ -747,13 +771,18 @@
             const centerNodes = App.graphData.nodes.map(n => ({ ...n, x: 0, y: 0 }));
             App.nodesDS.add(centerNodes);
             App.edgesDS.add(App.graphData.edges);
-            
-            // Dwing Cluster preset af voor de home view
+
+            // Sla gebruikersinstellingen op vóór tijdelijke stabilisatiereset
+            const savedSettings = { ...App.physicsSettings };
+            const savedEnabled = App.physicsEnabled;
             App.physicsSettings = { ...DEFAULT_PHYSICS_SETTINGS };
-            applyPhysicsSettings(App.physicsSettings, { enablePhysics: true });
-            
-            // Trigger stabilisatie
-            runInitialStabilization();
+
+            runInitialStabilization(() => {
+                App.physicsSettings = savedSettings;
+                App.physicsEnabled = savedEnabled;
+                syncPhysicsControlsFromState();
+                persistPhysicsSettings();
+            });
         }
     }
 
@@ -862,37 +891,35 @@
     // Sidebar is now always visible on mobile, no toggle needed
 
     function highlightRoute() {
-        const routeNodes = App.graphData.nodes
-            .filter(n => App.activeRoute.includes(n.id))
-            .map(n => ({ 
-                ...n, 
-                size: 26, 
-                borderWidth: 4, 
-                color: { border: '#007bc7', background: n.color },
-                x: 0, y: 0 // Start vanuit het midden voor het 'explosie' effect
-            }));
-        const routeEdges = App.graphData.edges
-            .filter(e => App.activeRoute.includes(e.from) && App.activeRoute.includes(e.to));
-        
-        App.nodesDS.clear(); 
-        App.edgesDS.clear();
-        App.nodesDS.add(routeNodes);
-        App.edgesDS.add(routeEdges);
+        if (!App.graphData.nodes.length || !App.network) return;
+        const routeSet = new Set(App.activeRoute);
 
-        // Dwing Cluster preset af voor de berekeningsview
-        App.physicsSettings = { ...DEFAULT_PHYSICS_SETTINGS };
-        applyPhysicsSettings(App.physicsSettings, { enablePhysics: true });
-        
-        // Stabiliseer kort en focus daarna op de route
-        App.network.once('stabilizationIterationsDone', () => {
-            disablePhysicsAndFreeze();
-            scheduleFitToView({ animate: true, padding: 80 });
-        });
-        
-        App.network.stabilize(120); 
+        App.nodesDS.update(App.graphData.nodes.map(n => ({
+            id: n.id,
+            size: routeSet.has(n.id) ? 26 : 10,
+            borderWidth: routeSet.has(n.id) ? 4 : 1,
+            color: routeSet.has(n.id)
+                ? { border: '#007bc7', background: n.color }
+                : { border: '#d0d0d0', background: '#f0f0f0' },
+            font: { color: routeSet.has(n.id) ? '#343434' : '#c0c0c0' },
+        })));
+
+        App.edgesDS.update(App.graphData.edges.map(e => ({
+            id: e.id,
+            color: (routeSet.has(e.from) && routeSet.has(e.to))
+                ? e.color
+                : { color: '#e8e8e8', highlight: '#e8e8e8', hover: '#e8e8e8' },
+            width: (routeSet.has(e.from) && routeSet.has(e.to)) ? 2 : 1,
+        })));
+
+        const routeIds = App.graphData.nodes.filter(n => routeSet.has(n.id)).map(n => n.id);
+        if (routeIds.length) {
+            App.network.fit({ nodes: routeIds, animation: { duration: 400, easingFunction: 'easeInOutQuad' } });
+        }
     }
 
     function calculate() {
+        if (!App.gexfDoc) return;
         const dagVal = document.getElementById('dagtekening').value;
         const peilVal = document.getElementById('peildatum').value;
         if (!dagVal || !peilVal) return;
@@ -931,7 +958,8 @@
         }
 
         const opts = { isVoorlopig, afwijkendBoekjaar, totaalBedrag };
-        const res = (isVoorlopig) ? checkInvorderbaarheidLid5(dag, peil, opts) : checkInvorderbaarheid(dag, peil, opts);
+        const res = isVoorlopig ? checkInvorderbaarheidLid5(dag, peil, opts) : checkInvorderbaarheid(dag, peil, opts);
+        App.activeRoute = res.route;
 
         panel.style.display = 'block';
         panel.className = res.invorderbaar ? 'invorderbaar' : 'niet-invorderbaar';
@@ -1064,7 +1092,7 @@
     }
 
     function initDates() {
-        const today = new Date().toISOString().slice(0, 10);
+        const today = getTodayLocal();
         document.getElementById('dagtekening').value = today;
         document.getElementById('peildatum').value = today;
     }
@@ -1085,10 +1113,12 @@
         document.getElementById('totaalbedrag-wrapper').style.display = isVoorlopig ? 'block' : 'none';
         calculate();
     });
+    const debouncedCalculate = debounce(calculate, 150);
+
     document.getElementById('home-btn').addEventListener('click', resetHomeView);
-    document.getElementById('totaalbedrag').addEventListener('input', calculate);
-    document.getElementById('dagtekening').addEventListener('input', calculate);
-    document.getElementById('peildatum').addEventListener('input', calculate);
+    document.getElementById('totaalbedrag').addEventListener('input', debouncedCalculate);
+    document.getElementById('dagtekening').addEventListener('input', debouncedCalculate);
+    document.getElementById('peildatum').addEventListener('input', debouncedCalculate);
     document.getElementById('afwijkend-boekjaar').addEventListener('change', calculate);
     document.getElementById('dagtekening-in-vaststellingsjaar').addEventListener('change', calculate);
 

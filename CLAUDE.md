@@ -21,14 +21,14 @@ pip install -r requirements.txt
 # Server starten (poort 8080)
 python app.py
 
-# Alle tests uitvoeren (74 tests: backend, integratie, frontend, realtime)
-./run_all_tests.sh
+# Alle tests uitvoeren (78 tests: backend, integratie, frontend, realtime)
+bash run_all_tests.sh
 
 # Individuele test suites
 python tests/test_senior_backend.py  # Backend-tests (23 tests)
-python tests/test_integration.py     # Integratie-tests (16 tests)
-node tests/test_ui_senior.js         # Frontend-tests (15 tests)
-node tests/test_realtime_datums.js   # Realtime datumvelden-tests (20 tests)
+python tests/test_integration.py     # Integratie-tests (17 tests)
+node tests/test_ui_senior.js         # Frontend-tests (17 tests)
+node tests/test_realtime_datums.js   # Realtime datumvelden-tests (21 tests)
 
 # Graaf valideren (integriteitscheck)
 python validator.py
@@ -69,13 +69,16 @@ Python engine die de GEXF laadt en endpoints exposeert voor graaf-data en bereke
 Single-page app gesplitst in drie bestanden: `index.html` bevat de HTML-structuur, `styles.css` de volledige Belastingdienst-huisstijl, en `lexnode.js` alle applicatielogica. Alle logica is geport naar JavaScript zodat de app op GitHub Pages werkt zonder backend.
 
 Belangrijke UI-kenmerken:
-- **Realtime berekening:** Er is geen aparte "Bereken"-knop. De berekening triggert automatisch via `oninput`/`onchange` listeners op alle invoervelden (`dagtekening`, `peildatum`, `totaalbedrag`, `afwijkend-boekjaar`, `dagtekening-in-vaststellingsjaar`).
-- **Physics tab:** Aparte tabblad met schakelaar, sliders voor gravitatie/centrale kracht/veerlengte, en drie presets (Compact / Cluster / Spread). Instellingen worden opgeslagen in `localStorage` onder de sleutel `lexnode-physics`.
+- **Realtime berekening:** Er is geen aparte "Bereken"-knop. `oninput`-events op tekst-/datumvelden zijn gedebounced (150 ms); `onchange`-events op checkboxes en select triggeren direct. Bij ontbrekende GEXF retourneert `calculate()` vroegtijdig.
+- **Route-highlight:** Na elke berekening markeert `highlightRoute()` de actieve redeneerroute via `nodesDS.update()` — route-nodes worden groter en blauw omrand, niet-route-nodes worden gedempt. Geen clear/add/stabilize-cyclus.
+- **Physics tab:** Aparte tabblad met schakelaar, sliders voor gravitatie/centrale kracht/veerlengte, en drie presets (Compact / Cluster / Spread). Instellingen worden opgeslagen in `localStorage` onder de sleutel `lexnode-physics`. De Home-knop reset de lay-out tijdelijk maar behoudt de opgeslagen physics-instellingen.
 - **Fullscreen:** Knop `⛶` schakelt tussen fullscreen en normaal met icon-toggle; valt terug op CSS `.pseudo-fullscreen` als de Fullscreen API niet beschikbaar is.
 - **Responsieve legenda:** Desktop toont een popup, mobiel een bottom bar (Info-knop). De mobiele bottom bar bevat ook graaf-metadata.
 
 ## Kritische koppelingen
 
-- **Node-IDs:** Hardcoded in `lexnode_engine.py`, `index.html` en tests. 
+- **Node-IDs:** Hardcoded in `lexnode_engine.py`, `index.html` en tests.
 - **Attribuut-IDs:** Nummeriek en positioneel (0–27). Wijziging in GEXF `<attributes>` blok breekt lookups.
-- **Pariteit:** Berekeningslogica (Lid 1, Lid 5, LI 2008) moet identiek blijven tussen `lexnode_engine.py` en `index.html`. Gebruik `tests/test_integration.py` om dit te verifiëren.
+- **Pariteit:** Berekeningslogica (Lid 1, Lid 5, LI 2008) moet identiek blijven tussen `lexnode_engine.py` en `lexnode.js`. Gebruik `tests/test_integration.py` om dit te verifiëren.
+- **Route-veld:** `checkInvorderbaarheid()` en `checkInvorderbaarheidLid5()` retourneren een `route`-veld (array van node-IDs). `calculate()` stelt `App.activeRoute = res.route` in. Voeg geen `App.activeRoute`-toewijzingen toe aan berekeningsfuncties zelf.
+- **Backend `vaststellingsjaar=False`:** Retourneert een expliciete fout (Art. 9 lid 7 IW 1990) i.p.v. stil Lid-1-logica toe te passen. Frontend toont dezelfde boodschap.

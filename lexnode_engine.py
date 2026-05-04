@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
 import re
+import calendar
 from datetime import datetime, timedelta
 
 class LexNodeEngine:
@@ -92,25 +93,30 @@ class LexNodeEngine:
             "atw_status":    "Uitgesloten (Art. 9 lid 10 IW 1990)" if atw_uitgesloten else "Toepasbaar",
         }
 
-    def check_invorderbaarheid(self, dagtekening: datetime, peildatum: datetime, 
-                               aanslagtype: str = "definitief", 
+    def check_invorderbaarheid(self, dagtekening: datetime, peildatum: datetime,
+                               aanslagtype: str = "definitief",
                                afwijkend_boekjaar: bool = False,
                                vaststellingsjaar: bool = True) -> dict:
-        
-        # Basis logica voor Art 9 lid 1
+
         details = self.get_full_justification("begrippen/zes-weken")
         basis_dagen = details["termijn_dagen"]
-        
+
+        if aanslagtype.startswith("voorlopig") and not vaststellingsjaar:
+            return {
+                "invorderbaar": False,
+                "deadline": dagtekening,
+                "details": details,
+                "bron": "Art. 9 lid 7 IW 1990 (buiten vaststellingsjaar)",
+                "fout": "Dagtekening valt buiten het vaststellingsjaar",
+            }
+
         if aanslagtype.startswith("voorlopig") and vaststellingsjaar:
             # Art 9 lid 5: Meerdere termijnen
             maand = dagtekening.month
             resterende_maanden = 12 - maand
             
             if resterende_maanden > 1:
-                # Meerdere termijnen berekenen
                 termijnen = []
-                # Check of dagtekening de laatste dag van de maand is
-                import calendar
                 _, last_day_month = calendar.monthrange(dagtekening.year, dagtekening.month)
                 is_laatste_dag = dagtekening.day == last_day_month
                 
@@ -151,7 +157,6 @@ class LexNodeEngine:
         # LI 9.1 Correctie voor enige/laatste termijn
         if aanslagtype.startswith("voorlopig"):
             if afwijkend_boekjaar:
-                import calendar
                 _, last_day = calendar.monthrange(deadline.year, deadline.month)
                 deadline = deadline.replace(day=last_day)
                 bron = "§ 9.1 LI 2008 (Afwijkend boekjaar)"
