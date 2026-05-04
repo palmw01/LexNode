@@ -44,29 +44,29 @@ GEXF-bestand met juridische concepten als nodes en relaties als edges. Elke node
 | ID | Titel                | Gebruik |
 |----|----------------------|---------------------------------------------------------------|
 | 0  | node_type            | Type node: `annotatie`, `begrip`, `regel`, `wettekst` |
-| 1  | jas_klasse           | ATW/JAS-klasse — PDF redeneerroute |
+| 1  | jas_klasse           | ATW/JAS-klasse — redeneerroute |
 | 2  | color                | Hex-kleur voor visualisatie |
 | 8  | begripsnaam          | Naam begrip — frontend node-details |
-| 9  | markering            | Wettekst-citaat — PDF sectie "Wettekst" |
+| 9  | markering            | Wettekst-citaat — node-details |
 | 10 | bron                 | Primair wetsartikel |
-| 11 | bronnen              | Aanvullende bronnen (lijst) — PDF grondslagen |
-| 12 | interpretatiemethode | Interpretatiemethode — PDF toelichting |
+| 11 | bronnen              | Aanvullende bronnen (lijst) — node-details |
+| 12 | interpretatiemethode | Interpretatiemethode — node-details |
 | 13 | toelichting_klasse   | Juridische toelichting / ATW-status |
 | 14 | definitie            | Juridische definitie (bevat termijntekst voor regex-parsing) |
 | 15 | soort                | Soort begrip of regel |
 | 16 | herkomst             | Herkomst van de regel |
 | 22 | leidt_tot            | Lijst van `[[namespace/node-id]]`-refs — graaf-navigatie |
 | 23 | afleidingsregels     | Lijst van regelrefs |
-| 24 | regel_id             | ID van de afleidingsregel — PDF sectie "Afleidingsregel" |
-| 25 | naam                 | Naam van de regel — PDF sectie "Afleidingsregel" |
-| 26 | operators            | Logische operators — PDF sectie "Afleidingsregel" |
+| 24 | regel_id             | ID van de afleidingsregel — node-details |
+| 25 | naam                 | Naam van de regel — node-details |
+| 26 | operators            | Logische operators — node-details |
 | 27 | bronreferentie       | Externe bronverwijzing — node-details |
 
 **2. Backend (`app.py` + `lexnode_engine.py`)**  
-Python engine die de GEXF laadt en endpoints exposeert voor graaf-data, berekeningen en PDF-export (ReportLab). De termijn wordt dynamisch via regex uitgelezen uit node `begrippen/zes-weken`.
+Python engine die de GEXF laadt en endpoints exposeert voor graaf-data en berekeningen. Geen externe afhankelijkheden (alleen Python stdlib). De termijn wordt dynamisch via regex uitgelezen uit node `begrippen/zes-weken`.
 
-**3. Frontend (`index.html`)**  
-Single-page app die vis-network gebruikt voor visualisatie en jsPDF voor client-side PDF-generatie. Alle logica is geport naar JavaScript zodat de app op GitHub Pages werkt zonder backend.
+**3. Frontend (`index.html` + `styles.css` + `lexnode.js`)**  
+Single-page app gesplitst in drie bestanden: `index.html` bevat de HTML-structuur, `styles.css` de volledige Belastingdienst-huisstijl, en `lexnode.js` alle applicatielogica. Alle logica is geport naar JavaScript zodat de app op GitHub Pages werkt zonder backend.
 
 Belangrijke UI-kenmerken:
 - **Realtime berekening:** Er is geen aparte "Bereken"-knop. De berekening triggert automatisch via `oninput`/`onchange` listeners op alle invoervelden (`dagtekening`, `peildatum`, `totaalbedrag`, `afwijkend-boekjaar`, `dagtekening-in-vaststellingsjaar`).

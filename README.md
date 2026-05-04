@@ -17,7 +17,6 @@ LexNode is een geavanceerd **Rules as Code (RaC)** prototype dat juridische rege
 - **Dynamic Logic:** Termijnen worden via regex dynamisch uit de graaf-attributen gelezen, niet hardcoded in de logica.
 - **Zero-Server Architecture:** De GitHub Pages versie draait volledig client-side (XML/GEXF parsing in JS).
 - **Juridische Precisie:** Volledige ondersteuning voor Art. 9 lid 1 (definitief) en lid 5 (voorlopig), inclusief Leidraad Invordering 2008 logica voor termijnberekening.
-- **Instant Justification:** Genereert direct in de browser een PDF-besluit met volledige bronverwijzing en afleidingsregels.
 - **Interactieve graafvisualisatie:** Physics-instellingen (Compact / Cluster / Spread presets), fullscreen-modus en responsieve legenda.
 
 ## Technologie Stack
@@ -25,9 +24,8 @@ LexNode is een geavanceerd **Rules as Code (RaC)** prototype dat juridische rege
 | Component | Technologie | Rol |
 |:---|:---|:---|
 | **Kennisgraaf** | GEXF / NetworkX | Opslag van juridische concepten, relaties en metadata (28 attributen per node). |
-| **Backend** | Python 3.10+ | Optionele REST API voor lokale ontwikkeling en PDF-generatie via ReportLab. |
+| **Backend** | Python 3.10+ | Optionele REST API voor lokale ontwikkeling (geen externe afhankelijkheden). |
 | **Frontend** | Vanilla JS / Vis-network | Visualisatie en berekeningslogica (ook zonder backend functioneel). |
-| **PDF Engine** | jsPDF / ReportLab | Hybride ondersteuning voor browser-side en server-side PDF export. |
 
 ## Architectuur & Datamodel
 
@@ -35,7 +33,7 @@ De kracht van LexNode zit in de **GEXF-structuur**. Elke node in de graaf is ver
 
 - **Node Types:** `begrip`, `regel`, `wettekst`, `annotatie`.
 - **Logica:** Attribuut 14 (`definitie`) bevat de tekstuele regel die door de engine wordt geparseerd.
-- **Herleidbaarheid:** Directe koppelingen naar `bronreferentie` en `jas_klasse` voor de PDF-onderbouwing.
+- **Herleidbaarheid:** Directe koppelingen naar `bronreferentie` en `jas_klasse` voor traceerbaarheid van redeneerroutes.
 
 ### Redeneerroutes
 De applicatie kiest op basis van de input dynamisch tussen:

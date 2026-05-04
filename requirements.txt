@@ -1,1 +1,1 @@
-reportlab>=4.0
+# Geen externe afhankelijkheden — alleen Python stdlib

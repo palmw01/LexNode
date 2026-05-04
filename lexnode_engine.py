@@ -23,7 +23,7 @@ class LexNodeEngine:
         self.tree = ET.parse(gexf_path)
         self.root = self.tree.getroot()
 
-    def _get_attrs(self, node_id: str) -> dict:
+    def get_node_attrs(self, node_id: str) -> dict:
         node = self.root.find(f".//g:node[@id='{node_id}']", self.NS)
         if node is None:
             return {}
@@ -47,7 +47,7 @@ class LexNodeEngine:
     def get_route_nodes(self) -> list:
         result = []
         for node_id in self.ROUTE:
-            raw = self._get_attrs(node_id)
+            raw = self.get_node_attrs(node_id)
             node_el = self.root.find(f".//g:node[@id='{node_id}']", self.NS)
             result.append({
                 "id":               node_id,
@@ -71,7 +71,7 @@ class LexNodeEngine:
         return result
 
     def get_full_justification(self, node_id: str) -> dict:
-        attrs = self._get_attrs(node_id)
+        attrs = self.get_node_attrs(node_id)
         definitie  = attrs.get(self.ATTR['definitie'], "")
         toelichting = attrs.get(self.ATTR['toelichting'], "")
 
