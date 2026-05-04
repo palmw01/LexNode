@@ -720,7 +720,6 @@
                 <label for="totaalbedrag">Totaalbedrag belastingaanslag (€)</label>
                 <input type="number" id="totaalbedrag" min="0" step="1" placeholder="Bijv. 1234">
             </div>
-            <button type="button" class="btn btn-primary" id="btn-bereken">Bereken</button>
 
             <div id="result-panel" role="region" aria-live="polite" aria-label="Berekeningsresultaat">
                 <div id="status-header"></div>
@@ -1911,8 +1910,9 @@
         calculate();
     });
     document.getElementById('home-btn').addEventListener('click', resetHomeView);
-    document.getElementById('btn-bereken').addEventListener('click', calculate);
     document.getElementById('totaalbedrag').addEventListener('input', calculate);
+    document.getElementById('dagtekening').addEventListener('input', calculate);
+    document.getElementById('peildatum').addEventListener('input', calculate);
     document.getElementById('afwijkend-boekjaar').addEventListener('change', calculate);
     document.getElementById('dagtekening-in-vaststellingsjaar').addEventListener('change', calculate);
 

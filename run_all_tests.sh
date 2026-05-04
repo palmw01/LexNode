@@ -6,7 +6,7 @@ set -e  # Exit on first error
 
 echo "╔════════════════════════════════════════════════════════════╗"
 echo "║        LexNode Senior Tester — Full Test Suite            ║"
-echo "║                   Running 54 Tests                        ║"
+echo "║               Running 54 + Realtime Tests                 ║"
 echo "╚════════════════════════════════════════════════════════════╝"
 echo ""
 
@@ -73,6 +73,11 @@ run_test_suite \
     "UI Senior Tests (Node.js)" \
     "node tests/test_ui_senior.js" \
     15
+
+run_test_suite \
+    "Realtime Datumvelden Tests (Node.js)" \
+    "node tests/test_realtime_datums.js" \
+    20
 
 # ───────────────────────────────────────────────────────────────
 # Summary
