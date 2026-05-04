@@ -743,6 +743,16 @@
         clearNodeDetails(true);
         resetResultPanel();
         openTab('calc');
+
+        const sel = document.getElementById('aanslagtype');
+        sel.value = '';
+        if (!sel.querySelector('option[value=""]')) {
+            const placeholder = new Option('— Selecteer aanslagtype —', '');
+            placeholder.disabled = true;
+            sel.insertBefore(placeholder, sel.firstChild);
+        }
+        document.getElementById('voorlopig-opties').style.display = 'none';
+        document.getElementById('totaalbedrag-wrapper').style.display = 'none';
         
         // Data herstellen
         if (App.network && App.graphData.nodes.length) {
