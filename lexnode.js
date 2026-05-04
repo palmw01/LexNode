@@ -749,6 +749,7 @@
         if (existing) existing.remove();
         const placeholder = new Option('— Selecteer aanslagtype —', '');
         placeholder.disabled = true;
+        placeholder.selected = true;
         sel.insertBefore(placeholder, sel.firstChild);
         sel.value = '';
         document.getElementById('voorlopig-opties').style.display = 'none';
@@ -1092,6 +1093,7 @@
         const sel = document.getElementById('aanslagtype');
         const placeholder = new Option('— Selecteer aanslagtype —', '');
         placeholder.disabled = true;
+        placeholder.selected = true;
         sel.insertBefore(placeholder, sel.firstChild);
         sel.value = '';
     })();
