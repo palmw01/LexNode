@@ -96,7 +96,7 @@
         main { flex: 1; display: flex; overflow: hidden; min-height: 0; }
 
         #sidebar {
-            width: 320px;
+            width: 360px;
             flex-shrink: 0;
             background: var(--wit);
             border-right: 1px solid var(--border);
@@ -116,8 +116,8 @@
 
         .tabs { display: flex; background: var(--rijk-blauw); }
         .tab-btn {
-            flex: 1; padding: 14px 12px; border: none; background: none;
-            color: white; cursor: pointer; font-size: 0.8rem; opacity: 0.7;
+            flex: 1; padding: 12px 8px; border: none; background: none;
+            color: white; cursor: pointer; font-size: 0.78rem; opacity: 0.7;
         }
         .tab-btn.active { opacity: 1; background: rgba(255,255,255,0.1); border-bottom: 3px solid var(--accent); }
 
@@ -383,28 +383,10 @@
         }
 
         /* Legend Styles */
-        .legend-popup {
-            display: none;
-            position: absolute;
-            top: 210px; /* Below fullscreen button which is at ~170px */
-            right: 12px;
-            background: white;
-            padding: 15px;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            font-size: 0.75rem;
-            z-index: 200;
-            width: 220px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-        }
-
-        .legend-popup.open { display: block; }
-
         .legend-item { display: flex; align-items: center; margin-bottom: 8px; }
         .dot { width: 12px; height: 12px; border-radius: 50%; margin-right: 10px; flex-shrink: 0; }
         .dot--actief { border: 2px solid var(--hemel-blauw); background: transparent; }
         .legend-divider { border-top: 1px solid #eee; margin: 10px 0; }
-        .legend-popup strong { display: block; margin-bottom: 10px; font-size: 0.85rem; color: var(--rijk-blauw); }
         .mobile-only-inline { display: none; }
         .desktop-only-inline { display: inline; }
         .legend-meta { font-size: 0.8rem; line-height: 1.6; color: #555; }
@@ -511,8 +493,7 @@
             .tab-content,
             .tab-content.active { overflow: visible; }
             .tab-content,
-            .tab-content.active,
-            .legend-popup {
+            .tab-content.active {
                 display: block;
                 position: fixed;
                 left: 0;
@@ -533,8 +514,7 @@
                 z-index: 2000;
                 transition: bottom 0.3s ease, visibility 0.3s ease;
             }
-            .tab-content::before,
-            .legend-popup::before {
+            .tab-content::before {
                 content: "";
                 display: block;
                 width: 52px;
@@ -543,8 +523,7 @@
                 border-radius: 999px;
                 background: #c8d2de;
             }
-            .tab-content h3,
-            .legend-popup strong {
+            .tab-content h3 {
                 margin-bottom: 16px;
                 padding-bottom: 10px;
                 border-bottom: 1px solid #dfe7f0;
@@ -594,8 +573,7 @@
                 z-index: 1;
                 overflow: hidden;
             }
-            .tab-content.mobile-popup-open,
-            .legend-popup.open {
+            .tab-content.mobile-popup-open {
                 bottom: var(--mobile-bar-height);
                 visibility: visible;
                 pointer-events: auto;
@@ -603,14 +581,10 @@
 
             #mobile-bottom-bar { display: flex; }
             #graph-meta { display: none; }
-            #info-btn   { display: none; }
             #nav-knoppen {
                 display: flex;
                 top: 12px;
                 right: 12px;
-            }
-            #nav-knoppen #btn-legend {
-                display: none;
             }
             .mobile-only-inline { display: inline; }
             .desktop-only-inline { display: none; }
@@ -635,6 +609,8 @@
                     data-tab="physics" role="tab" aria-selected="false" aria-controls="physics">Physics</button>
             <button type="button" class="tab-btn"
                     data-tab="details" role="tab" aria-selected="false" aria-controls="details">Node Details</button>
+            <button type="button" class="tab-btn"
+                    data-tab="info" role="tab" aria-selected="false" aria-controls="info">Info</button>
         </div>
 
         <div id="calc" class="tab-content active" role="tabpanel">
@@ -727,6 +703,27 @@
                 <p class="detail-hint">Klik op een node in de graaf...</p>
             </div>
         </div>
+
+        <div id="info" class="tab-content" role="tabpanel">
+            <h3>Info</h3>
+            <div class="legend-item"><div class="dot" style="background:#CCCCCC"></div>Annotatie (Wetsartikel)</div>
+            <div class="legend-item"><div class="dot" style="background:#70AD47"></div>Rechtsobject (Begrip)</div>
+            <div class="legend-item"><div class="dot" style="background:#F4B942"></div>Tijdsaanduiding</div>
+            <div class="legend-item"><div class="dot" style="background:#7030A0"></div>Voorwaarde</div>
+            <div class="legend-item"><div class="dot" style="background:#00B0F0"></div>Afleidingsregel</div>
+            <div class="legend-item"><div class="dot" style="background:#FF0000"></div>Uitkomst</div>
+            <div class="legend-divider"></div>
+            <div class="legend-item"><div class="dot dot--actief"></div>Actieve Route</div>
+            <div class="legend-divider"></div>
+            <strong style="display:block; margin-bottom:6px; font-size:0.85rem; color:var(--rijk-blauw);">Graafinfo</strong>
+            <div class="legend-meta" id="legend-mobile-graph-info">Laden…</div>
+            <div class="notitie-github" style="margin-top:12px;">
+                Broncode en kennisgraaf beschikbaar op
+                <a href="https://github.com/palmw01/LexNode" target="_blank" rel="noopener">
+                    github.com/palmw01/LexNode
+                </a>
+            </div>
+        </div>
     </aside>
 
     <div id="graph-container">
@@ -737,36 +734,12 @@
             <button type="button" class="nav-btn" id="btn-zoom-out" title="Uitzoomen">−</button>
             <button type="button" class="nav-btn" id="btn-fit"      title="Alles tonen">⤢</button>
             <button type="button" class="nav-btn" id="btn-fullscreen" title="Fullscreen">⛶</button>
-            <button type="button" class="nav-btn" id="btn-legend" title="Info" aria-label="Toon info"
-                    data-popup-target="legend-popup" aria-controls="legend-popup" aria-expanded="false">ℹ</button>
         </div>
 
     </div>
 </main>
 
 <div id="legend-overlay" class="overlay"></div>
-<div id="legend-popup" class="legend-popup" role="dialog" aria-labelledby="legend-title">
-    <strong id="legend-title">Info</strong>
-    <div class="legend-item"><div class="dot" style="background:#CCCCCC"></div>Annotatie (Wetsartikel)</div>
-    <div class="legend-item"><div class="dot" style="background:#70AD47"></div>Rechtsobject (Begrip)</div>
-    <div class="legend-item"><div class="dot" style="background:#F4B942"></div>Tijdsaanduiding</div>
-    <div class="legend-item"><div class="dot" style="background:#7030A0"></div>Voorwaarde</div>
-    <div class="legend-item"><div class="dot" style="background:#00B0F0"></div>Afleidingsregel</div>
-    <div class="legend-item"><div class="dot" style="background:#FF0000"></div>Uitkomst</div>
-    <div class="legend-divider"></div>
-    <div class="legend-item"><div class="dot dot--actief"></div>Actieve Route</div>
-    <div class="legend-mobile-only">
-        <div class="legend-divider"></div>
-        <strong>Graafinfo</strong>
-        <div class="legend-meta" id="legend-mobile-graph-info">Laden…</div>
-        <div class="notitie-github">
-            Broncode en kennisgraaf beschikbaar op
-            <a href="https://github.com/palmw01/LexNode" target="_blank" rel="noopener">
-                github.com/palmw01/LexNode
-            </a>
-        </div>
-    </div>
-</div>
 
 <nav id="mobile-bottom-bar">
     <button type="button" class="mobile-bar-btn" id="btn-mobile-calc"
@@ -776,7 +749,7 @@
     <button type="button" class="mobile-bar-btn" id="btn-mobile-details"
             data-popup-target="details" aria-controls="details" aria-expanded="false">Node details</button>
     <button type="button" class="mobile-bar-btn" id="btn-mobile-legend"
-            data-popup-target="legend-popup" aria-controls="legend-popup" aria-expanded="false">Info</button>
+            data-popup-target="info" aria-controls="info" aria-expanded="false">Info</button>
 </nav>
 
 <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
@@ -1894,10 +1867,10 @@
     function initPopups() {
         const overlay = document.getElementById('legend-overlay');
         const popupClassNames = {
-            'legend-popup': 'open',
             'calc': 'mobile-popup-open',
             'physics': 'mobile-popup-open',
-            'details': 'mobile-popup-open'
+            'details': 'mobile-popup-open',
+            'info': 'mobile-popup-open'
         };
         const popupButtons = Array.from(document.querySelectorAll('[data-popup-target]'));
 
@@ -1924,7 +1897,7 @@
             closeAllPopups();
             if (isOpen) return;
 
-            if (targetId !== 'legend-popup') openTab(targetId);
+            openTab(targetId);
 
             popup.classList.add(openClass);
             if (overlay) overlay.classList.add('active');
