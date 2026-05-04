@@ -143,11 +143,11 @@
     };
 
     const RELATIES = {
-        'begrippen':        { color: '#aaa',    label: 'Groepeert begrippen'       },
-        'leidt-tot':        { color: '#007bc7', label: 'Leidt tot conclusie'       },
-        'afleidingsregels': { color: '#e87c25', label: 'Koppelt afleidingsregel'   },
-        'heeft':            { color: '#999',    label: 'Heeft als onderdeel'       },
-        'is-een':           { color: '#3a9e5f', label: 'Is een specialisatie van'  },
+        'begrippen':        { color: '#aaa'    },
+        'leidt-tot':        { color: '#007bc7' },
+        'afleidingsregels': { color: '#e87c25' },
+        'heeft':            { color: '#999'    },
+        'is-een':           { color: '#3a9e5f' },
     };
 
     // ── Helpers ───────────────────────────────────────────────────────────
@@ -197,16 +197,6 @@
         const header = document.querySelector('header');
         if (!header) return;
         document.documentElement.style.setProperty('--header-height', `${header.offsetHeight}px`);
-    }
-
-    function fitGraphToView() {
-        if (!App.network) return;
-        App.network.fit({
-            animation: {
-                duration: 250,
-                easingFunction: 'easeInOutQuad',
-            }
-        });
     }
 
     // ── GEXF parser ───────────────────────────────────────────────────────
@@ -294,10 +284,16 @@
     }
 
     // ── Invorderbaarheidsberekening (uitgebreid met Leidraad) ──────────────
+    function getAtwStatus() {
+        const toelichting = (getNodeAttrs('begrippen/zes-weken')[ATTR_TOELICHTING_KLASSE] || '').toLowerCase();
+        return toelichting.includes('algemene termijnenwet niet van toepassing')
+            ? 'Uitgesloten (Art. 9 lid 10 IW 1990)'
+            : 'Toepasbaar';
+    }
+
     function checkInvorderbaarheid(dagtekening, peildatum, options = {}) {
-        const attrs       = getNodeAttrs('begrippen/zes-weken');
-        const toelichting = (attrs[ATTR_TOELICHTING_KLASSE] || '').toLowerCase();
-        const bron        = attrs[ATTR_BRON] || 'Art. 9 IW 1990';
+        const attrs = getNodeAttrs('begrippen/zes-weken');
+        const bron  = attrs[ATTR_BRON] || 'Art. 9 IW 1990';
         const dagen       = getTermijnDagen();
         let deadline      = new Date(dagtekening);
         deadline.setDate(deadline.getDate() + dagen);
@@ -321,11 +317,7 @@
             }
         }
 
-        const atw = toelichting.includes('algemene termijnenwet niet van toepassing')
-            ? 'Uitgesloten (Art. 9 lid 10 IW 1990)'
-            : 'Toepasbaar';
-
-        return { invorderbaar: peildatum >= deadline, deadline, dagen, bron: meta_bron, atw, route };
+        return { invorderbaar: peildatum >= deadline, deadline, dagen, bron: meta_bron, atw: getAtwStatus(), route };
     }
 
     // ── Lid-5-berekening (AR-9-5a t/m AR-9-5e) ───────────────────────────
@@ -395,6 +387,7 @@
             termijnen,
             resterendeMaanden,
             bron,
+            atw: getAtwStatus(),
             lid5: true,
             terugvalLid1: false,
             route,
@@ -555,7 +548,7 @@
     }
 
     function runInitialStabilization(onDone) {
-        if (!App.network) return;
+        if (!App.network || App.isStabilizing) return;
         
         const loader = document.getElementById('loader');
         if (loader) {
@@ -990,7 +983,8 @@
             termijnBedragInfo.textContent = '';
         }
 
-        document.getElementById('meta-info').textContent = 'Bron: ' + res.bron;
+        const atwTekst = res.atw ? ` • ATW: ${res.atw}` : '';
+        document.getElementById('meta-info').textContent = 'Bron: ' + res.bron + atwTekst;
         highlightRoute();
     }
 
