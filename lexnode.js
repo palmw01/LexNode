@@ -745,12 +745,12 @@
         openTab('calc');
 
         const sel = document.getElementById('aanslagtype');
+        const existing = sel.querySelector('option[value=""]');
+        if (existing) existing.remove();
+        const placeholder = new Option('— Selecteer aanslagtype —', '');
+        placeholder.disabled = true;
+        sel.insertBefore(placeholder, sel.firstChild);
         sel.value = '';
-        if (!sel.querySelector('option[value=""]')) {
-            const placeholder = new Option('— Selecteer aanslagtype —', '');
-            placeholder.disabled = true;
-            sel.insertBefore(placeholder, sel.firstChild);
-        }
         document.getElementById('voorlopig-opties').style.display = 'none';
         document.getElementById('totaalbedrag-wrapper').style.display = 'none';
         
