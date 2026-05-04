@@ -6,7 +6,7 @@ set -e  # Exit on first error
 
 echo "╔════════════════════════════════════════════════════════════╗"
 echo "║        LexNode Senior Tester — Full Test Suite            ║"
-echo "║               Running 54 + Realtime Tests                 ║"
+echo "║                    Running 78 Tests                       ║"
 echo "╚════════════════════════════════════════════════════════════╝"
 echo ""
 
@@ -59,7 +59,7 @@ run_test_suite \
 run_test_suite \
     "Integration Tests (Backend ↔ Frontend)" \
     "python tests/test_integration.py -q" \
-    16
+    17
 
 # ───────────────────────────────────────────────────────────────
 # Frontend Tests (JavaScript/Node.js)
@@ -72,12 +72,12 @@ echo ""
 run_test_suite \
     "UI Senior Tests (Node.js)" \
     "node tests/test_ui_senior.js" \
-    15
+    17
 
 run_test_suite \
     "Realtime Datumvelden Tests (Node.js)" \
     "node tests/test_realtime_datums.js" \
-    20
+    21
 
 # ───────────────────────────────────────────────────────────────
 # Summary
