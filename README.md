@@ -10,15 +10,17 @@
 
 LexNode is een geavanceerd **Rules as Code (RaC)** prototype dat juridische regels uit de **Invorderingswet 1990** modelleert als een interactieve kennisgraaf. Het project demonstreert hoe complexe wetgeving (Art. 9 IW) omgezet kan worden in executable code die zowel visuele uitleg als juridisch onderbouwde besluiten levert.
 
-## 🚀 Kernpunten
+## Kernpunten
 
 - **Visual Reasoning:** De UI markeert de actieve redeneerroute direct in de kennisgraaf.
+- **Realtime berekening:** Geen "Bereken"-knop — resultaten worden onmiddellijk bijgewerkt bij elke invoerwijziging.
 - **Dynamic Logic:** Termijnen worden via regex dynamisch uit de graaf-attributen gelezen, niet hardcoded in de logica.
 - **Zero-Server Architecture:** De GitHub Pages versie draait volledig client-side (XML/GEXF parsing in JS).
 - **Juridische Precisie:** Volledige ondersteuning voor Art. 9 lid 1 (definitief) en lid 5 (voorlopig), inclusief Leidraad Invordering 2008 logica voor termijnberekening.
 - **Instant Justification:** Genereert direct in de browser een PDF-besluit met volledige bronverwijzing en afleidingsregels.
+- **Interactieve graafvisualisatie:** Physics-instellingen (Compact / Cluster / Spread presets), fullscreen-modus en responsieve legenda.
 
-## 🛠 Technologie Stack
+## Technologie Stack
 
 | Component | Technologie | Rol |
 |:---|:---|:---|
@@ -27,7 +29,7 @@ LexNode is een geavanceerd **Rules as Code (RaC)** prototype dat juridische rege
 | **Frontend** | Vanilla JS / Vis-network | Visualisatie en berekeningslogica (ook zonder backend functioneel). |
 | **PDF Engine** | jsPDF / ReportLab | Hybride ondersteuning voor browser-side en server-side PDF export. |
 
-## 📐 Architectuur & Datamodel
+## Architectuur & Datamodel
 
 De kracht van LexNode zit in de **GEXF-structuur**. Elke node in de graaf is verrijkt met 28 attributen die de juridische context bewaren:
 
@@ -40,7 +42,7 @@ De applicatie kiest op basis van de input dynamisch tussen:
 1. **Lid 1 Route:** De standaard 6-weken termijn.
 2. **Lid 5 Route:** Complexe berekening van resterende kalendermaanden (AR-9-5b) met terugvaloptie (AR-9-5e).
 
-## 💻 Lokale Installatie
+## Lokale Installatie
 
 ```bash
 # Clone de repository
@@ -49,7 +51,7 @@ cd LexNode
 
 # Setup virtuele omgeving
 python3 -m venv .venv
-source .venv/bin/activate  # Of activate.fish voor fish shell
+source .venv/bin/activate.fish  # Of: source .venv/bin/activate (bash/zsh)
 
 # Installatie
 pip install -r requirements.txt
@@ -59,13 +61,16 @@ python app.py
 ```
 *Open [http://localhost:8080](http://localhost:8080)*
 
-## 🧪 Kwaliteitsborging
+## Kwaliteitsborging
 
-LexNode bevat een robuuste test-suite van **54 geautomatiseerde tests** die de volledige stack dekken:
+LexNode bevat een test-suite van **74 geautomatiseerde tests** die de volledige stack dekken:
 
-- **Backend (23 tests):** Validatie van de Python engine en GEXF parsing.
-- **Integratie (16 tests):** End-to-end flows tussen API en engine.
-- **Frontend (15 tests):** UI-logica en browser-side berekeningen via Node.js.
+| Suite | Tests | Doel |
+|---|---|---|
+| `test_senior_backend.py` | 23 | Python engine, GEXF parsing, berekeningen |
+| `test_integration.py` | 16 | End-to-end flows backend ↔ engine |
+| `test_ui_senior.js` | 15 | UI-logica en browser-side berekeningen |
+| `test_realtime_datums.js` | 20 | Realtime datumveld-gedrag (geen Bereken-knop) |
 
 ```bash
 # Voer alle tests uit
@@ -75,7 +80,7 @@ LexNode bevat een robuuste test-suite van **54 geautomatiseerde tests** die de v
 python validator.py
 ```
 
-## ⚖️ Juridische Context
+## Juridische Context
 
 Dit prototype implementeert de volgende regels:
 - **Art. 9 lid 1 IW 1990:** Termijn van zes weken na dagtekening.

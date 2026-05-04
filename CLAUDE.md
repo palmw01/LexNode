@@ -21,13 +21,14 @@ pip install -r requirements.txt
 # Server starten (poort 8080)
 python app.py
 
-# Alle tests uitvoeren (54 tests: backend, frontend, integratie)
+# Alle tests uitvoeren (74 tests: backend, integratie, frontend, realtime)
 ./run_all_tests.sh
 
 # Individuele test suites
 python tests/test_senior_backend.py  # Backend-tests (23 tests)
 python tests/test_integration.py     # Integratie-tests (16 tests)
 node tests/test_ui_senior.js         # Frontend-tests (15 tests)
+node tests/test_realtime_datums.js   # Realtime datumvelden-tests (20 tests)
 
 # Graaf valideren (integriteitscheck)
 python validator.py
@@ -66,6 +67,12 @@ Python engine die de GEXF laadt en endpoints exposeert voor graaf-data, berekeni
 
 **3. Frontend (`index.html`)**  
 Single-page app die vis-network gebruikt voor visualisatie en jsPDF voor client-side PDF-generatie. Alle logica is geport naar JavaScript zodat de app op GitHub Pages werkt zonder backend.
+
+Belangrijke UI-kenmerken:
+- **Realtime berekening:** Er is geen aparte "Bereken"-knop. De berekening triggert automatisch via `oninput`/`onchange` listeners op alle invoervelden (`dagtekening`, `peildatum`, `totaalbedrag`, `afwijkend-boekjaar`, `dagtekening-in-vaststellingsjaar`).
+- **Physics tab:** Aparte tabblad met schakelaar, sliders voor gravitatie/centrale kracht/veerlengte, en drie presets (Compact / Cluster / Spread). Instellingen worden opgeslagen in `localStorage` onder de sleutel `lexnode-physics`.
+- **Fullscreen:** Knop `⛶` schakelt tussen fullscreen en normaal met icon-toggle; valt terug op CSS `.pseudo-fullscreen` als de Fullscreen API niet beschikbaar is.
+- **Responsieve legenda:** Desktop toont een popup, mobiel een bottom bar (Info-knop). De mobiele bottom bar bevat ook graaf-metadata.
 
 ## Kritische koppelingen
 
