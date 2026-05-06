@@ -456,7 +456,7 @@
   <data key="d21">concept</data>
   <data key="d22">[]</data>
   <data key="d23">['[[begrippen/invorderbaarheid-belastingaanslag]]']</data>
-  <data key="d24">[]</data>
+  <data key="d24">['[[begrippen/vervaldag-31-december]]']</data>
   <data key="d25">[]</data>
   <data key="d8">2026-01-01</data>
 </node>
@@ -1087,6 +1087,9 @@
 <edge source="begrippen/termijn-eindigt-voor-31-december" target="begrippen/invorderbaarheid-belastingaanslag" id="0">
   <data key="d30">heeft</data>
 </edge>
+<edge source="begrippen/termijn-eindigt-voor-31-december" target="begrippen/vervaldag-31-december" id="0">
+  <data key="d30">leidt-tot</data>
+</edge>
 <edge source="begrippen/termijnbedrag" target="regels/AR-9-5f" id="0">
   <data key="d30">afleidingsregels</data>
 </edge>
@@ -1309,6 +1312,9 @@
 <edge source="regels/AR-LI-9-1a" target="begrippen/vervaldag-31-december" id="1">
   <data key="d30">uitvoer</data>
 </edge>
+<edge source="regels/AR-LI-9-1a" target="begrippen/dagtekening-aanslagbiljet" id="0">
+  <data key="d30">rechtsfeit</data>
+</edge>
 <edge source="regels/AR-LI-9-1a" target="begrippen/voorlopige-aanslag" id="0">
   <data key="d30">invoer</data>
 </edge>
@@ -1326,6 +1332,9 @@
 </edge>
 <edge source="regels/AR-LI-9-1b" target="begrippen/vervaldag-laatste-dag-maand" id="1">
   <data key="d30">uitvoer</data>
+</edge>
+<edge source="regels/AR-LI-9-1b" target="begrippen/dagtekening-aanslagbiljet" id="0">
+  <data key="d30">rechtsfeit</data>
 </edge>
 <edge source="regels/AR-LI-9-1b" target="begrippen/voorlopige-aanslag" id="0">
   <data key="d30">invoer</data>
