@@ -1,0 +1,1336 @@
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd"><key id="d30" for="edge" attr.name="label" attr.type="string"/>
+<key id="d29" for="node" attr.name="bronreferentie" attr.type="string"/>
+<key id="d28" for="node" attr.name="operators" attr.type="string"/>
+<key id="d27" for="node" attr.name="naam" attr.type="string"/>
+<key id="d26" for="node" attr.name="regel_id" attr.type="string"/>
+<key id="d25" for="node" attr.name="afleidingsregels" attr.type="string"/>
+<key id="d24" for="node" attr.name="leidt_tot" attr.type="string"/>
+<key id="d23" for="node" attr.name="heeft" attr.type="string"/>
+<key id="d22" for="node" attr.name="is_een" attr.type="string"/>
+<key id="d21" for="node" attr.name="status" attr.type="string"/>
+<key id="d20" for="node" attr.name="geldigheid_tot" attr.type="string"/>
+<key id="d19" for="node" attr.name="geldigheid_van" attr.type="string"/>
+<key id="d18" for="node" attr.name="herkomst" attr.type="string"/>
+<key id="d17" for="node" attr.name="soort" attr.type="string"/>
+<key id="d16" for="node" attr.name="definitie" attr.type="string"/>
+<key id="d15" for="node" attr.name="toelichting_klasse" attr.type="string"/>
+<key id="d14" for="node" attr.name="interpretatiemethode" attr.type="string"/>
+<key id="d13" for="node" attr.name="bronnen" attr.type="string"/>
+<key id="d12" for="node" attr.name="bron" attr.type="string"/>
+<key id="d11" for="node" attr.name="markering" attr.type="string"/>
+<key id="d10" for="node" attr.name="begripsnaam" attr.type="string"/>
+<key id="d9" for="node" attr.name="kruisreferenties" attr.type="string"/>
+<key id="d8" for="node" attr.name="start" attr.type="string"/>
+<key id="d7" for="node" attr.name="structuurpositie" attr.type="string"/>
+<key id="d6" for="node" attr.name="peildatum" attr.type="string"/>
+<key id="d5" for="node" attr.name="bwb_id" attr.type="string"/>
+<key id="d4" for="node" attr.name="artikel" attr.type="string"/>
+<key id="d3" for="node" attr.name="color" attr.type="string"/>
+<key id="d2" for="node" attr.name="jas_klasse" attr.type="string"/>
+<key id="d1" for="node" attr.name="node_type" attr.type="string"/>
+<key id="d0" for="node" attr.name="label" attr.type="string"/>
+<graph edgedefault="directed"><node id="annotaties/iw1990/art9-1">
+  <data key="d0">Art. 9 lid 1 IW 1990</data>
+  <data key="d1">annotatie</data>
+  <data key="d2">annotatie</data>
+  <data key="d3">#CCCCCC</data>
+  <data key="d4">Art. 9 lid 1 IW 1990</data>
+  <data key="d5">BWBR0004770</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d7">Hoofdstuk II Invordering in eerste aanleg &gt; Artikel 9 &gt; Lid 1</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="annotaties/iw1990/art9-5">
+  <data key="d0">Art. 9 lid 5 IW 1990</data>
+  <data key="d1">annotatie</data>
+  <data key="d2">annotatie</data>
+  <data key="d3">#CCCCCC</data>
+  <data key="d4">Art. 9 lid 5 IW 1990</data>
+  <data key="d5">BWBR0004770</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d7">Hoofdstuk II Invordering in eerste aanleg &gt; Artikel 9 &gt; Lid 5</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="annotaties/iw1990/art9">
+  <data key="d0">Art. 9 IW 1990</data>
+  <data key="d1">annotatie</data>
+  <data key="d2">annotatie</data>
+  <data key="d3">#CCCCCC</data>
+  <data key="d4">Art. 9 IW 1990</data>
+  <data key="d5">BWBR0004770</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d7">Hoofdstuk II Invordering in eerste aanleg &gt; Artikel 9</data>
+  <data key="d9">['Art. 2 IW 1990', 'Art. 8 Wet BPM 1992', 'Art. 6 Wet BZM', 'Algemene termijnenwet', 'Art. 167 Douanewetboek van de Unie']</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="annotaties/li2008/art9-9-1">
+  <data key="d0">§ 9.1 LI 2008</data>
+  <data key="d1">annotatie</data>
+  <data key="d2">annotatie</data>
+  <data key="d3">#CCCCCC</data>
+  <data key="d4">§ 9.1 LI 2008</data>
+  <data key="d5">BWBR0024096</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d7">Artikel 1 Inleiding en toepassingsgebied &gt; Artikel 9 Betalingstermijnen &gt; Lid 9.1</data>
+  <data key="d9">['Art. 9 IW 1990']</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="begrippen/31-december">
+  <data key="d0">31-december</data>
+  <data key="d1">begrip</data>
+  <data key="d2">tijdsaanduiding</data>
+  <data key="d3">#F4B942</data>
+  <data key="d10">31-december</data>
+  <data key="d11">31 december</data>
+  <data key="d12">§ 9.1 LI 2008</data>
+  <data key="d13">['§ 9.1 LI 2008']</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d14">grammaticaal</data>
+  <data key="d15">Specifieke datum in de kalender.</data>
+  <data key="d16">De eenendertigste dag van de twaalfde maand van een kalenderjaar</data>
+  <data key="d17">datum</data>
+  <data key="d18">direct</data>
+  <data key="d19">2026-01-01</data>
+  <data key="d20"></data>
+  <data key="d21">concept</data>
+  <data key="d22">[]</data>
+  <data key="d23">[]</data>
+  <data key="d24">[]</data>
+  <data key="d25">[]</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="begrippen/afwijkend-boekjaar">
+  <data key="d0">afwijkend-boekjaar</data>
+  <data key="d1">begrip</data>
+  <data key="d2">voorwaarde</data>
+  <data key="d3">#7030A0</data>
+  <data key="d10">afwijkend-boekjaar</data>
+  <data key="d11">Bij afwijkende boekjaren</data>
+  <data key="d12">§ 9.1 LI 2008</data>
+  <data key="d13">['§ 9.1 LI 2008']</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d14">grammaticaal</data>
+  <data key="d15">Contextuele conditie voor de specialisatieregel.</data>
+  <data key="d16">Situatie waarbij het boekjaar van een belastingplichtige niet samenvalt met het kalenderjaar</data>
+  <data key="d17">waar-niet-waar</data>
+  <data key="d18">direct</data>
+  <data key="d19">2026-01-01</data>
+  <data key="d20"></data>
+  <data key="d21">concept</data>
+  <data key="d22">[]</data>
+  <data key="d23">[]</data>
+  <data key="d24">[]</data>
+  <data key="d25">[]</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="begrippen/belastingaanslag">
+  <data key="d0">belastingaanslag</data>
+  <data key="d1">begrip</data>
+  <data key="d2">rechtsobject</data>
+  <data key="d3">#70AD47</data>
+  <data key="d10">belastingaanslag</data>
+  <data key="d11">Een belastingaanslag</data>
+  <data key="d12">Art. 9 lid 1 IW 1990</data>
+  <data key="d13">['Art. 9 lid 1 IW 1990']</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d14">grammaticaal</data>
+  <data key="d15">De belastingaanslag is het voorwerp van de invorderingsrechtsbetrekking; grammaticaal is 'een belastingaanslag' het zelfstandig naamwoord waarop de invorderbaarheid betrekking heeft. Alternatieve classificatie als rechtssubject is uitgesloten: de aanslag is geen drager van rechten of plichten.</data>
+  <data key="d16">Een door de Belastingdienst opgelegd en geformaliseerd besluit tot vaststelling van een belastingschuld, dat als voorwerp van invordering dient en waarop de invorderingsrechtsbetrekking zich richt</data>
+  <data key="d17">enumeratiewaarde</data>
+  <data key="d18">direct</data>
+  <data key="d19">2026-01-01</data>
+  <data key="d20"></data>
+  <data key="d21">concept</data>
+  <data key="d22">[]</data>
+  <data key="d23">['[[begrippen/dagtekening-aanslagbiljet]]']</data>
+  <data key="d24">[]</data>
+  <data key="d25">[]</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="begrippen/dagtekening-aanslagbiljet">
+  <data key="d0">dagtekening-aanslagbiljet</data>
+  <data key="d1">begrip</data>
+  <data key="d2">tijdsaanduiding</data>
+  <data key="d3">#F4B942</data>
+  <data key="d10">dagtekening-aanslagbiljet</data>
+  <data key="d11">de dagtekening van het aanslagbiljet</data>
+  <data key="d12">Art. 9 lid 1 IW 1990</data>
+  <data key="d13">['Art. 9 lid 1 IW 1990', 'Art. 9 lid 5 IW 1990']</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d14">systematisch</data>
+  <data key="d15">Dubbelclassificatie: (1) tijdsaanduiding — de dagtekening is het referentiepunt waarvan de invorderingstermijn van zes weken wordt berekend; (2) rechtsfeit — de dagtekening is de handeling (het formeel dateren/uitreiken van het aanslagbiljet) waaraan het rechtsgevolg (aanvang invorderingstermijn) is verbonden. Primaire classificatie: tijdsaanduiding, omdat het meetpunt in de voorwaardeconstructie van lid 1 centraal staat.</data>
+  <data key="d16">De op het aanslagbiljet vermelde datum waarop de belastingaanslag formeel is gedagtekend en die dient als het vaste referentiepunt voor de berekening van de invorderingstermijn</data>
+  <data key="d17">datum</data>
+  <data key="d18">direct</data>
+  <data key="d19">2026-01-01</data>
+  <data key="d20"></data>
+  <data key="d21">concept</data>
+  <data key="d22">[]</data>
+  <data key="d23">[]</data>
+  <data key="d24">['[[begrippen/zes-weken-na-dagtekening-aanslagbiljet]]']</data>
+  <data key="d25">[]</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="begrippen/dagtekening-in-november-of-eerder">
+  <data key="d0">dagtekening-in-november-of-eerder</data>
+  <data key="d1">begrip</data>
+  <data key="d2">voorwaarde</data>
+  <data key="d3">#7030A0</data>
+  <data key="d10">dagtekening-in-november-of-eerder</data>
+  <data key="d11">die zijn gedagtekend in november of eerder</data>
+  <data key="d12">§ 9.1 LI 2008</data>
+  <data key="d13">['§ 9.1 LI 2008']</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d14">grammaticaal</data>
+  <data key="d15">Beschrijft een conditie waaraan de voorlopige aanslag moet voldoen.</data>
+  <data key="d16">Situatie waarbij de datum die op het aanslagbiljet is vermeld valt in de periode van 1 januari tot en met 30 november van het kalenderjaar</data>
+  <data key="d17">waar-niet-waar</data>
+  <data key="d18">direct</data>
+  <data key="d19">2026-01-01</data>
+  <data key="d20"></data>
+  <data key="d21">concept</data>
+  <data key="d22">[]</data>
+  <data key="d23">['[[begrippen/dagtekening-aanslagbiljet]]']</data>
+  <data key="d24">[]</data>
+  <data key="d25">[]</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="begrippen/dagtekening-in-vaststellingsjaar">
+  <data key="d0">dagtekening-in-vaststellingsjaar</data>
+  <data key="d1">begrip</data>
+  <data key="d2">voorwaarde</data>
+  <data key="d3">#7030A0</data>
+  <data key="d10">dagtekening-in-vaststellingsjaar</data>
+  <data key="d11">waarvan het aanslagbiljet een dagtekening heeft die ligt in het jaar waarover deze is vastgesteld</data>
+  <data key="d12">Art. 9 lid 5 IW 1990</data>
+  <data key="d13">['Art. 9 lid 5 IW 1990']</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d14">grammaticaal</data>
+  <data key="d15">Kwalificatieconditie die het toepassingsbereik van lid 5 afbakent: de dagtekening van het aanslagbiljet moet vallen in het belastingjaar waarover de voorlopige aanslag is vastgesteld. Aanslagen met een dagtekening vóór het belastingjaar vallen onder lid 7.</data>
+  <data key="d16">De toepassingsvoorwaarde dat de dagtekening van het aanslagbiljet valt binnen het kalenderjaar waarover de voorlopige aanslag of de voorlopige conserverende aanslag is vastgesteld, als afbakeningscriterium voor de termijnenregeling van art. 9 lid 5 IW 1990</data>
+  <data key="d17">waar-niet-waar</data>
+  <data key="d18">afgeleid</data>
+  <data key="d19">2026-01-01</data>
+  <data key="d20"></data>
+  <data key="d21">concept</data>
+  <data key="d22">[]</data>
+  <data key="d23">['[[begrippen/dagtekening-aanslagbiljet]]']</data>
+  <data key="d24">['[[begrippen/invorderbaarheid-in-gelijke-termijnen]]']</data>
+  <data key="d25">['[[regels/AR-9-5a]]']</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="begrippen/een-maand-na-dagtekening">
+  <data key="d0">een-maand-na-dagtekening</data>
+  <data key="d1">begrip</data>
+  <data key="d2">tijdsaanduiding</data>
+  <data key="d3">#F4B942</data>
+  <data key="d10">een-maand-na-dagtekening</data>
+  <data key="d11">één maand na de dagtekening van het aanslagbiljet</data>
+  <data key="d12">Art. 9 lid 5 IW 1990</data>
+  <data key="d13">['Art. 9 lid 5 IW 1990']</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d14">grammaticaal</data>
+  <data key="d15">Tijdsaanduiding voor de vervaldatum van de eerste termijn in de lid-5-regeling. De termijn van één maand is een vaste verwijzingsdatum relatief aan de dagtekening.</data>
+  <data key="d16">Het tijdstip dat is gelegen één kalendermaand na de dagtekening van het aanslagbiljet en dat dient als vervaldatum van de eerste invorderingstermijn op grond van art. 9 lid 5 IW 1990</data>
+  <data key="d17">datum</data>
+  <data key="d18">afgeleid</data>
+  <data key="d19">2026-01-01</data>
+  <data key="d20"></data>
+  <data key="d21">concept</data>
+  <data key="d22">[]</data>
+  <data key="d23">['[[begrippen/dagtekening-aanslagbiljet]]']</data>
+  <data key="d24">['[[begrippen/vervaldag-eerste-termijn]]']</data>
+  <data key="d25">['[[regels/AR-9-5c]]']</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="begrippen/in-afwijking-van-eerste-lid">
+  <data key="d0">in-afwijking-van-eerste-lid</data>
+  <data key="d1">begrip</data>
+  <data key="d2">voorwaarde</data>
+  <data key="d3">#7030A0</data>
+  <data key="d10">in-afwijking-van-eerste-lid</data>
+  <data key="d11">In afwijking van het eerste lid</data>
+  <data key="d12">Art. 9 lid 5 IW 1990</data>
+  <data key="d13">['Art. 9 lid 5 IW 1990']</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d14">systematisch</data>
+  <data key="d15">Specialisatiebepaling die lid 5 aanmerkt als lex specialis t.o.v. art. 9 lid 1. De zinsnede heeft geen zelfstandige materiële inhoud maar markeert de hiërarchische relatie: de hoofdregel van lid 1 (zes weken) wordt voor de genoemde aanslagtypen verdrongen door de termijnenregeling van lid 5.</data>
+  <data key="d16">De aanduiding dat de termijnenregeling van lid 5 een lex-specialis-relatie heeft ten opzichte van de hoofdregel van art. 9 lid 1 IW 1990, zodat de zes-wekentermijn van lid 1 voor de genoemde voorlopige aanslagen wordt verdrongen door de gelijke-termijnenregeling van lid 5</data>
+  <data key="d17">waar-niet-waar</data>
+  <data key="d18">afgeleid</data>
+  <data key="d19">2026-01-01</data>
+  <data key="d20"></data>
+  <data key="d21">concept</data>
+  <data key="d22">[]</data>
+  <data key="d23">[]</data>
+  <data key="d24">['[[begrippen/invorderbaarheid-in-gelijke-termijnen]]']</data>
+  <data key="d25">['[[regels/AR-9-5a]]']</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="begrippen/invorderbaarheid-belastingaanslag">
+  <data key="d0">invorderbaarheid-belastingaanslag</data>
+  <data key="d1">begrip</data>
+  <data key="d2">afleidingsregel</data>
+  <data key="d3">#00B0F0</data>
+  <data key="d10">invorderbaarheid-belastingaanslag</data>
+  <data key="d11">Een belastingaanslag is invorderbaar zes weken na de dagtekening van het aanslagbiljet.</data>
+  <data key="d12">Art. 9 lid 1 IW 1990</data>
+  <data key="d13">['Art. 9 lid 1 IW 1990']</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d14">systematisch</data>
+  <data key="d15">De volledige zin van lid 1 vormt een beslissingsregel (type afleidingsregel): als zes weken zijn verstreken na de dagtekening van het aanslagbiljet, dan is de belastingaanslag invorderbaar (ja/nee). Dit is de hoofdregel; de overige leden (2, 4–9, 11) bevatten specialisatieregels die 'in afwijking van het eerste lid' gelden.</data>
+  <data key="d16">De beslissingsregel die bepaalt of een belastingaanslag invorderbaar is, inhoudende dat invorderbaarheid intreedt zodra zes weken zijn verstreken na de dagtekening van het aanslagbiljet</data>
+  <data key="d17">waar-niet-waar</data>
+  <data key="d18">afgeleid</data>
+  <data key="d19">2026-01-01</data>
+  <data key="d20"></data>
+  <data key="d21">concept</data>
+  <data key="d22">[]</data>
+  <data key="d23">['[[begrippen/belastingaanslag]]', '[[begrippen/zes-weken-na-dagtekening-aanslagbiljet]]']</data>
+  <data key="d24">['[[begrippen/invorderbaarheid]]']</data>
+  <data key="d25">['[[regels/AR-9-1]]']</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="begrippen/invorderbaarheid-in-gelijke-termijnen">
+  <data key="d0">invorderbaarheid-in-gelijke-termijnen</data>
+  <data key="d1">begrip</data>
+  <data key="d2">afleidingsregel</data>
+  <data key="d3">#00B0F0</data>
+  <data key="d10">invorderbaarheid-in-gelijke-termijnen</data>
+  <data key="d11">In afwijking van het eerste lid is een voorlopige aanslag in de inkomstenbelasting of in de vennootschapsbelasting en een voorlopige conserverende aanslag in de inkomstenbelasting, waarvan het aanslagbiljet een dagtekening heeft die ligt in het jaar waarover deze is vastgesteld, invorderbaar in zoveel gelijke termijnen als er na de maand, die in de dagtekening van het aanslagbiljet is vermeld, nog maanden van het jaar overblijven.</data>
+  <data key="d12">Art. 9 lid 5 IW 1990</data>
+  <data key="d13">['Art. 9 lid 5 IW 1990']</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d14">systematisch</data>
+  <data key="d15">Specialisatieregel t.o.v. art. 9 lid 1. Als-dan: als de voorlopige aanslag (IB/VPB) of voorlopige conserverende aanslag (IB) is gedagtekend in het belastingjaar, dan is hij invorderbaar in gelijke maandelijkse termijnen. Bevat twee cumulatieve kwalificatievoorwaarden en de rekenregel voor het termijnenaantal.</data>
+  <data key="d16">De specialisatieregel die bepaalt dat een voorlopige aanslag IB of VPB, dan wel een voorlopige conserverende aanslag IB, waarvan het aanslagbiljet is gedagtekend in het belastingjaar, invorderbaar is in een aantal gelijke maandelijkse termijnen dat gelijk is aan het aantal kalendermaanden dat na de dagtekening maand nog in dat jaar resteert</data>
+  <data key="d17">getal</data>
+  <data key="d18">afgeleid</data>
+  <data key="d19">2026-01-01</data>
+  <data key="d20"></data>
+  <data key="d21">concept</data>
+  <data key="d22">['[[begrippen/invorderbaarheid]]']</data>
+  <data key="d23">['[[begrippen/voorlopige-aanslag]]', '[[begrippen/voorlopige-conserverende-aanslag-ib]]', '[[begrippen/dagtekening-in-vaststellingsjaar]]', '[[begrippen/termijnenberekening-resterende-maanden]]']</data>
+  <data key="d24">['[[begrippen/vervaldag-eerste-termijn]]', '[[begrippen/vervaldag-volgende-termijnen]]']</data>
+  <data key="d25">['[[regels/AR-9-5a]]']</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="begrippen/invorderbaarheid">
+  <data key="d0">invorderbaarheid</data>
+  <data key="d1">begrip</data>
+  <data key="d2">rechtsbetrekking</data>
+  <data key="d3">#FF0000</data>
+  <data key="d10">invorderbaarheid</data>
+  <data key="d11">is invorderbaar</data>
+  <data key="d12">Art. 9 lid 1 IW 1990</data>
+  <data key="d13">['Art. 9 lid 1 IW 1990', 'Art. 9 lid 5 IW 1990']</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d14">grammaticaal</data>
+  <data key="d15">Het werkwoord 'is invorderbaar' drukt de juridische toestand uit die de rechtsbetrekking tussen ontvanger (rechthebbende) en belastingschuldige (plichthebbende) activeert. Rechtssubjecten worden in lid 1 niet expliciet benoemd; zij vloeien voort uit art. 2 en 3 IW 1990. Invorderbaarheid is de drempelvoorwaarde voor het inzetten van invorderingsmaatregelen.</data>
+  <data key="d16">De juridische toestand waarin een belastingaanslag verkeert zodra de wettelijke betalingstermijn is verstreken, op grond waarvan de ontvanger bevoegd is invorderingsmaatregelen te treffen jegens de belastingschuldige</data>
+  <data key="d17">waar-niet-waar</data>
+  <data key="d18">afgeleid</data>
+  <data key="d19">2026-01-01</data>
+  <data key="d20"></data>
+  <data key="d21">concept</data>
+  <data key="d22">[]</data>
+  <data key="d23">[]</data>
+  <data key="d24">[]</data>
+  <data key="d25">['[[regels/AR-9-1]]']</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="begrippen/logische-of">
+  <data key="d0">logische-of</data>
+  <data key="d1">begrip</data>
+  <data key="d2">operator</data>
+  <data key="d3">#808080</data>
+  <data key="d10">logische-of</data>
+  <data key="d11">of</data>
+  <data key="d12">Art. 9 lid 5 IW 1990</data>
+  <data key="d13">['Art. 9 lid 5 IW 1990']</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d14">grammaticaal</data>
+  <data key="d15">Het voegwoord 'of' fungeert als logische OR-operator in de opsomming van aanslagtypen (IB of VPB) in lid 5. De voorwaarde is vervuld als sprake is van ofwel een voorlopige IB-aanslag ofwel een voorlopige VPB-aanslag.</data>
+  <data key="d16">De logische operator die twee of meer alternatieven verbindt, zodanig dat de samengestelde voorwaarde is vervuld als ten minste één van de verbonden elementen waar is</data>
+  <data key="d17">waar-niet-waar</data>
+  <data key="d18">direct</data>
+  <data key="d19">2026-01-01</data>
+  <data key="d20"></data>
+  <data key="d21">concept</data>
+  <data key="d22">[]</data>
+  <data key="d23">[]</data>
+  <data key="d24">[]</data>
+  <data key="d25">[]</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="begrippen/maand-dagtekening-aanslagbiljet">
+  <data key="d0">maand-dagtekening-aanslagbiljet</data>
+  <data key="d1">begrip</data>
+  <data key="d2">tijdsaanduiding</data>
+  <data key="d3">#F4B942</data>
+  <data key="d10">maand-dagtekening-aanslagbiljet</data>
+  <data key="d11">de maand, die in de dagtekening van het aanslagbiljet is vermeld</data>
+  <data key="d12">Art. 9 lid 5 IW 1990</data>
+  <data key="d13">['Art. 9 lid 5 IW 1990']</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d14">grammaticaal</data>
+  <data key="d15">Tijdsaanduiding die de maandcomponent uit de dagtekening van het aanslagbiljet extraheert. Dit is het ankerpunt voor de termijnenberekening in lid 5: het aantal resterende maanden van het jaar wordt geteld na de vermelde maand.</data>
+  <data key="d16">De kalendermaand die is vermeld in de dagtekening van het aanslagbiljet en die als referentiepunt dient voor de berekening van het aantal resterende maanden van het belastingjaar in de termijnenregeling van art. 9 lid 5 IW 1990</data>
+  <data key="d17">datum</data>
+  <data key="d18">direct</data>
+  <data key="d19">2026-01-01</data>
+  <data key="d20"></data>
+  <data key="d21">concept</data>
+  <data key="d22">[]</data>
+  <data key="d23">[]</data>
+  <data key="d24">['[[begrippen/resterende-maanden-jaar]]']</data>
+  <data key="d25">[]</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="begrippen/resterende-maanden-jaar">
+  <data key="d0">resterende-maanden-jaar</data>
+  <data key="d1">begrip</data>
+  <data key="d2">variabele</data>
+  <data key="d3">#92D050</data>
+  <data key="d10">resterende-maanden-jaar</data>
+  <data key="d11">nog maanden van het jaar overblijven</data>
+  <data key="d12">Art. 9 lid 5 IW 1990</data>
+  <data key="d13">['Art. 9 lid 5 IW 1990']</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d14">grammaticaal</data>
+  <data key="d15">Variabele die het aantal resterende kalendermaanden in het belastingjaar weergeeft, te tellen na de maand die in de dagtekening van het aanslagbiljet is vermeld. De waarde varieert naar gelang de dagtekening (max. 11 bij januari, min. 0 bij december).</data>
+  <data key="d16">Het aantal kalendermaanden dat in het belastingjaar resteert na de maand die in de dagtekening van het aanslagbiljet is vermeld, en dat gelijk is aan het aantal gelijke termijnen waarin de voorlopige aanslag invorderbaar is op grond van art. 9 lid 5 IW 1990</data>
+  <data key="d17">getal</data>
+  <data key="d18">afgeleid</data>
+  <data key="d19">2026-01-01</data>
+  <data key="d20"></data>
+  <data key="d21">concept</data>
+  <data key="d22">[]</data>
+  <data key="d23">['[[begrippen/maand-dagtekening-aanslagbiljet]]']</data>
+  <data key="d24">['[[begrippen/termijnenberekening-resterende-maanden]]']</data>
+  <data key="d25">['[[regels/AR-9-5b]]']</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="begrippen/telkens-een-maand-later">
+  <data key="d0">telkens-een-maand-later</data>
+  <data key="d1">begrip</data>
+  <data key="d2">tijdsaanduiding</data>
+  <data key="d3">#F4B942</data>
+  <data key="d10">telkens-een-maand-later</data>
+  <data key="d11">telkens een maand later</data>
+  <data key="d12">Art. 9 lid 5 IW 1990</data>
+  <data key="d13">['Art. 9 lid 5 IW 1990']</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d14">grammaticaal</data>
+  <data key="d15">Tijdsaanduiding die de iteratieve periodiciteit van de vervaldatums na de eerste termijn uitdrukt. 'Telkens' markeert de herhalende toepassing van de één-maand-stap voor elke volgende termijn.</data>
+  <data key="d16">De iteratieve tijdstap van één kalendermaand waarmee elke vervaldatum na de eerste termijn wordt bepaald, door steeds één maand op te tellen bij de vorige vervaldatum</data>
+  <data key="d17">datum</data>
+  <data key="d18">afgeleid</data>
+  <data key="d19">2026-01-01</data>
+  <data key="d20"></data>
+  <data key="d21">concept</data>
+  <data key="d22">[]</data>
+  <data key="d23">[]</data>
+  <data key="d24">['[[begrippen/vervaldag-volgende-termijnen]]']</data>
+  <data key="d25">['[[regels/AR-9-5d]]']</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="begrippen/termijn-eindigt-voor-31-december">
+  <data key="d0">termijn-eindigt-voor-31-december</data>
+  <data key="d1">begrip</data>
+  <data key="d2">voorwaarde</data>
+  <data key="d3">#7030A0</data>
+  <data key="d10">termijn-eindigt-voor-31-december</data>
+  <data key="d11">toepassing van de wet er toe zou leiden dat de enige of laatste betalingstermijn eindigt voor 31 december</data>
+  <data key="d12">§ 9.1 LI 2008</data>
+  <data key="d13">['§ 9.1 LI 2008']</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d14">systematisch</data>
+  <data key="d15">Conditie gebaseerd op de uitkomst van de wettelijke termijnberekening.</data>
+  <data key="d16">Situatie waarbij de berekende vervaldag van de laatste betalingstermijn volgens de regels van de wet valt op een datum vóór 31 december van het betreffende jaar</data>
+  <data key="d17">waar-niet-waar</data>
+  <data key="d18">afgeleid</data>
+  <data key="d19">2026-01-01</data>
+  <data key="d20"></data>
+  <data key="d21">concept</data>
+  <data key="d22">[]</data>
+  <data key="d23">['[[begrippen/invorderbaarheid-belastingaanslag]]']</data>
+  <data key="d24">[]</data>
+  <data key="d25">[]</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="begrippen/termijnbedrag">
+  <data key="d0">termijnbedrag</data>
+  <data key="d1">begrip</data>
+  <data key="d2">variabele</data>
+  <data key="d3">#92D050</data>
+  <data key="d10">termijnbedrag</data>
+  <data key="d11">gelijke termijnen</data>
+  <data key="d12">Art. 9 lid 5 IW 1990</data>
+  <data key="d13">['Art. 9 lid 5 IW 1990']</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d14">systematisch</data>
+  <data key="d15">Afgeleide variabele die de numerieke waarde van één betalingstermijn representeert. De wet stelt de eis dat termijnen 'gelijk' zijn, wat een rekenkundige deling van het totaalbedrag door het aantal termijnen impliceert.</data>
+  <data key="d16">Het bedrag van een afzonderlijke termijn, berekend door het totaalbedrag van de belastingaanslag te delen door het aantal termijnen</data>
+  <data key="d17">getal</data>
+  <data key="d18">afgeleid</data>
+  <data key="d19">2026-01-01</data>
+  <data key="d20"></data>
+  <data key="d21">concept</data>
+  <data key="d22">[]</data>
+  <data key="d23">[]</data>
+  <data key="d24">[]</data>
+  <data key="d25">['[[regels/AR-9-5f]]']</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="begrippen/termijnenberekening-resterende-maanden">
+  <data key="d0">termijnenberekening-resterende-maanden</data>
+  <data key="d1">begrip</data>
+  <data key="d2">afleidingsregel</data>
+  <data key="d3">#00B0F0</data>
+  <data key="d10">termijnenberekening-resterende-maanden</data>
+  <data key="d11">in zoveel gelijke termijnen als er na de maand, die in de dagtekening van het aanslagbiljet is vermeld, nog maanden van het jaar overblijven</data>
+  <data key="d12">Art. 9 lid 5 IW 1990</data>
+  <data key="d13">['Art. 9 lid 5 IW 1990']</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d14">systematisch</data>
+  <data key="d15">Rekenregel die het aantal invorderingstermijnen bepaalt. Input: maand van de dagtekening (tijdsaanduiding) en het resterende aantal kalendermaanden (variabele). Output: het exacte aantal gelijke maandelijkse termijnen. Logica: bij dagtekening in januari zijn er 11 termijnen; bij oktober 2, bij november 1 (terugval naar lid 1 via derde volzin).</data>
+  <data key="d16">De rekenregel die het aantal gelijke invorderingstermijnen bepaalt door het aantal kalendermaanden te tellen dat in het belastingjaar resteert na de maand die in de dagtekening van het aanslagbiljet is vermeld</data>
+  <data key="d17">getal</data>
+  <data key="d18">afgeleid</data>
+  <data key="d19">2026-01-01</data>
+  <data key="d20"></data>
+  <data key="d21">concept</data>
+  <data key="d22">[]</data>
+  <data key="d23">['[[begrippen/maand-dagtekening-aanslagbiljet]]', '[[begrippen/resterende-maanden-jaar]]']</data>
+  <data key="d24">['[[begrippen/invorderbaarheid-in-gelijke-termijnen]]']</data>
+  <data key="d25">['[[regels/AR-9-5b]]']</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="begrippen/terugvalregel-lid-1">
+  <data key="d0">terugvalregel-lid-1</data>
+  <data key="d1">begrip</data>
+  <data key="d2">afleidingsregel</data>
+  <data key="d3">#00B0F0</data>
+  <data key="d10">terugvalregel-lid-1</data>
+  <data key="d11">Indien de toepassing van de eerste volzin niet leidt tot meer dan één termijn, vindt het eerste lid toepassing.</data>
+  <data key="d12">Art. 9 lid 5 IW 1990</data>
+  <data key="d13">['Art. 9 lid 5 IW 1990']</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d14">systematisch</data>
+  <data key="d15">Beslissingsregel (terugvalregel) die de toepassingsgrens van de lid-5-termijnenregeling bepaalt. Als het berekende termijnenaantal ≤ 1 is, herneemt art. 9 lid 1 toepassing. Dit doet zich voor bij een dagtekening in december (0 resterende maanden na december).</data>
+  <data key="d16">De beslissingsregel die bepaalt dat art. 9 lid 1 IW 1990 herneemt als de termijnenberekening van art. 9 lid 5 eerste volzin niet leidt tot meer dan één termijn, zodat de zes-wekentermijn van lid 1 in de plaats treedt van de gelijke-termijnenregeling</data>
+  <data key="d17">waar-niet-waar</data>
+  <data key="d18">afgeleid</data>
+  <data key="d19">2026-01-01</data>
+  <data key="d20"></data>
+  <data key="d21">concept</data>
+  <data key="d22">[]</data>
+  <data key="d23">['[[begrippen/termijnenberekening-resterende-maanden]]', '[[begrippen/resterende-maanden-jaar]]']</data>
+  <data key="d24">['[[begrippen/invorderbaarheid-belastingaanslag]]']</data>
+  <data key="d25">['[[regels/AR-9-5e]]']</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="begrippen/totaalbedrag-belastingaanslag">
+  <data key="d0">totaalbedrag-belastingaanslag</data>
+  <data key="d1">begrip</data>
+  <data key="d2">variabele</data>
+  <data key="d3">#92D050</data>
+  <data key="d10">totaalbedrag-belastingaanslag</data>
+  <data key="d11">een belastingaanslag</data>
+  <data key="d12">Art. 9 lid 1 IW 1990</data>
+  <data key="d13">['Art. 9 lid 1 IW 1990']</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d14">systematisch</data>
+  <data key="d15">Kenmerk van het rechtsobject belastingaanslag. Het totaalbedrag is de numerieke waarde van de vastgestelde belastingschuld die de basis vormt voor de invordering en de berekening van termijnen.</data>
+  <data key="d16">Het totale bedrag van de belastingaanslag dat bij aanvang van de invordering verschuldigd is</data>
+  <data key="d17">getal</data>
+  <data key="d18">direct</data>
+  <data key="d19">2026-01-01</data>
+  <data key="d20"></data>
+  <data key="d21">concept</data>
+  <data key="d22">[]</data>
+  <data key="d23">[]</data>
+  <data key="d24">['[[begrippen/termijnbedrag]]']</data>
+  <data key="d25">[]</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="begrippen/vervaldag-31-december">
+  <data key="d0">vervaldag-31-december</data>
+  <data key="d1">begrip</data>
+  <data key="d2">afleidingsregel</data>
+  <data key="d3">#00B0F0</data>
+  <data key="d10">vervaldag-31-december</data>
+  <data key="d11">dan wordt de vervaldag van deze termijn op 31 december gesteld</data>
+  <data key="d12">§ 9.1 LI 2008</data>
+  <data key="d13">['§ 9.1 LI 2008']</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d14">grammaticaal</data>
+  <data key="d15">Stelt een nieuwe waarde vast voor de vervaldag.</data>
+  <data key="d16">Besluit om de uiterste betaaldatum van de laatste termijn vast te stellen op 31 december van het kalenderjaar</data>
+  <data key="d17">datum</data>
+  <data key="d18">afgeleid</data>
+  <data key="d19">2026-01-01</data>
+  <data key="d20"></data>
+  <data key="d21">concept</data>
+  <data key="d22">[]</data>
+  <data key="d23">['[[begrippen/31-december]]']</data>
+  <data key="d24">['[[begrippen/invorderbaarheid]]']</data>
+  <data key="d25">['[[regels/AR-LI-9-1a]]']</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="begrippen/vervaldag-eerste-termijn">
+  <data key="d0">vervaldag-eerste-termijn</data>
+  <data key="d1">begrip</data>
+  <data key="d2">afleidingsregel</data>
+  <data key="d3">#00B0F0</data>
+  <data key="d10">vervaldag-eerste-termijn</data>
+  <data key="d11">De eerste termijn vervalt één maand na de dagtekening van het aanslagbiljet</data>
+  <data key="d12">Art. 9 lid 5 IW 1990</data>
+  <data key="d13">['Art. 9 lid 5 IW 1990']</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d14">grammaticaal</data>
+  <data key="d15">Rekenregel die de vervaldatum van de eerste maandelijkse termijn bepaalt. Input: dagtekening aanslagbiljet. Output: vervaldatum = dagtekening + één maand.</data>
+  <data key="d16">De rekenregel die de vervaldatum van de eerste gelijke invorderingstermijn vaststelt als het tijdstip gelegen één kalendermaand na de dagtekening van het aanslagbiljet</data>
+  <data key="d17">datum</data>
+  <data key="d18">afgeleid</data>
+  <data key="d19">2026-01-01</data>
+  <data key="d20"></data>
+  <data key="d21">concept</data>
+  <data key="d22">[]</data>
+  <data key="d23">['[[begrippen/dagtekening-aanslagbiljet]]', '[[begrippen/een-maand-na-dagtekening]]']</data>
+  <data key="d24">[]</data>
+  <data key="d25">['[[regels/AR-9-5c]]']</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="begrippen/vervaldag-laatste-dag-maand">
+  <data key="d0">vervaldag-laatste-dag-maand</data>
+  <data key="d1">begrip</data>
+  <data key="d2">afleidingsregel</data>
+  <data key="d3">#00B0F0</data>
+  <data key="d10">vervaldag-laatste-dag-maand</data>
+  <data key="d11">wordt de laatste vervaldag steeds op de laatste dag van de maand gesteld</data>
+  <data key="d12">§ 9.1 LI 2008</data>
+  <data key="d13">['§ 9.1 LI 2008']</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d14">grammaticaal</data>
+  <data key="d15">Stelt een waarde vast voor de vervaldag bij afwijkende boekjaren.</data>
+  <data key="d16">Besluit om de uiterste betaaldatum van de laatste termijn vast te stellen op de laatste kalenderdag van de maand waarin de termijn oorspronkelijk zou vervallen</data>
+  <data key="d17">datum</data>
+  <data key="d18">afgeleid</data>
+  <data key="d19">2026-01-01</data>
+  <data key="d20"></data>
+  <data key="d21">concept</data>
+  <data key="d22">[]</data>
+  <data key="d23">[]</data>
+  <data key="d24">['[[begrippen/invorderbaarheid]]']</data>
+  <data key="d25">['[[regels/AR-LI-9-1b]]']</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="begrippen/vervaldag-volgende-termijnen">
+  <data key="d0">vervaldag-volgende-termijnen</data>
+  <data key="d1">begrip</data>
+  <data key="d2">afleidingsregel</data>
+  <data key="d3">#00B0F0</data>
+  <data key="d10">vervaldag-volgende-termijnen</data>
+  <data key="d11">elk van de volgende termijnen telkens een maand later</data>
+  <data key="d12">Art. 9 lid 5 IW 1990</data>
+  <data key="d13">['Art. 9 lid 5 IW 1990']</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d14">grammaticaal</data>
+  <data key="d15">Rekenregel die de vervaldatums van alle opvolgende termijnen bepaalt. Input: vervaldatum vorige termijn. Output: vervaldatum volgende termijn = vorige vervaldatum + één maand. De regel wordt iteratief toegepast voor elke volgende termijn.</data>
+  <data key="d16">De rekenregel die voor elke invorderingstermijn na de eerste de vervaldatum vaststelt door bij de vervaldatum van de vorige termijn steeds één kalendermaand op te tellen</data>
+  <data key="d17">datum (reeks)</data>
+  <data key="d18">afgeleid</data>
+  <data key="d19">2026-01-01</data>
+  <data key="d20"></data>
+  <data key="d21">concept</data>
+  <data key="d22">[]</data>
+  <data key="d23">['[[begrippen/vervaldag-eerste-termijn]]', '[[begrippen/telkens-een-maand-later]]']</data>
+  <data key="d24">[]</data>
+  <data key="d25">['[[regels/AR-9-5d]]']</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="begrippen/voorlopige-aanslag">
+  <data key="d0">voorlopige-aanslag</data>
+  <data key="d1">begrip</data>
+  <data key="d2">rechtsobject</data>
+  <data key="d3">#70AD47</data>
+  <data key="d10">voorlopige-aanslag</data>
+  <data key="d11">voor voorlopige aanslagen (bedoeld in artikel 9, vijfde lid, van de wet)</data>
+  <data key="d12">§ 9.1 LI 2008</data>
+  <data key="d13">['Art. 9 lid 5 IW 1990', '§ 9.1 LI 2008']</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d14">systematisch</data>
+  <data key="d15">Rechtsobject dat het voorwerp is van de invorderingsregels in art. 9 IW 1990.</data>
+  <data key="d16">Belastingaanslag die voorafgaand aan de definitieve vaststelling van de belastingschuld wordt opgelegd</data>
+  <data key="d17">enumeratiewaarde [id]</data>
+  <data key="d18">direct</data>
+  <data key="d19">2026-01-01</data>
+  <data key="d20"></data>
+  <data key="d21">concept</data>
+  <data key="d22">['[[begrippen/belastingaanslag]]']</data>
+  <data key="d23">[]</data>
+  <data key="d24">[]</data>
+  <data key="d25">[]</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="begrippen/voorlopige-conserverende-aanslag-ib">
+  <data key="d0">voorlopige-conserverende-aanslag-ib</data>
+  <data key="d1">begrip</data>
+  <data key="d2">rechtsobject</data>
+  <data key="d3">#70AD47</data>
+  <data key="d10">voorlopige-conserverende-aanslag-ib</data>
+  <data key="d11">een voorlopige conserverende aanslag in de inkomstenbelasting</data>
+  <data key="d12">Art. 9 lid 5 IW 1990</data>
+  <data key="d13">['Art. 9 lid 5 IW 1990']</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d14">grammaticaal</data>
+  <data key="d15">Naast de reguliere voorlopige aanslag IB/VPB benoemt lid 5 afzonderlijk de voorlopige conserverende aanslag IB als tweede aanslagtype waarvoor de termijnenregeling geldt. Het is een conserverende aanslag die belastinguitstel bij emigratie of vergelijkbare situaties beoogt te verzekeren.</data>
+  <data key="d16">Een belastingaanslag in de inkomstenbelasting van voorlopige en conserverende aard, die — mits het aanslagbiljet is gedagtekend in het belastingjaar waarover hij is vastgesteld — invorderbaar is in gelijke maandelijkse termijnen overeenkomstig art. 9 lid 5 IW 1990</data>
+  <data key="d17">enumeratiewaarde</data>
+  <data key="d18">direct</data>
+  <data key="d19">2026-01-01</data>
+  <data key="d20"></data>
+  <data key="d21">concept</data>
+  <data key="d22">['[[begrippen/belastingaanslag]]']</data>
+  <data key="d23">[]</data>
+  <data key="d24">[]</data>
+  <data key="d25">[]</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="begrippen/zes-weken-na-dagtekening-aanslagbiljet">
+  <data key="d0">zes-weken-na-dagtekening-aanslagbiljet</data>
+  <data key="d1">begrip</data>
+  <data key="d2">voorwaarde</data>
+  <data key="d3">#7030A0</data>
+  <data key="d10">zes-weken-na-dagtekening-aanslagbiljet</data>
+  <data key="d11">zes weken na de dagtekening van het aanslagbiljet</data>
+  <data key="d12">Art. 9 lid 1 IW 1990</data>
+  <data key="d13">['Art. 9 lid 1 IW 1990']</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d14">grammaticaal</data>
+  <data key="d15">De temporele zinsnede 'zes weken na de dagtekening van het aanslagbiljet' functioneert als de conditie waaraan voldaan moet zijn voor invorderbaarheid. De aanslag is pas invorderbaar nadat dit tijdvak is verstreken. De formulering bevat twee tijdsaanduidingen: de termijn ('zes weken') en het referentiepunt ('de dagtekening').</data>
+  <data key="d16">De tijdsconditie die vervuld moet zijn opdat een belastingaanslag invorderbaar wordt: het tijdstip van beoordeling moet zijn gelegen op of na het tijdstip dat resulteert uit het optellen van zes weken bij de dagtekening van het aanslagbiljet</data>
+  <data key="d17">datum</data>
+  <data key="d18">afgeleid</data>
+  <data key="d19">2026-01-01</data>
+  <data key="d20"></data>
+  <data key="d21">concept</data>
+  <data key="d22">[]</data>
+  <data key="d23">['[[begrippen/zes-weken]]', '[[begrippen/dagtekening-aanslagbiljet]]']</data>
+  <data key="d24">['[[begrippen/invorderbaarheid]]']</data>
+  <data key="d25">['[[regels/AR-9-1]]']</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="begrippen/zes-weken">
+  <data key="d0">zes-weken</data>
+  <data key="d1">begrip</data>
+  <data key="d2">tijdsaanduiding</data>
+  <data key="d3">#F4B942</data>
+  <data key="d10">zes-weken</data>
+  <data key="d11">zes weken</data>
+  <data key="d12">Art. 9 lid 1 IW 1990</data>
+  <data key="d13">['Art. 9 lid 1 IW 1990']</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d14">grammaticaal</data>
+  <data key="d15">De tijdsduur 'zes weken' is specifieker dan een variabele: het betreft een vaste termijn (tijdvak) die voor alle belastingaanslagen onder lid 1 gelijk is. Tijdsaanduiding heeft voorrang boven variabele en parameter (kaders §Meest specifieke klasse). Lid 10 bepaalt dat de Algemene termijnenwet niet van toepassing is, wat de berekening van deze termijn beïnvloedt.</data>
+  <data key="d16">Een vaste termijn van zes aaneengesloten weken die als tijdvak geldt voor de berekening van het moment van invorderbaarheid van een belastingaanslag en die zonder verlenging voor weekenden of feestdagen wordt berekend</data>
+  <data key="d17">getal</data>
+  <data key="d18">direct</data>
+  <data key="d19">2026-01-01</data>
+  <data key="d20"></data>
+  <data key="d21">concept</data>
+  <data key="d22">[]</data>
+  <data key="d23">[]</data>
+  <data key="d24">[]</data>
+  <data key="d25">[]</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="regels/AR-9-1">
+  <data key="d0">bepalen invorderbaarheid belastingaanslag</data>
+  <data key="d1">afleidingsregel</data>
+  <data key="d2">afleidingsregel</data>
+  <data key="d3">#00B0F0</data>
+  <data key="d26">AR-9-1</data>
+  <data key="d27">bepalen invorderbaarheid belastingaanslag</data>
+  <data key="d17">Beslissingsregel</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d28">['plus', 'groter-dan-of-gelijk-aan']</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="regels/AR-9-5a">
+  <data key="d0">bepalen invorderbaarheid voorlopige aanslag in gelijke termijnen</data>
+  <data key="d1">afleidingsregel</data>
+  <data key="d2">afleidingsregel</data>
+  <data key="d3">#00B0F0</data>
+  <data key="d26">AR-9-5a</data>
+  <data key="d27">bepalen invorderbaarheid voorlopige aanslag in gelijke termijnen</data>
+  <data key="d17">Specialisatieregel</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d28">['EN', 'OF', 'groter-dan']</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="regels/AR-9-5b">
+  <data key="d0">berekenen resterende maanden jaar</data>
+  <data key="d1">afleidingsregel</data>
+  <data key="d2">afleidingsregel</data>
+  <data key="d3">#00B0F0</data>
+  <data key="d26">AR-9-5b</data>
+  <data key="d27">berekenen resterende maanden jaar</data>
+  <data key="d17">Rekenregel</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d28">['min']</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="regels/AR-9-5c">
+  <data key="d0">berekenen vervaldag eerste termijn voorlopige aanslag</data>
+  <data key="d1">afleidingsregel</data>
+  <data key="d2">afleidingsregel</data>
+  <data key="d3">#00B0F0</data>
+  <data key="d26">AR-9-5c</data>
+  <data key="d27">berekenen vervaldag eerste termijn voorlopige aanslag</data>
+  <data key="d17">Rekenregel</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d28">['plus']</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="regels/AR-9-5d">
+  <data key="d0">berekenen vervaldag volgende termijnen voorlopige aanslag</data>
+  <data key="d1">afleidingsregel</data>
+  <data key="d2">afleidingsregel</data>
+  <data key="d3">#00B0F0</data>
+  <data key="d26">AR-9-5d</data>
+  <data key="d27">berekenen vervaldag volgende termijnen voorlopige aanslag</data>
+  <data key="d17">Rekenregel</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d28">['plus']</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="regels/AR-9-5e">
+  <data key="d0">bepalen terugval naar lid 1 bij onvoldoende termijnen</data>
+  <data key="d1">afleidingsregel</data>
+  <data key="d2">afleidingsregel</data>
+  <data key="d3">#00B0F0</data>
+  <data key="d26">AR-9-5e</data>
+  <data key="d27">bepalen terugval naar lid 1 bij onvoldoende termijnen</data>
+  <data key="d17">Beslissingsregel</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d28">['ten-hoogste', 'NIET']</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="regels/AR-9-5f">
+  <data key="d0">berekenen termijnbedrag voorlopige aanslag</data>
+  <data key="d1">afleidingsregel</data>
+  <data key="d2">afleidingsregel</data>
+  <data key="d3">#00B0F0</data>
+  <data key="d26">AR-9-5f</data>
+  <data key="d27">berekenen termijnbedrag voorlopige aanslag</data>
+  <data key="d17">Rekenregel</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d28">['gedeeld-door']</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="regels/AR-LI-9-1a">
+  <data key="d0">vaststellen vervaldag voorlopige aanslag einde kalenderjaar</data>
+  <data key="d1">afleidingsregel</data>
+  <data key="d2">afleidingsregel</data>
+  <data key="d3">#00B0F0</data>
+  <data key="d26">AR-LI-9-1a</data>
+  <data key="d27">vaststellen vervaldag voorlopige aanslag einde kalenderjaar</data>
+  <data key="d17">Specialisatieregel</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d28">['EN']</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="regels/AR-LI-9-1b">
+  <data key="d0">vaststellen vervaldag voorlopige aanslag afwijkend boekjaar</data>
+  <data key="d1">afleidingsregel</data>
+  <data key="d2">afleidingsregel</data>
+  <data key="d3">#00B0F0</data>
+  <data key="d26">AR-LI-9-1b</data>
+  <data key="d27">vaststellen vervaldag voorlopige aanslag afwijkend boekjaar</data>
+  <data key="d17">Specialisatieregel</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d28">['EN']</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="wetteksten/iw1990/art9">
+  <data key="d0">Art. 9 IW 1990</data>
+  <data key="d1">wetstekst</data>
+  <data key="d2">wetstekst</data>
+  <data key="d3">#CCCCCC</data>
+  <data key="d4">Art. 9 IW 1990</data>
+  <data key="d5">BWBR0004770</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d7">Hoofdstuk II Invordering in eerste aanleg &gt; Artikel 9</data>
+  <data key="d29">jci1.3:c:BWBR0004770&amp;hoofdstuk=II&amp;artikel=9&amp;z=2026-01-01&amp;g=2026-01-01</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<node id="wetteksten/li2008/art9-9-1">
+  <data key="d0">§ 9.1 LI 2008</data>
+  <data key="d1">wetstekst</data>
+  <data key="d2">wetstekst</data>
+  <data key="d3">#CCCCCC</data>
+  <data key="d4">§ 9.1 LI 2008</data>
+  <data key="d5">BWBR0024096</data>
+  <data key="d6">2026-01-01</data>
+  <data key="d7">Artikel 1 Inleiding en toepassingsgebied &gt; Artikel 9 Betalingstermijnen &gt; Lid 9.1</data>
+  <data key="d29">jci1.3:c:BWBR0024096&amp;artikel=9</data>
+  <data key="d8">2026-01-01</data>
+</node>
+<edge source="annotaties/iw1990/art9-1" target="annotaties/iw1990/art9" id="0">
+  <data key="d30">onderdeel-van</data>
+</edge>
+<edge source="annotaties/iw1990/art9-1" target="wetteksten/iw1990/art9" id="0">
+  <data key="d30">wetstekst</data>
+</edge>
+<edge source="annotaties/iw1990/art9-1" target="begrippen/belastingaanslag" id="0">
+  <data key="d30">begrippen</data>
+</edge>
+<edge source="annotaties/iw1990/art9-1" target="begrippen/invorderbaarheid" id="0">
+  <data key="d30">begrippen</data>
+</edge>
+<edge source="annotaties/iw1990/art9-1" target="begrippen/zes-weken-na-dagtekening-aanslagbiljet" id="0">
+  <data key="d30">begrippen</data>
+</edge>
+<edge source="annotaties/iw1990/art9-1" target="begrippen/zes-weken" id="0">
+  <data key="d30">begrippen</data>
+</edge>
+<edge source="annotaties/iw1990/art9-1" target="begrippen/dagtekening-aanslagbiljet" id="0">
+  <data key="d30">begrippen</data>
+</edge>
+<edge source="annotaties/iw1990/art9-1" target="begrippen/invorderbaarheid-belastingaanslag" id="0">
+  <data key="d30">begrippen</data>
+</edge>
+<edge source="annotaties/iw1990/art9-5" target="annotaties/iw1990/art9" id="0">
+  <data key="d30">onderdeel-van</data>
+</edge>
+<edge source="annotaties/iw1990/art9-5" target="wetteksten/iw1990/art9" id="0">
+  <data key="d30">wetstekst</data>
+</edge>
+<edge source="annotaties/iw1990/art9-5" target="begrippen/voorlopige-aanslag" id="0">
+  <data key="d30">begrippen</data>
+</edge>
+<edge source="annotaties/iw1990/art9-5" target="begrippen/logische-of" id="0">
+  <data key="d30">begrippen</data>
+</edge>
+<edge source="annotaties/iw1990/art9-5" target="begrippen/voorlopige-conserverende-aanslag-ib" id="0">
+  <data key="d30">begrippen</data>
+</edge>
+<edge source="annotaties/iw1990/art9-5" target="begrippen/in-afwijking-van-eerste-lid" id="0">
+  <data key="d30">begrippen</data>
+</edge>
+<edge source="annotaties/iw1990/art9-5" target="begrippen/dagtekening-in-vaststellingsjaar" id="0">
+  <data key="d30">begrippen</data>
+</edge>
+<edge source="annotaties/iw1990/art9-5" target="begrippen/dagtekening-aanslagbiljet" id="0">
+  <data key="d30">begrippen</data>
+</edge>
+<edge source="annotaties/iw1990/art9-5" target="begrippen/maand-dagtekening-aanslagbiljet" id="0">
+  <data key="d30">begrippen</data>
+</edge>
+<edge source="annotaties/iw1990/art9-5" target="begrippen/termijnenberekening-resterende-maanden" id="0">
+  <data key="d30">begrippen</data>
+</edge>
+<edge source="annotaties/iw1990/art9-5" target="begrippen/resterende-maanden-jaar" id="0">
+  <data key="d30">begrippen</data>
+</edge>
+<edge source="annotaties/iw1990/art9-5" target="begrippen/invorderbaarheid-in-gelijke-termijnen" id="0">
+  <data key="d30">begrippen</data>
+</edge>
+<edge source="annotaties/iw1990/art9-5" target="begrippen/vervaldag-eerste-termijn" id="0">
+  <data key="d30">begrippen</data>
+</edge>
+<edge source="annotaties/iw1990/art9-5" target="begrippen/een-maand-na-dagtekening" id="0">
+  <data key="d30">begrippen</data>
+</edge>
+<edge source="annotaties/iw1990/art9-5" target="begrippen/vervaldag-volgende-termijnen" id="0">
+  <data key="d30">begrippen</data>
+</edge>
+<edge source="annotaties/iw1990/art9-5" target="begrippen/telkens-een-maand-later" id="0">
+  <data key="d30">begrippen</data>
+</edge>
+<edge source="annotaties/iw1990/art9-5" target="begrippen/terugvalregel-lid-1" id="0">
+  <data key="d30">begrippen</data>
+</edge>
+<edge source="annotaties/iw1990/art9-5" target="begrippen/termijnbedrag" id="0">
+  <data key="d30">begrippen</data>
+</edge>
+<edge source="annotaties/iw1990/art9-5" target="begrippen/totaalbedrag-belastingaanslag" id="0">
+  <data key="d30">begrippen</data>
+</edge>
+<edge source="annotaties/iw1990/art9" target="wetteksten/iw1990/art9" id="0">
+  <data key="d30">wetstekst</data>
+</edge>
+<edge source="annotaties/iw1990/art9" target="annotaties/iw1990/art9-1" id="0">
+  <data key="d30">leden-noten</data>
+</edge>
+<edge source="annotaties/iw1990/art9" target="annotaties/iw1990/art9-5" id="0">
+  <data key="d30">leden-noten</data>
+</edge>
+<edge source="annotaties/li2008/art9-9-1" target="wetteksten/li2008/art9-9-1" id="0">
+  <data key="d30">wetstekst</data>
+</edge>
+<edge source="annotaties/li2008/art9-9-1" target="begrippen/voorlopige-aanslag" id="0">
+  <data key="d30">begrippen</data>
+</edge>
+<edge source="annotaties/li2008/art9-9-1" target="begrippen/dagtekening-in-november-of-eerder" id="0">
+  <data key="d30">begrippen</data>
+</edge>
+<edge source="annotaties/li2008/art9-9-1" target="begrippen/termijn-eindigt-voor-31-december" id="0">
+  <data key="d30">begrippen</data>
+</edge>
+<edge source="annotaties/li2008/art9-9-1" target="begrippen/vervaldag-31-december" id="0">
+  <data key="d30">begrippen</data>
+</edge>
+<edge source="annotaties/li2008/art9-9-1" target="begrippen/31-december" id="0">
+  <data key="d30">begrippen</data>
+</edge>
+<edge source="annotaties/li2008/art9-9-1" target="begrippen/afwijkend-boekjaar" id="0">
+  <data key="d30">begrippen</data>
+</edge>
+<edge source="annotaties/li2008/art9-9-1" target="begrippen/vervaldag-laatste-dag-maand" id="0">
+  <data key="d30">begrippen</data>
+</edge>
+<edge source="begrippen/belastingaanslag" target="begrippen/dagtekening-aanslagbiljet" id="0">
+  <data key="d30">heeft</data>
+</edge>
+<edge source="begrippen/dagtekening-aanslagbiljet" target="begrippen/zes-weken-na-dagtekening-aanslagbiljet" id="0">
+  <data key="d30">leidt-tot</data>
+</edge>
+<edge source="begrippen/dagtekening-in-november-of-eerder" target="begrippen/dagtekening-aanslagbiljet" id="0">
+  <data key="d30">heeft</data>
+</edge>
+<edge source="begrippen/dagtekening-in-vaststellingsjaar" target="begrippen/dagtekening-aanslagbiljet" id="0">
+  <data key="d30">heeft</data>
+</edge>
+<edge source="begrippen/dagtekening-in-vaststellingsjaar" target="begrippen/invorderbaarheid-in-gelijke-termijnen" id="0">
+  <data key="d30">leidt-tot</data>
+</edge>
+<edge source="begrippen/dagtekening-in-vaststellingsjaar" target="regels/AR-9-5a" id="0">
+  <data key="d30">afleidingsregels</data>
+</edge>
+<edge source="begrippen/een-maand-na-dagtekening" target="begrippen/dagtekening-aanslagbiljet" id="0">
+  <data key="d30">heeft</data>
+</edge>
+<edge source="begrippen/een-maand-na-dagtekening" target="begrippen/vervaldag-eerste-termijn" id="0">
+  <data key="d30">leidt-tot</data>
+</edge>
+<edge source="begrippen/een-maand-na-dagtekening" target="regels/AR-9-5c" id="0">
+  <data key="d30">afleidingsregels</data>
+</edge>
+<edge source="begrippen/in-afwijking-van-eerste-lid" target="begrippen/invorderbaarheid-in-gelijke-termijnen" id="0">
+  <data key="d30">leidt-tot</data>
+</edge>
+<edge source="begrippen/in-afwijking-van-eerste-lid" target="regels/AR-9-5a" id="0">
+  <data key="d30">afleidingsregels</data>
+</edge>
+<edge source="begrippen/invorderbaarheid-belastingaanslag" target="begrippen/belastingaanslag" id="0">
+  <data key="d30">heeft</data>
+</edge>
+<edge source="begrippen/invorderbaarheid-belastingaanslag" target="begrippen/zes-weken-na-dagtekening-aanslagbiljet" id="0">
+  <data key="d30">heeft</data>
+</edge>
+<edge source="begrippen/invorderbaarheid-belastingaanslag" target="begrippen/invorderbaarheid" id="0">
+  <data key="d30">leidt-tot</data>
+</edge>
+<edge source="begrippen/invorderbaarheid-belastingaanslag" target="regels/AR-9-1" id="0">
+  <data key="d30">afleidingsregels</data>
+</edge>
+<edge source="begrippen/invorderbaarheid-in-gelijke-termijnen" target="begrippen/voorlopige-aanslag" id="0">
+  <data key="d30">heeft</data>
+</edge>
+<edge source="begrippen/invorderbaarheid-in-gelijke-termijnen" target="begrippen/voorlopige-conserverende-aanslag-ib" id="0">
+  <data key="d30">heeft</data>
+</edge>
+<edge source="begrippen/invorderbaarheid-in-gelijke-termijnen" target="begrippen/dagtekening-in-vaststellingsjaar" id="0">
+  <data key="d30">heeft</data>
+</edge>
+<edge source="begrippen/invorderbaarheid-in-gelijke-termijnen" target="begrippen/termijnenberekening-resterende-maanden" id="0">
+  <data key="d30">heeft</data>
+</edge>
+<edge source="begrippen/invorderbaarheid-in-gelijke-termijnen" target="begrippen/vervaldag-eerste-termijn" id="0">
+  <data key="d30">leidt-tot</data>
+</edge>
+<edge source="begrippen/invorderbaarheid-in-gelijke-termijnen" target="begrippen/vervaldag-volgende-termijnen" id="0">
+  <data key="d30">leidt-tot</data>
+</edge>
+<edge source="begrippen/invorderbaarheid-in-gelijke-termijnen" target="regels/AR-9-5a" id="0">
+  <data key="d30">afleidingsregels</data>
+</edge>
+<edge source="begrippen/invorderbaarheid-in-gelijke-termijnen" target="begrippen/invorderbaarheid" id="0">
+  <data key="d30">is-een</data>
+</edge>
+<edge source="begrippen/invorderbaarheid" target="regels/AR-9-1" id="0">
+  <data key="d30">afleidingsregels</data>
+</edge>
+<edge source="begrippen/maand-dagtekening-aanslagbiljet" target="begrippen/resterende-maanden-jaar" id="0">
+  <data key="d30">leidt-tot</data>
+</edge>
+<edge source="begrippen/resterende-maanden-jaar" target="begrippen/maand-dagtekening-aanslagbiljet" id="0">
+  <data key="d30">heeft</data>
+</edge>
+<edge source="begrippen/resterende-maanden-jaar" target="begrippen/termijnenberekening-resterende-maanden" id="0">
+  <data key="d30">leidt-tot</data>
+</edge>
+<edge source="begrippen/resterende-maanden-jaar" target="regels/AR-9-5b" id="0">
+  <data key="d30">afleidingsregels</data>
+</edge>
+<edge source="begrippen/telkens-een-maand-later" target="begrippen/vervaldag-volgende-termijnen" id="0">
+  <data key="d30">leidt-tot</data>
+</edge>
+<edge source="begrippen/telkens-een-maand-later" target="regels/AR-9-5d" id="0">
+  <data key="d30">afleidingsregels</data>
+</edge>
+<edge source="begrippen/termijn-eindigt-voor-31-december" target="begrippen/invorderbaarheid-belastingaanslag" id="0">
+  <data key="d30">heeft</data>
+</edge>
+<edge source="begrippen/termijnbedrag" target="regels/AR-9-5f" id="0">
+  <data key="d30">afleidingsregels</data>
+</edge>
+<edge source="begrippen/termijnenberekening-resterende-maanden" target="begrippen/maand-dagtekening-aanslagbiljet" id="0">
+  <data key="d30">heeft</data>
+</edge>
+<edge source="begrippen/termijnenberekening-resterende-maanden" target="begrippen/resterende-maanden-jaar" id="0">
+  <data key="d30">heeft</data>
+</edge>
+<edge source="begrippen/termijnenberekening-resterende-maanden" target="begrippen/invorderbaarheid-in-gelijke-termijnen" id="0">
+  <data key="d30">leidt-tot</data>
+</edge>
+<edge source="begrippen/termijnenberekening-resterende-maanden" target="regels/AR-9-5b" id="0">
+  <data key="d30">afleidingsregels</data>
+</edge>
+<edge source="begrippen/terugvalregel-lid-1" target="begrippen/termijnenberekening-resterende-maanden" id="0">
+  <data key="d30">heeft</data>
+</edge>
+<edge source="begrippen/terugvalregel-lid-1" target="begrippen/resterende-maanden-jaar" id="0">
+  <data key="d30">heeft</data>
+</edge>
+<edge source="begrippen/terugvalregel-lid-1" target="begrippen/invorderbaarheid-belastingaanslag" id="0">
+  <data key="d30">leidt-tot</data>
+</edge>
+<edge source="begrippen/terugvalregel-lid-1" target="regels/AR-9-5e" id="0">
+  <data key="d30">afleidingsregels</data>
+</edge>
+<edge source="begrippen/totaalbedrag-belastingaanslag" target="begrippen/termijnbedrag" id="0">
+  <data key="d30">leidt-tot</data>
+</edge>
+<edge source="begrippen/vervaldag-31-december" target="begrippen/31-december" id="0">
+  <data key="d30">heeft</data>
+</edge>
+<edge source="begrippen/vervaldag-31-december" target="begrippen/invorderbaarheid" id="0">
+  <data key="d30">leidt-tot</data>
+</edge>
+<edge source="begrippen/vervaldag-31-december" target="regels/AR-LI-9-1a" id="0">
+  <data key="d30">afleidingsregels</data>
+</edge>
+<edge source="begrippen/vervaldag-eerste-termijn" target="begrippen/dagtekening-aanslagbiljet" id="0">
+  <data key="d30">heeft</data>
+</edge>
+<edge source="begrippen/vervaldag-eerste-termijn" target="begrippen/een-maand-na-dagtekening" id="0">
+  <data key="d30">heeft</data>
+</edge>
+<edge source="begrippen/vervaldag-eerste-termijn" target="regels/AR-9-5c" id="0">
+  <data key="d30">afleidingsregels</data>
+</edge>
+<edge source="begrippen/vervaldag-laatste-dag-maand" target="begrippen/invorderbaarheid" id="0">
+  <data key="d30">leidt-tot</data>
+</edge>
+<edge source="begrippen/vervaldag-laatste-dag-maand" target="regels/AR-LI-9-1b" id="0">
+  <data key="d30">afleidingsregels</data>
+</edge>
+<edge source="begrippen/vervaldag-volgende-termijnen" target="begrippen/vervaldag-eerste-termijn" id="0">
+  <data key="d30">heeft</data>
+</edge>
+<edge source="begrippen/vervaldag-volgende-termijnen" target="begrippen/telkens-een-maand-later" id="0">
+  <data key="d30">heeft</data>
+</edge>
+<edge source="begrippen/vervaldag-volgende-termijnen" target="regels/AR-9-5d" id="0">
+  <data key="d30">afleidingsregels</data>
+</edge>
+<edge source="begrippen/voorlopige-aanslag" target="begrippen/belastingaanslag" id="0">
+  <data key="d30">is-een</data>
+</edge>
+<edge source="begrippen/voorlopige-conserverende-aanslag-ib" target="begrippen/belastingaanslag" id="0">
+  <data key="d30">is-een</data>
+</edge>
+<edge source="begrippen/zes-weken-na-dagtekening-aanslagbiljet" target="begrippen/zes-weken" id="0">
+  <data key="d30">heeft</data>
+</edge>
+<edge source="begrippen/zes-weken-na-dagtekening-aanslagbiljet" target="begrippen/dagtekening-aanslagbiljet" id="0">
+  <data key="d30">heeft</data>
+</edge>
+<edge source="begrippen/zes-weken-na-dagtekening-aanslagbiljet" target="begrippen/invorderbaarheid" id="0">
+  <data key="d30">leidt-tot</data>
+</edge>
+<edge source="begrippen/zes-weken-na-dagtekening-aanslagbiljet" target="regels/AR-9-1" id="0">
+  <data key="d30">afleidingsregels</data>
+</edge>
+<edge source="regels/AR-9-1" target="annotaties/iw1990/art9-1" id="0">
+  <data key="d30">afgeleid-van</data>
+</edge>
+<edge source="regels/AR-9-1" target="begrippen/invorderbaarheid-belastingaanslag" id="0">
+  <data key="d30">bepaalt</data>
+</edge>
+<edge source="regels/AR-9-1" target="begrippen/dagtekening-aanslagbiljet" id="0">
+  <data key="d30">rechtsfeit</data>
+</edge>
+<edge source="regels/AR-9-1" target="begrippen/dagtekening-aanslagbiljet" id="1">
+  <data key="d30">invoer</data>
+</edge>
+<edge source="regels/AR-9-1" target="begrippen/belastingaanslag" id="0">
+  <data key="d30">invoer</data>
+</edge>
+<edge source="regels/AR-9-1" target="begrippen/zes-weken-na-dagtekening-aanslagbiljet" id="0">
+  <data key="d30">invoer</data>
+</edge>
+<edge source="regels/AR-9-1" target="begrippen/invorderbaarheid" id="0">
+  <data key="d30">uitvoer</data>
+</edge>
+<edge source="regels/AR-9-5a" target="annotaties/iw1990/art9-5" id="0">
+  <data key="d30">afgeleid-van</data>
+</edge>
+<edge source="regels/AR-9-5a" target="begrippen/invorderbaarheid-in-gelijke-termijnen" id="0">
+  <data key="d30">bepaalt</data>
+</edge>
+<edge source="regels/AR-9-5a" target="begrippen/invorderbaarheid-in-gelijke-termijnen" id="1">
+  <data key="d30">uitvoer</data>
+</edge>
+<edge source="regels/AR-9-5a" target="begrippen/dagtekening-aanslagbiljet" id="0">
+  <data key="d30">rechtsfeit</data>
+</edge>
+<edge source="regels/AR-9-5a" target="begrippen/voorlopige-aanslag" id="0">
+  <data key="d30">invoer</data>
+</edge>
+<edge source="regels/AR-9-5a" target="begrippen/voorlopige-conserverende-aanslag-ib" id="0">
+  <data key="d30">invoer</data>
+</edge>
+<edge source="regels/AR-9-5a" target="begrippen/dagtekening-in-vaststellingsjaar" id="0">
+  <data key="d30">invoer</data>
+</edge>
+<edge source="regels/AR-9-5a" target="begrippen/termijnenberekening-resterende-maanden" id="0">
+  <data key="d30">invoer</data>
+</edge>
+<edge source="regels/AR-9-5b" target="annotaties/iw1990/art9-5" id="0">
+  <data key="d30">afgeleid-van</data>
+</edge>
+<edge source="regels/AR-9-5b" target="begrippen/resterende-maanden-jaar" id="0">
+  <data key="d30">bepaalt</data>
+</edge>
+<edge source="regels/AR-9-5b" target="begrippen/resterende-maanden-jaar" id="1">
+  <data key="d30">uitvoer</data>
+</edge>
+<edge source="regels/AR-9-5b" target="begrippen/dagtekening-aanslagbiljet" id="0">
+  <data key="d30">rechtsfeit</data>
+</edge>
+<edge source="regels/AR-9-5b" target="begrippen/maand-dagtekening-aanslagbiljet" id="0">
+  <data key="d30">invoer</data>
+</edge>
+<edge source="regels/AR-9-5c" target="annotaties/iw1990/art9-5" id="0">
+  <data key="d30">afgeleid-van</data>
+</edge>
+<edge source="regels/AR-9-5c" target="begrippen/vervaldag-eerste-termijn" id="0">
+  <data key="d30">bepaalt</data>
+</edge>
+<edge source="regels/AR-9-5c" target="begrippen/vervaldag-eerste-termijn" id="1">
+  <data key="d30">uitvoer</data>
+</edge>
+<edge source="regels/AR-9-5c" target="begrippen/dagtekening-aanslagbiljet" id="0">
+  <data key="d30">rechtsfeit</data>
+</edge>
+<edge source="regels/AR-9-5c" target="begrippen/dagtekening-aanslagbiljet" id="1">
+  <data key="d30">invoer</data>
+</edge>
+<edge source="regels/AR-9-5c" target="begrippen/een-maand-na-dagtekening" id="0">
+  <data key="d30">invoer</data>
+</edge>
+<edge source="regels/AR-9-5d" target="annotaties/iw1990/art9-5" id="0">
+  <data key="d30">afgeleid-van</data>
+</edge>
+<edge source="regels/AR-9-5d" target="begrippen/vervaldag-volgende-termijnen" id="0">
+  <data key="d30">bepaalt</data>
+</edge>
+<edge source="regels/AR-9-5d" target="begrippen/vervaldag-volgende-termijnen" id="1">
+  <data key="d30">uitvoer</data>
+</edge>
+<edge source="regels/AR-9-5d" target="begrippen/dagtekening-aanslagbiljet" id="0">
+  <data key="d30">rechtsfeit</data>
+</edge>
+<edge source="regels/AR-9-5d" target="begrippen/vervaldag-eerste-termijn" id="0">
+  <data key="d30">invoer</data>
+</edge>
+<edge source="regels/AR-9-5d" target="begrippen/telkens-een-maand-later" id="0">
+  <data key="d30">invoer</data>
+</edge>
+<edge source="regels/AR-9-5e" target="annotaties/iw1990/art9-5" id="0">
+  <data key="d30">afgeleid-van</data>
+</edge>
+<edge source="regels/AR-9-5e" target="begrippen/terugvalregel-lid-1" id="0">
+  <data key="d30">bepaalt</data>
+</edge>
+<edge source="regels/AR-9-5e" target="begrippen/dagtekening-aanslagbiljet" id="0">
+  <data key="d30">rechtsfeit</data>
+</edge>
+<edge source="regels/AR-9-5e" target="begrippen/resterende-maanden-jaar" id="0">
+  <data key="d30">invoer</data>
+</edge>
+<edge source="regels/AR-9-5e" target="begrippen/termijnenberekening-resterende-maanden" id="0">
+  <data key="d30">invoer</data>
+</edge>
+<edge source="regels/AR-9-5e" target="begrippen/invorderbaarheid-belastingaanslag" id="0">
+  <data key="d30">uitvoer</data>
+</edge>
+<edge source="regels/AR-9-5f" target="annotaties/iw1990/art9-5" id="0">
+  <data key="d30">afgeleid-van</data>
+</edge>
+<edge source="regels/AR-9-5f" target="begrippen/termijnbedrag" id="0">
+  <data key="d30">bepaalt</data>
+</edge>
+<edge source="regels/AR-9-5f" target="begrippen/termijnbedrag" id="1">
+  <data key="d30">uitvoer</data>
+</edge>
+<edge source="regels/AR-9-5f" target="begrippen/dagtekening-aanslagbiljet" id="0">
+  <data key="d30">rechtsfeit</data>
+</edge>
+<edge source="regels/AR-9-5f" target="begrippen/totaalbedrag-belastingaanslag" id="0">
+  <data key="d30">invoer</data>
+</edge>
+<edge source="regels/AR-9-5f" target="begrippen/resterende-maanden-jaar" id="0">
+  <data key="d30">invoer</data>
+</edge>
+<edge source="regels/AR-LI-9-1a" target="annotaties/li2008/art9-9-1" id="0">
+  <data key="d30">afgeleid-van</data>
+</edge>
+<edge source="regels/AR-LI-9-1a" target="begrippen/vervaldag-31-december" id="0">
+  <data key="d30">bepaalt</data>
+</edge>
+<edge source="regels/AR-LI-9-1a" target="begrippen/vervaldag-31-december" id="1">
+  <data key="d30">uitvoer</data>
+</edge>
+<edge source="regels/AR-LI-9-1a" target="begrippen/voorlopige-aanslag" id="0">
+  <data key="d30">invoer</data>
+</edge>
+<edge source="regels/AR-LI-9-1a" target="begrippen/dagtekening-in-november-of-eerder" id="0">
+  <data key="d30">invoer</data>
+</edge>
+<edge source="regels/AR-LI-9-1a" target="begrippen/termijn-eindigt-voor-31-december" id="0">
+  <data key="d30">invoer</data>
+</edge>
+<edge source="regels/AR-LI-9-1b" target="annotaties/li2008/art9-9-1" id="0">
+  <data key="d30">afgeleid-van</data>
+</edge>
+<edge source="regels/AR-LI-9-1b" target="begrippen/vervaldag-laatste-dag-maand" id="0">
+  <data key="d30">bepaalt</data>
+</edge>
+<edge source="regels/AR-LI-9-1b" target="begrippen/vervaldag-laatste-dag-maand" id="1">
+  <data key="d30">uitvoer</data>
+</edge>
+<edge source="regels/AR-LI-9-1b" target="begrippen/voorlopige-aanslag" id="0">
+  <data key="d30">invoer</data>
+</edge>
+<edge source="regels/AR-LI-9-1b" target="begrippen/afwijkend-boekjaar" id="0">
+  <data key="d30">invoer</data>
+</edge>
+</graph></graphml>

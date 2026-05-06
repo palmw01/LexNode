@@ -5,7 +5,7 @@
   </meta>
   <graph defaultedgetype="directed" mode="dynamic" name="" timeformat="date">
     <attributes mode="static" class="edge">
-      <attribute id="29" title="networkx_key" type="long" />
+      <attribute id="28" title="networkx_key" type="long" />
     </attributes>
     <attributes mode="static" class="node">
       <attribute id="0" title="node_type" type="string" />
@@ -36,7 +36,6 @@
       <attribute id="25" title="naam" type="string" />
       <attribute id="26" title="operators" type="string" />
       <attribute id="27" title="bronreferentie" type="string" />
-      <attribute id="28" title="tekst" type="string" />
     </attributes>
     <nodes>
       <node id="annotaties/iw1990/art9-1" label="Art. 9 lid 1 IW 1990" start="2026-01-01">
@@ -875,7 +874,6 @@
           <attvalue for="5" value="2026-01-01" />
           <attvalue for="6" value="Hoofdstuk II Invordering in eerste aanleg &gt; Artikel 9" />
           <attvalue for="27" value="jci1.3:c:BWBR0004770&amp;hoofdstuk=II&amp;artikel=9&amp;z=2026-01-01&amp;g=2026-01-01" />
-          <attvalue for="28" value="1. Een belastingaanslag is invorderbaar zes weken na de dagtekening van het aanslagbiljet.&#10;2. In afwijking van het eerste lid is een navorderingsaanslag, alsmede een conserverende navorderingsaanslag invorderbaar één maand na de dagtekening van het aanslagbiljet en een naheffingsaanslag invorderbaar veertien dagen na de dagtekening van het aanslagbiljet.&#10;3. Een ingevolge artikel 2, tweede lid, onderdeel c, met een belastingaanslag gelijkgestelde beschikking inzake een bestuurlijke boete die gelijktijdig en in verband met de vaststelling van een belastingaanslag als bedoeld in artikel 2, eerste lid, onderdeel m, is opgelegd, is invorderbaar overeenkomstig de bepalingen die gelden voor die belastingaanslag. Een ingevolge artikel 2, tweede lid, onderdeel c, met een belastingaanslag gelijkgestelde beschikking inzake belasting- of revisierente is invorderbaar overeenkomstig de bepalingen die gelden voor de belastingaanslag, bedoeld in artikel 2, eerste lid, onderdeel m, waarop de belasting- of revisierente betrekking heeft.&#10;4. Een uitnodiging tot betaling, alsmede een ingevolge artikel 2, tweede lid, onderdeel c, met een belastingaanslag gelijkgestelde beschikking inzake rente op achterstallen, inzake kosten van ambtelijke werkzaamheden of inzake een bestuurlijke boete als bedoeld in hoofdstuk 9 van de Algemene douanewet, is invorderbaar tien dagen na de dagtekening van het aanslagbiljet.&#10;5. In afwijking van het eerste lid is een voorlopige aanslag in de inkomstenbelasting of in de vennootschapsbelasting en een voorlopige conserverende aanslag in de inkomstenbelasting, waarvan het aanslagbiljet een dagtekening heeft die ligt in het jaar waarover deze is vastgesteld, invorderbaar in zoveel gelijke termijnen als er na de maand, die in de dagtekening van het aanslagbiljet is vermeld, nog maanden van het jaar overblijven. De eerste termijn vervalt één maand na de dagtekening van het aanslagbiljet en elk van de volgende termijnen telkens een maand later. Indien de toepassing van de eerste volzin niet leidt tot meer dan één termijn, vindt het eerste lid toepassing.&#10;6. In afwijking van het eerste en het vijfde lid is een belastingaanslag als bedoeld in het vijfde lid, die een uit te betalen bedrag behelst, invorderbaar in zoveel gelijke termijnen als er met inbegrip van de maand die in de dagtekening van het aanslagbiljet is vermeld, nog maanden van het jaar overblijven. De eerste termijn vervalt aan het eind van de maand van de dagtekening van het aanslagbiljet en elk van de volgende termijnen telkens een maand later.&#10;7. In afwijking van het eerste lid is een voorlopige aanslag waarvan het aanslagbiljet een dagtekening heeft die ligt voor het jaar waarover deze is vastgesteld, invorderbaar in zoveel gelijke termijnen als er maanden van het jaar zijn. De eerste termijn vervalt aan het eind van de eerste maand van het jaar waarover de voorlopige aanslag is vastgesteld en elk van de volgende termijnen telkens een maand later.&#10;8. In afwijking van het tweede lid is terstond invorderbaar een naheffingsaanslag ter zake van: a. de belasting van personenauto's en motorrijwielen, die is opgelegd aan een ander dan een vergunninghouder als bedoeld in artikel 8 van de Wet op de belasting van personenauto's en motorrijwielen 1992, of b. de belasting zware motorrijtuigen, die is opgelegd aan de houder van een ander motorrijtuig dan bedoeld in artikel 6, onderdeel a, van de Wet belasting zware motorrijtuigen.&#10;9. In afwijking van het vierde lid is een uitnodiging tot betaling die is vastgesteld overeenkomstig een op een kalendermaand betrekking hebbende, aanvullende aangifte als bedoeld in artikel 167, eerste lid, van het Douanewetboek van de Unie invorderbaar vijftien dagen na de maand waarover de aangifte is gedaan. In afwijking in zoverre van de eerste volzin is de uitnodiging tot betaling ter zake van de aangifte over de maand februari invorderbaar na zestien maart.&#10;10. De Algemene termijnenwet is niet van toepassing op de in de voorgaande leden gestelde termijnen.&#10;11. In afwijking van het eerste lid is een belastingaanslag die een uit te betalen bedrag behelst niet invorderbaar: a. zolang over de juistheid van het adresgegeven van de belastingschuldige gerede twijfel bestaat of zolang dit gegeven ontbreekt; b. indien er op het moment dat er na het tijdstip waarop de belastingschuld is ontstaan vijf jaren zijn verstreken: 1°. gerede twijfel bestaat over de juistheid van het adresgegeven van de belastingschuldige; of 2°. het adresgegeven van de belastingschuldige ontbreekt.&#10;12. De verplichting tot betaling wordt niet geschorst door de indiening van een bezwaar- of beroepschrift inzake een belastingaanslag." />
         </attvalues>
       </node>
       <node id="wetteksten/li2008/art9-9-1" label="§ 9.1 LI 2008" start="2026-01-01">
@@ -888,764 +886,763 @@
           <attvalue for="5" value="2026-01-01" />
           <attvalue for="6" value="Artikel 1 Inleiding en toepassingsgebied &gt; Artikel 9 Betalingstermijnen &gt; Lid 9.1" />
           <attvalue for="27" value="jci1.3:c:BWBR0024096&amp;artikel=9" />
-          <attvalue for="28" value="[9.1]. In de gevallen waarin voor voorlopige aanslagen (bedoeld in artikel 9, vijfde lid, van de wet) die zijn gedagtekend in november of eerder, toepassing van de wet er toe zou leiden dat de enige of laatste betalingstermijn eindigt voor 31 december, dan wordt de vervaldag van deze termijn op 31 december gesteld. Bij afwijkende boekjaren wordt de laatste vervaldag steeds op de laatste dag van de maand gesteld." />
         </attvalues>
       </node>
     </nodes>
     <edges>
       <edge source="annotaties/iw1990/art9-1" target="annotaties/iw1990/art9" id="0" label="onderdeel-van">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="annotaties/iw1990/art9-1" target="wetteksten/iw1990/art9" id="1" label="wetstekst">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="annotaties/iw1990/art9-1" target="begrippen/belastingaanslag" id="2" label="begrippen">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="annotaties/iw1990/art9-1" target="begrippen/invorderbaarheid" id="3" label="begrippen">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="annotaties/iw1990/art9-1" target="begrippen/zes-weken-na-dagtekening-aanslagbiljet" id="4" label="begrippen">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="annotaties/iw1990/art9-1" target="begrippen/zes-weken" id="5" label="begrippen">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="annotaties/iw1990/art9-1" target="begrippen/dagtekening-aanslagbiljet" id="6" label="begrippen">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="annotaties/iw1990/art9-1" target="begrippen/invorderbaarheid-belastingaanslag" id="7" label="begrippen">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="annotaties/iw1990/art9-5" target="annotaties/iw1990/art9" id="8" label="onderdeel-van">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="annotaties/iw1990/art9-5" target="wetteksten/iw1990/art9" id="9" label="wetstekst">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="annotaties/iw1990/art9-5" target="begrippen/voorlopige-aanslag" id="10" label="begrippen">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="annotaties/iw1990/art9-5" target="begrippen/logische-of" id="11" label="begrippen">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="annotaties/iw1990/art9-5" target="begrippen/voorlopige-conserverende-aanslag-ib" id="12" label="begrippen">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="annotaties/iw1990/art9-5" target="begrippen/in-afwijking-van-eerste-lid" id="13" label="begrippen">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="annotaties/iw1990/art9-5" target="begrippen/dagtekening-in-vaststellingsjaar" id="14" label="begrippen">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="annotaties/iw1990/art9-5" target="begrippen/dagtekening-aanslagbiljet" id="15" label="begrippen">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="annotaties/iw1990/art9-5" target="begrippen/maand-dagtekening-aanslagbiljet" id="16" label="begrippen">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="annotaties/iw1990/art9-5" target="begrippen/termijnenberekening-resterende-maanden" id="17" label="begrippen">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="annotaties/iw1990/art9-5" target="begrippen/resterende-maanden-jaar" id="18" label="begrippen">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="annotaties/iw1990/art9-5" target="begrippen/invorderbaarheid-in-gelijke-termijnen" id="19" label="begrippen">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="annotaties/iw1990/art9-5" target="begrippen/vervaldag-eerste-termijn" id="20" label="begrippen">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="annotaties/iw1990/art9-5" target="begrippen/een-maand-na-dagtekening" id="21" label="begrippen">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="annotaties/iw1990/art9-5" target="begrippen/vervaldag-volgende-termijnen" id="22" label="begrippen">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="annotaties/iw1990/art9-5" target="begrippen/telkens-een-maand-later" id="23" label="begrippen">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="annotaties/iw1990/art9-5" target="begrippen/terugvalregel-lid-1" id="24" label="begrippen">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="annotaties/iw1990/art9-5" target="begrippen/termijnbedrag" id="25" label="begrippen">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="annotaties/iw1990/art9-5" target="begrippen/totaalbedrag-belastingaanslag" id="26" label="begrippen">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="annotaties/iw1990/art9" target="wetteksten/iw1990/art9" id="27" label="wetstekst">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="annotaties/iw1990/art9" target="annotaties/iw1990/art9-1" id="28" label="leden-noten">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="annotaties/iw1990/art9" target="annotaties/iw1990/art9-5" id="29" label="leden-noten">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="annotaties/li2008/art9-9-1" target="wetteksten/li2008/art9-9-1" id="30" label="wetstekst">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="annotaties/li2008/art9-9-1" target="begrippen/voorlopige-aanslag" id="31" label="begrippen">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="annotaties/li2008/art9-9-1" target="begrippen/dagtekening-in-november-of-eerder" id="32" label="begrippen">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="annotaties/li2008/art9-9-1" target="begrippen/termijn-eindigt-voor-31-december" id="33" label="begrippen">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="annotaties/li2008/art9-9-1" target="begrippen/vervaldag-31-december" id="34" label="begrippen">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="annotaties/li2008/art9-9-1" target="begrippen/31-december" id="35" label="begrippen">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="annotaties/li2008/art9-9-1" target="begrippen/afwijkend-boekjaar" id="36" label="begrippen">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="annotaties/li2008/art9-9-1" target="begrippen/vervaldag-laatste-dag-maand" id="37" label="begrippen">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/belastingaanslag" target="begrippen/dagtekening-aanslagbiljet" id="38" label="heeft">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/dagtekening-aanslagbiljet" target="begrippen/zes-weken-na-dagtekening-aanslagbiljet" id="39" label="leidt-tot">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/dagtekening-in-november-of-eerder" target="begrippen/dagtekening-aanslagbiljet" id="40" label="heeft">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/dagtekening-in-vaststellingsjaar" target="begrippen/dagtekening-aanslagbiljet" id="41" label="heeft">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/dagtekening-in-vaststellingsjaar" target="begrippen/invorderbaarheid-in-gelijke-termijnen" id="42" label="leidt-tot">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/dagtekening-in-vaststellingsjaar" target="regels/AR-9-5a" id="43" label="afleidingsregels">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/een-maand-na-dagtekening" target="begrippen/dagtekening-aanslagbiljet" id="44" label="heeft">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/een-maand-na-dagtekening" target="begrippen/vervaldag-eerste-termijn" id="45" label="leidt-tot">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/een-maand-na-dagtekening" target="regels/AR-9-5c" id="46" label="afleidingsregels">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/in-afwijking-van-eerste-lid" target="begrippen/invorderbaarheid-in-gelijke-termijnen" id="47" label="leidt-tot">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/in-afwijking-van-eerste-lid" target="regels/AR-9-5a" id="48" label="afleidingsregels">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/invorderbaarheid-belastingaanslag" target="begrippen/belastingaanslag" id="49" label="heeft">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/invorderbaarheid-belastingaanslag" target="begrippen/zes-weken-na-dagtekening-aanslagbiljet" id="50" label="heeft">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/invorderbaarheid-belastingaanslag" target="begrippen/invorderbaarheid" id="51" label="leidt-tot">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/invorderbaarheid-belastingaanslag" target="regels/AR-9-1" id="52" label="afleidingsregels">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/invorderbaarheid-in-gelijke-termijnen" target="begrippen/voorlopige-aanslag" id="53" label="heeft">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/invorderbaarheid-in-gelijke-termijnen" target="begrippen/voorlopige-conserverende-aanslag-ib" id="54" label="heeft">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/invorderbaarheid-in-gelijke-termijnen" target="begrippen/dagtekening-in-vaststellingsjaar" id="55" label="heeft">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/invorderbaarheid-in-gelijke-termijnen" target="begrippen/termijnenberekening-resterende-maanden" id="56" label="heeft">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/invorderbaarheid-in-gelijke-termijnen" target="begrippen/vervaldag-eerste-termijn" id="57" label="leidt-tot">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/invorderbaarheid-in-gelijke-termijnen" target="begrippen/vervaldag-volgende-termijnen" id="58" label="leidt-tot">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/invorderbaarheid-in-gelijke-termijnen" target="regels/AR-9-5a" id="59" label="afleidingsregels">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/invorderbaarheid-in-gelijke-termijnen" target="begrippen/invorderbaarheid" id="60" label="is-een">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/invorderbaarheid" target="regels/AR-9-1" id="61" label="afleidingsregels">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/maand-dagtekening-aanslagbiljet" target="begrippen/resterende-maanden-jaar" id="62" label="leidt-tot">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/resterende-maanden-jaar" target="begrippen/maand-dagtekening-aanslagbiljet" id="63" label="heeft">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/resterende-maanden-jaar" target="begrippen/termijnenberekening-resterende-maanden" id="64" label="leidt-tot">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/resterende-maanden-jaar" target="regels/AR-9-5b" id="65" label="afleidingsregels">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/telkens-een-maand-later" target="begrippen/vervaldag-volgende-termijnen" id="66" label="leidt-tot">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/telkens-een-maand-later" target="regels/AR-9-5d" id="67" label="afleidingsregels">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/termijn-eindigt-voor-31-december" target="begrippen/invorderbaarheid-belastingaanslag" id="68" label="heeft">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/termijnbedrag" target="regels/AR-9-5f" id="69" label="afleidingsregels">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/termijnenberekening-resterende-maanden" target="begrippen/maand-dagtekening-aanslagbiljet" id="70" label="heeft">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/termijnenberekening-resterende-maanden" target="begrippen/resterende-maanden-jaar" id="71" label="heeft">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/termijnenberekening-resterende-maanden" target="begrippen/invorderbaarheid-in-gelijke-termijnen" id="72" label="leidt-tot">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/termijnenberekening-resterende-maanden" target="regels/AR-9-5b" id="73" label="afleidingsregels">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/terugvalregel-lid-1" target="begrippen/termijnenberekening-resterende-maanden" id="74" label="heeft">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/terugvalregel-lid-1" target="begrippen/resterende-maanden-jaar" id="75" label="heeft">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/terugvalregel-lid-1" target="begrippen/invorderbaarheid-belastingaanslag" id="76" label="leidt-tot">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/terugvalregel-lid-1" target="regels/AR-9-5e" id="77" label="afleidingsregels">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/totaalbedrag-belastingaanslag" target="begrippen/termijnbedrag" id="78" label="leidt-tot">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/vervaldag-31-december" target="begrippen/31-december" id="79" label="heeft">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/vervaldag-31-december" target="begrippen/invorderbaarheid" id="80" label="leidt-tot">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/vervaldag-31-december" target="regels/AR-LI-9-1a" id="81" label="afleidingsregels">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/vervaldag-eerste-termijn" target="begrippen/dagtekening-aanslagbiljet" id="82" label="heeft">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/vervaldag-eerste-termijn" target="begrippen/een-maand-na-dagtekening" id="83" label="heeft">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/vervaldag-eerste-termijn" target="regels/AR-9-5c" id="84" label="afleidingsregels">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/vervaldag-laatste-dag-maand" target="begrippen/invorderbaarheid" id="85" label="leidt-tot">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/vervaldag-laatste-dag-maand" target="regels/AR-LI-9-1b" id="86" label="afleidingsregels">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/vervaldag-volgende-termijnen" target="begrippen/vervaldag-eerste-termijn" id="87" label="heeft">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/vervaldag-volgende-termijnen" target="begrippen/telkens-een-maand-later" id="88" label="heeft">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/vervaldag-volgende-termijnen" target="regels/AR-9-5d" id="89" label="afleidingsregels">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/voorlopige-aanslag" target="begrippen/belastingaanslag" id="90" label="is-een">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/voorlopige-conserverende-aanslag-ib" target="begrippen/belastingaanslag" id="91" label="is-een">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/zes-weken-na-dagtekening-aanslagbiljet" target="begrippen/zes-weken" id="92" label="heeft">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/zes-weken-na-dagtekening-aanslagbiljet" target="begrippen/dagtekening-aanslagbiljet" id="93" label="heeft">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/zes-weken-na-dagtekening-aanslagbiljet" target="begrippen/invorderbaarheid" id="94" label="leidt-tot">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="begrippen/zes-weken-na-dagtekening-aanslagbiljet" target="regels/AR-9-1" id="95" label="afleidingsregels">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-1" target="annotaties/iw1990/art9-1" id="96" label="afgeleid-van">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-1" target="begrippen/invorderbaarheid-belastingaanslag" id="97" label="bepaalt">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-1" target="begrippen/dagtekening-aanslagbiljet" id="98" label="rechtsfeit">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-1" target="begrippen/dagtekening-aanslagbiljet" id="99" label="invoer">
         <attvalues>
-          <attvalue for="29" value="1" />
+          <attvalue for="28" value="1" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-1" target="begrippen/belastingaanslag" id="100" label="invoer">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-1" target="begrippen/zes-weken-na-dagtekening-aanslagbiljet" id="101" label="invoer">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-1" target="begrippen/invorderbaarheid" id="102" label="uitvoer">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-5a" target="annotaties/iw1990/art9-5" id="103" label="afgeleid-van">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-5a" target="begrippen/invorderbaarheid-in-gelijke-termijnen" id="104" label="bepaalt">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-5a" target="begrippen/invorderbaarheid-in-gelijke-termijnen" id="105" label="uitvoer">
         <attvalues>
-          <attvalue for="29" value="1" />
+          <attvalue for="28" value="1" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-5a" target="begrippen/dagtekening-aanslagbiljet" id="106" label="rechtsfeit">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-5a" target="begrippen/voorlopige-aanslag" id="107" label="invoer">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-5a" target="begrippen/voorlopige-conserverende-aanslag-ib" id="108" label="invoer">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-5a" target="begrippen/dagtekening-in-vaststellingsjaar" id="109" label="invoer">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-5a" target="begrippen/termijnenberekening-resterende-maanden" id="110" label="invoer">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-5b" target="annotaties/iw1990/art9-5" id="111" label="afgeleid-van">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-5b" target="begrippen/resterende-maanden-jaar" id="112" label="bepaalt">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-5b" target="begrippen/resterende-maanden-jaar" id="113" label="uitvoer">
         <attvalues>
-          <attvalue for="29" value="1" />
+          <attvalue for="28" value="1" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-5b" target="begrippen/dagtekening-aanslagbiljet" id="114" label="rechtsfeit">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-5b" target="begrippen/maand-dagtekening-aanslagbiljet" id="115" label="invoer">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-5c" target="annotaties/iw1990/art9-5" id="116" label="afgeleid-van">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-5c" target="begrippen/vervaldag-eerste-termijn" id="117" label="bepaalt">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-5c" target="begrippen/vervaldag-eerste-termijn" id="118" label="uitvoer">
         <attvalues>
-          <attvalue for="29" value="1" />
+          <attvalue for="28" value="1" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-5c" target="begrippen/dagtekening-aanslagbiljet" id="119" label="rechtsfeit">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-5c" target="begrippen/dagtekening-aanslagbiljet" id="120" label="invoer">
         <attvalues>
-          <attvalue for="29" value="1" />
+          <attvalue for="28" value="1" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-5c" target="begrippen/een-maand-na-dagtekening" id="121" label="invoer">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-5d" target="annotaties/iw1990/art9-5" id="122" label="afgeleid-van">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-5d" target="begrippen/vervaldag-volgende-termijnen" id="123" label="bepaalt">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-5d" target="begrippen/vervaldag-volgende-termijnen" id="124" label="uitvoer">
         <attvalues>
-          <attvalue for="29" value="1" />
+          <attvalue for="28" value="1" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-5d" target="begrippen/dagtekening-aanslagbiljet" id="125" label="rechtsfeit">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-5d" target="begrippen/vervaldag-eerste-termijn" id="126" label="invoer">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-5d" target="begrippen/telkens-een-maand-later" id="127" label="invoer">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-5e" target="annotaties/iw1990/art9-5" id="128" label="afgeleid-van">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-5e" target="begrippen/terugvalregel-lid-1" id="129" label="bepaalt">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-5e" target="begrippen/dagtekening-aanslagbiljet" id="130" label="rechtsfeit">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-5e" target="begrippen/resterende-maanden-jaar" id="131" label="invoer">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-5e" target="begrippen/termijnenberekening-resterende-maanden" id="132" label="invoer">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-5e" target="begrippen/invorderbaarheid-belastingaanslag" id="133" label="uitvoer">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-5f" target="annotaties/iw1990/art9-5" id="134" label="afgeleid-van">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-5f" target="begrippen/termijnbedrag" id="135" label="bepaalt">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-5f" target="begrippen/termijnbedrag" id="136" label="uitvoer">
         <attvalues>
-          <attvalue for="29" value="1" />
+          <attvalue for="28" value="1" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-5f" target="begrippen/dagtekening-aanslagbiljet" id="137" label="rechtsfeit">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-5f" target="begrippen/totaalbedrag-belastingaanslag" id="138" label="invoer">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-9-5f" target="begrippen/resterende-maanden-jaar" id="139" label="invoer">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-LI-9-1a" target="annotaties/li2008/art9-9-1" id="140" label="afgeleid-van">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-LI-9-1a" target="begrippen/vervaldag-31-december" id="141" label="bepaalt">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-LI-9-1a" target="begrippen/vervaldag-31-december" id="142" label="uitvoer">
         <attvalues>
-          <attvalue for="29" value="1" />
+          <attvalue for="28" value="1" />
         </attvalues>
       </edge>
       <edge source="regels/AR-LI-9-1a" target="begrippen/voorlopige-aanslag" id="143" label="invoer">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-LI-9-1a" target="begrippen/dagtekening-in-november-of-eerder" id="144" label="invoer">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-LI-9-1a" target="begrippen/termijn-eindigt-voor-31-december" id="145" label="invoer">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-LI-9-1b" target="annotaties/li2008/art9-9-1" id="146" label="afgeleid-van">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-LI-9-1b" target="begrippen/vervaldag-laatste-dag-maand" id="147" label="bepaalt">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-LI-9-1b" target="begrippen/vervaldag-laatste-dag-maand" id="148" label="uitvoer">
         <attvalues>
-          <attvalue for="29" value="1" />
+          <attvalue for="28" value="1" />
         </attvalues>
       </edge>
       <edge source="regels/AR-LI-9-1b" target="begrippen/voorlopige-aanslag" id="149" label="invoer">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
       <edge source="regels/AR-LI-9-1b" target="begrippen/afwijkend-boekjaar" id="150" label="invoer">
         <attvalues>
-          <attvalue for="29" value="0" />
+          <attvalue for="28" value="0" />
         </attvalues>
       </edge>
     </edges>
