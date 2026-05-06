@@ -96,6 +96,7 @@ class LexNodeEngine:
     def check_invorderbaarheid(self, dagtekening: datetime, peildatum: datetime,
                                aanslagtype: str = "definitief",
                                afwijkend_boekjaar: bool = False,
+                               boekjaar_eindmaand: int = 12,
                                vaststellingsjaar: bool = True) -> dict:
 
         details = self.get_full_justification("begrippen/zes-weken")
@@ -113,7 +114,8 @@ class LexNodeEngine:
         if aanslagtype.startswith("voorlopig") and vaststellingsjaar:
             # Art 9 lid 5: Meerdere termijnen
             maand = dagtekening.month
-            resterende_maanden = 12 - maand
+            eind = boekjaar_eindmaand if afwijkend_boekjaar else 12
+            resterende_maanden = (eind - maand + 12) % 12 if afwijkend_boekjaar else 12 - maand
             
             if resterende_maanden > 1:
                 termijnen = []
@@ -121,8 +123,9 @@ class LexNodeEngine:
                 is_laatste_dag = dagtekening.day == last_day_month
                 
                 for i in range(1, resterende_maanden + 1):
-                    doel_maand = dagtekening.month + i
-                    doel_jaar = dagtekening.year
+                    raw_maand = dagtekening.month + i
+                    doel_jaar = dagtekening.year + (raw_maand - 1) // 12
+                    doel_maand = ((raw_maand - 1) % 12) + 1
                     _, last_day_doel = calendar.monthrange(doel_jaar, doel_maand)
                     dag = last_day_doel if is_laatste_dag else min(dagtekening.day, last_day_doel)
                     termijnen.append(datetime(doel_jaar, doel_maand, dag))

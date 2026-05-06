@@ -48,6 +48,7 @@ class LexNodeHandler(http.server.SimpleHTTPRequestHandler):
 
             aanslagtype = params.get('aanslagtype', 'definitief')
             afwijkend_boekjaar = params.get('afwijkend_boekjaar', False)
+            boekjaar_eindmaand = int(params.get('boekjaar_eindmaand', 12))
             vaststellingsjaar = params.get('dagtekening_in_vaststellingsjaar', True)
 
             result = engine.check_invorderbaarheid(
@@ -55,6 +56,7 @@ class LexNodeHandler(http.server.SimpleHTTPRequestHandler):
                 peildatum,
                 aanslagtype=aanslagtype,
                 afwijkend_boekjaar=afwijkend_boekjaar,
+                boekjaar_eindmaand=boekjaar_eindmaand,
                 vaststellingsjaar=vaststellingsjaar
             )
 

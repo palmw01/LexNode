@@ -204,38 +204,103 @@ class TestLI2008Correcties(unittest.TestCase):
         self.assertNotIn('termijnen', result,
                         "December heeft maar 0 resterende maanden → Lid 1")
     
-    def test_li_9_1b_afwijkend_boekjaar_maart_naar_30_april(self):
-        """AR-LI-9-1b: Maart met afwijkend boekjaar + Lid 5 → 30 april op laatste termijn"""
+    def test_li_9_1b_afwijkend_boekjaar_standaard_eindmaand_december(self):
+        """AR-LI-9-1b: Afwijkend boekjaar zonder eindmaand (default dec) → 9 termijnen, laatste dag 31"""
         dag = datetime(2026, 3, 15)
         peil = datetime(2026, 4, 29)
         result = self.engine.check_invorderbaarheid(dag, peil,
                                                      aanslagtype="voorlopig",
                                                      vaststellingsjaar=True,
-                                                     afwijkend_boekjaar=True)
-        # Maart: 12 - 3 = 9 resterende maanden → Lid 5
-        # Eerste termijn is april 15, laatste is december 15
-        # Met afwijkend boekjaar: 15 dec → 31 dec (niet 30 april)
-        # Eigenlijk: Lid 5 heeft 9 termijnen, de laatste is december
-        if 'termijnen' in result:
-            # Met afwijkend boekjaar: laatste termijn moet laatste dag van december zijn
-            self.assertEqual(result['termijnen'][-1].day, 31,
-                           "Afwijkend boekjaar: laatste termijn moet dag 31 zijn")
+                                                     afwijkend_boekjaar=True,
+                                                     boekjaar_eindmaand=12)
+        # (12 - 3 + 12) % 12 = 9 termijnen
+        self.assertIn('termijnen', result, "Moet Lid-5-termijnen geven")
+        self.assertEqual(len(result['termijnen']), 9)
+        self.assertEqual(result['termijnen'][-1].month, 12)
+        self.assertEqual(result['termijnen'][-1].day, 31,
+                         "Afwijkend boekjaar: laatste termijn op laatste dag van eindmaand")
     
     def test_li_9_1b_februari_schrikkelaar_naar_29_februari(self):
-        """AR-LI-9-1b: November schrikkelaar + afwijkend boekjaar → 29 februari"""
+        """AR-LI-9-1b: November schrikkelaar + afwijkend boekjaar (dec) → terugval lid 1, deadline 31 dec"""
         dag = datetime(2024, 11, 15)  # 2024 is schrikkelaar
         peil = datetime(2024, 2, 28)
         result = self.engine.check_invorderbaarheid(dag, peil,
                                                      aanslagtype="voorlopig",
                                                      vaststellingsjaar=True,
-                                                     afwijkend_boekjaar=True)
-        # November: 12 - 11 = 1 maand → terugval naar Lid 1
-        # 15 nov + 42 = 27 dec
-        # Met afwijkend boekjaar: 27 dec → 31 dec (laatste dag december)
+                                                     afwijkend_boekjaar=True,
+                                                     boekjaar_eindmaand=12)
+        # (12 - 11 + 12) % 12 = 1 → terugval naar Lid 1
+        # 15 nov + 42 = 27 dec → laatste dag dec = 31 dec
         self.assertNotIn('termijnen', result,
-                        "November moet terugvallen naar Lid 1")
+                        "November + eindmaand=12 moet terugvallen naar Lid 1")
         self.assertEqual(result['deadline'], datetime(2024, 12, 31),
                         "Afwijkend boekjaar + november: 31 december")
+
+    def test_afwijkend_boekjaar_eindmaand_maart_twee_termijnen(self):
+        """Afwijkend boekjaar eindigt in maart: jan → 2 termijnen (feb, 31 mrt)"""
+        dag = datetime(2026, 1, 10)
+        peil = datetime(2026, 1, 1)
+        result = self.engine.check_invorderbaarheid(dag, peil,
+                                                     aanslagtype="voorlopig",
+                                                     vaststellingsjaar=True,
+                                                     afwijkend_boekjaar=True,
+                                                     boekjaar_eindmaand=3)
+        # (3 - 1 + 12) % 12 = 2 termijnen
+        self.assertIn('termijnen', result, "Moet 2 termijnen geven")
+        self.assertEqual(len(result['termijnen']), 2)
+        self.assertEqual(result['termijnen'][0].month, 2)   # februari
+        self.assertEqual(result['termijnen'][0].day, 10)
+        self.assertEqual(result['termijnen'][1].month, 3)   # maart
+        self.assertEqual(result['termijnen'][1].day, 31,    "Laatste dag van eindmaand (maart)")
+
+    def test_afwijkend_boekjaar_eindmaand_juni_drie_termijnen(self):
+        """Afwijkend boekjaar eindigt in juni: maart → 3 termijnen (apr, mei, 30 jun)"""
+        dag = datetime(2026, 3, 15)
+        peil = datetime(2026, 3, 1)
+        result = self.engine.check_invorderbaarheid(dag, peil,
+                                                     aanslagtype="voorlopig",
+                                                     vaststellingsjaar=True,
+                                                     afwijkend_boekjaar=True,
+                                                     boekjaar_eindmaand=6)
+        # (6 - 3 + 12) % 12 = 3 termijnen
+        self.assertIn('termijnen', result, "Moet 3 termijnen geven")
+        self.assertEqual(len(result['termijnen']), 3)
+        self.assertEqual(result['termijnen'][0].month, 4)   # april
+        self.assertEqual(result['termijnen'][1].month, 5)   # mei
+        self.assertEqual(result['termijnen'][2].month, 6)   # juni
+        self.assertEqual(result['termijnen'][2].day, 30,    "Laatste dag van eindmaand (juni)")
+
+    def test_afwijkend_boekjaar_over_jaargrens(self):
+        """Boekjaar loopt over jaargrens: okt dagtekening, eindmaand=3 → 5 termijnen t/m 31 mrt"""
+        dag = datetime(2026, 10, 15)
+        peil = datetime(2026, 10, 1)
+        result = self.engine.check_invorderbaarheid(dag, peil,
+                                                     aanslagtype="voorlopig",
+                                                     vaststellingsjaar=True,
+                                                     afwijkend_boekjaar=True,
+                                                     boekjaar_eindmaand=3)
+        # (3 - 10 + 12) % 12 = 5 termijnen: nov, dec, jan, feb, mrt
+        self.assertIn('termijnen', result, "Moet 5 termijnen geven")
+        self.assertEqual(len(result['termijnen']), 5)
+        self.assertEqual(result['termijnen'][0].month, 11)  # november
+        self.assertEqual(result['termijnen'][2].month, 1)   # januari (volgend jaar)
+        self.assertEqual(result['termijnen'][4].month, 3)   # maart
+        self.assertEqual(result['termijnen'][4].day, 31,    "Laatste dag van eindmaand (maart)")
+
+    def test_afwijkend_boekjaar_terugval_lid1_met_eindmaand(self):
+        """Afwijkend boekjaar: 1 resterende maand → terugval Lid 1, deadline op laatste dag eindmaand"""
+        dag = datetime(2026, 5, 20)
+        peil = datetime(2026, 5, 1)
+        result = self.engine.check_invorderbaarheid(dag, peil,
+                                                     aanslagtype="voorlopig",
+                                                     vaststellingsjaar=True,
+                                                     afwijkend_boekjaar=True,
+                                                     boekjaar_eindmaand=6)
+        # (6 - 5 + 12) % 12 = 1 → terugval Lid 1
+        # 20 mei + 42 dagen = 1 juli → afwijkend boekjaar → laatste dag van die maand = 31 juli
+        self.assertNotIn('termijnen', result, "1 resterende maand → terugval Lid 1")
+        self.assertEqual(result['deadline'], datetime(2026, 7, 31),
+                         "Deadline moet laatste dag van de maand zijn (31 juli)")
 
 
 class TestEdgeCases(unittest.TestCase):

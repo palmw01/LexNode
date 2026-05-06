@@ -327,7 +327,12 @@
             : null;
 
         const maand = dagtekening.getMonth() + 1;
-        const resterendeMaanden = 12 - maand;
+        const eindmaand = (options.afwijkendBoekjaar && options.boekjaarEindmaand != null)
+            ? options.boekjaarEindmaand
+            : 12;
+        const resterendeMaanden = options.afwijkendBoekjaar
+            ? (eindmaand - maand + 12) % 12
+            : 12 - maand;
 
         // AR-9-5e: terugval naar lid 1 als termijnen <= 1
         if (resterendeMaanden <= 1) {
@@ -948,7 +953,10 @@
             return;
         }
 
-        const opts = { isVoorlopig, afwijkendBoekjaar, totaalBedrag };
+        const boekjaarEindmaand = (afwijkendBoekjaar && document.getElementById('boekjaar-eindmaand'))
+            ? parseInt(document.getElementById('boekjaar-eindmaand').value, 10)
+            : null;
+        const opts = { isVoorlopig, afwijkendBoekjaar, totaalBedrag, boekjaarEindmaand };
         const res = isVoorlopig ? checkInvorderbaarheidLid5(dag, peil, opts) : checkInvorderbaarheid(dag, peil, opts);
         App.activeRoute = res.route;
 
@@ -1112,7 +1120,11 @@
     document.getElementById('totaalbedrag').addEventListener('input', debouncedCalculate);
     document.getElementById('dagtekening').addEventListener('input', debouncedCalculate);
     document.getElementById('peildatum').addEventListener('input', debouncedCalculate);
-    document.getElementById('afwijkend-boekjaar').addEventListener('change', calculate);
+    document.getElementById('afwijkend-boekjaar').addEventListener('change', (e) => {
+        document.getElementById('boekjaar-eindmaand-wrapper').style.display = e.target.checked ? 'block' : 'none';
+        calculate();
+    });
+    document.getElementById('boekjaar-eindmaand').addEventListener('change', calculate);
     document.getElementById('dagtekening-in-vaststellingsjaar').addEventListener('change', calculate);
 
     // Physics controls
